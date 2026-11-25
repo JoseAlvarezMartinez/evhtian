@@ -1,0 +1,488 @@
+---
+/**
+ * Visor de fotos a pantalla completa de la página de producto (estilo Mercado Libre).
+ * Se abre con cualquier elemento [data-zoom-open="N"] dentro de [data-product-page]:
+ * N=0 es la foto principal del color elegido, N>=1 son los detalles.
+ * Clic o toque en la foto: acerca en ese punto. Con el mouse, la foto acercada sigue al cursor;
+ * en el celular se arrastra, se pellizca para acercar y se desliza para pasar de foto.
+ */
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icon from './Icon.astro';
+import { colors, models, type ModelId } from '../data/catalog';
+import { detailPhotos, photoFor } from '../data/photos';
+
+interface Props {
+  model: ModelId;
+}
+const { model } = Astro.props;
+const name = models.find((m) => m.id === model)?.name ?? model;
+
+async function slide(img: ImageMetadata, alt: string, color?: string) {
+  const [large, thumb] = await Promise.all([
+    getImage({ src: img, width: Math.min(img.width, 2000), format: 'webp', quality: 85 }),
+    getImage({ src: img, width: 160, format: 'webp' }),
+  ]);
+  return { color, alt, src: large.src, thumb: thumb.src, w: img.width, h: img.height };
+}
+
+const mains = await Promise.all(
+  colors.map((c) => slide(photoFor(model, c.id)!, `Ambo ${name} en ${c.name.toLowerCase()}`, c.id)),
+);
+// Detalles por color (si el color no tiene propios, se usan los generales del modelo).
+const details = Object.fromEntries(
+  await Promise.all(
+    colors.map(async (c) => [
+      c.id,
+      await Promise.all(detailPhotos(model, c.id).map((img, i) => slide(img, `Ambo ${name} en ${c.name.toLowerCase()} (foto ${i + 2})`))),
+    ]),
+  ),
+);
+const data = JSON.stringify({ mains, details });
+---
+<dialog class="lb" aria-label={`Fotos del ambo ${name}`} data-lightbox>
+  <script type="application/json" data-lb-data set:html={data} />
+  <header class="lb-top">
+    <span class="lb-count tnum" data-lb-count></span>
+    <button class="lb-btn" type="button" data-lb-close aria-label="Cerrar fotos"><Icon name="close" /></button>
+  </header>
+
+  <div class="lb-stage" data-lb-stage>
+    <img class="lb-img" data-lb-img alt="" draggable="false" decoding="async" />
+  </div>
+
+  <button class="lb-btn lb-nav lb-prev" type="button" data-lb-prev aria-label="Foto anterior"><Icon name="prev" /></button>
+  <button class="lb-btn lb-nav lb-next" type="button" data-lb-next aria-label="Foto siguiente"><Icon name="next" /></button>
+
+  <footer class="lb-foot">
+    <p class="lb-hint" data-lb-hint aria-live="polite"></p>
+    <div class="lb-thumbs" data-lb-thumbs></div>
+  </footer>
+</dialog>
+
+<style>
+  .lb {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--paper);
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .lb[open] {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    animation: lb-in 260ms var(--ease-out);
+  }
+  .lb::backdrop {
+    background: var(--paper);
+  }
+  @keyframes lb-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .lb-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s-3) var(--s-4);
+  }
+  .lb-count {
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--ink-2);
+  }
+
+  .lb-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: rgb(251 250 247 / 0.92);
+    color: var(--ink);
+    cursor: pointer;
+    transition:
+      background-color 160ms,
+      border-color 160ms;
+  }
+  .lb-btn[hidden],
+  .lb-thumbs[hidden] {
+    display: none;
+  }
+  .lb-btn:hover {
+    border-color: var(--ink);
+    background: var(--paper);
+  }
+
+  .lb-stage {
+    position: relative;
+    display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    place-items: center;
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: zoom-in;
+  }
+  .lb-stage.is-zoomed {
+    cursor: zoom-out;
+  }
+  .lb-img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    transform-origin: center;
+    will-change: transform;
+    -webkit-user-drag: none;
+  }
+  .lb-img.is-animating {
+    transition: transform 280ms var(--ease-out);
+  }
+
+  .lb-nav {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    z-index: 1;
+  }
+  .lb-prev {
+    left: var(--s-4);
+  }
+  .lb-next {
+    right: var(--s-4);
+  }
+
+  .lb-foot {
+    display: grid;
+    justify-items: center;
+    gap: var(--s-2);
+    padding: var(--s-2) var(--s-4) max(var(--s-4), env(safe-area-inset-bottom));
+  }
+  .lb-hint {
+    font-size: 0.75rem;
+    color: var(--ink-3);
+  }
+  .lb-thumbs {
+    display: flex;
+    gap: var(--s-2);
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .lb-thumbs :global(button) {
+    flex: none;
+    width: 3.5rem;
+    aspect-ratio: 4 / 5;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--paper-3);
+    opacity: 0.6;
+    cursor: pointer;
+    transition:
+      opacity 160ms,
+      border-color 160ms;
+  }
+  .lb-thumbs :global(button:hover) {
+    opacity: 1;
+  }
+  .lb-thumbs :global(button[aria-current='true']) {
+    border: 2px solid var(--ink);
+    opacity: 1;
+  }
+  .lb-thumbs :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 10%;
+  }
+
+  @media (max-width: 640px) {
+    .lb-nav {
+      display: none;
+    }
+    .lb-thumbs :global(button) {
+      width: 3rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lb[open] {
+      animation: none;
+    }
+    .lb-img.is-animating {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  type Slide = { color?: string; alt: string; src: string; thumb: string; w: number; h: number };
+
+  const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox]');
+  const page = document.querySelector<HTMLElement>('[data-product-page]');
+
+  if (dialog && page) {
+    const { mains, details } = JSON.parse(dialog.querySelector('[data-lb-data]')!.textContent!) as {
+      mains: Slide[];
+      details: Record<string, Slide[]>;
+    };
+    const stage = dialog.querySelector<HTMLElement>('[data-lb-stage]')!;
+    const img = dialog.querySelector<HTMLImageElement>('[data-lb-img]')!;
+    const count = dialog.querySelector<HTMLElement>('[data-lb-count]')!;
+    const hint = dialog.querySelector<HTMLElement>('[data-lb-hint]')!;
+    const thumbs = dialog.querySelector<HTMLElement>('[data-lb-thumbs]')!;
+    const prevBtn = dialog.querySelector<HTMLButtonElement>('[data-lb-prev]')!;
+    const nextBtn = dialog.querySelector<HTMLButtonElement>('[data-lb-next]')!;
+    const fineHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+    let slides: Slide[] = [];
+    let index = 0;
+    let opener: HTMLElement | null = null;
+    // Estado del zoom: escala y desplazamiento (px) desde el centro.
+    let s = 1;
+    let tx = 0;
+    let ty = 0;
+
+    // Zoom del clic/toque: hasta el tamaño real de la foto, entre 2,2x y 3x (pellizcando llega a 4x).
+    const zoomMax = () => Math.min(3, Math.max(2.2, img.naturalWidth / Math.max(1, img.offsetWidth)));
+
+    function limits(scale = s) {
+      return {
+        x: Math.max(0, (img.offsetWidth * scale - stage.clientWidth) / 2),
+        y: Math.max(0, (img.offsetHeight * scale - stage.clientHeight) / 2),
+      };
+    }
+    function clamp() {
+      const l = limits();
+      tx = Math.min(l.x, Math.max(-l.x, tx));
+      ty = Math.min(l.y, Math.max(-l.y, ty));
+    }
+    function apply(animate = false) {
+      img.classList.toggle('is-animating', animate);
+      img.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${s})`;
+      stage.classList.toggle('is-zoomed', s > 1.01);
+    }
+    function setHint() {
+      hint.textContent =
+        s > 1.01
+          ? fineHover.matches
+            ? 'Mové el mouse para recorrer la foto · clic para alejar'
+            : 'Arrastrá para recorrer la foto · tocá para alejar'
+          : fineHover.matches
+            ? 'Hacé clic en la foto para ver los detalles de cerca'
+            : 'Tocá o pellizcá la foto para acercar · deslizá para ver más';
+    }
+    /** Acerca o aleja manteniendo fijo el punto (px, py) de la pantalla. */
+    function zoomTo(next: number, px: number, py: number, animate = true) {
+      const r = stage.getBoundingClientRect();
+      const ox = px - (r.left + r.width / 2);
+      const oy = py - (r.top + r.height / 2);
+      const k = next / s;
+      tx = ox - (ox - tx) * k;
+      ty = oy - (oy - ty) * k;
+      s = next;
+      if (s <= 1.01) {
+        s = 1;
+        tx = ty = 0;
+      }
+      clamp();
+      apply(animate);
+      setHint();
+    }
+    function reset() {
+      s = 1;
+      tx = ty = 0;
+      apply();
+      setHint();
+    }
+    /** Con el mouse, la foto acercada sigue al cursor (como en Mercado Libre). */
+    function follow(px: number, py: number) {
+      const r = stage.getBoundingClientRect();
+      const l = limits();
+      tx = l.x * (1 - (2 * (px - r.left)) / r.width);
+      ty = l.y * (1 - (2 * (py - r.top)) / r.height);
+      clamp();
+      apply();
+    }
+
+    function show(i: number) {
+      index = (i + slides.length) % slides.length;
+      const sl = slides[index];
+      reset();
+      img.style.opacity = '0';
+      img.width = sl.w;
+      img.height = sl.h;
+      img.alt = sl.alt;
+      img.src = sl.src;
+      count.textContent = `${index + 1} / ${slides.length}`;
+      thumbs.querySelectorAll('button').forEach((b, j) => {
+        b.setAttribute('aria-current', String(j === index));
+        if (j === index) b.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      });
+      // Precarga las vecinas para pasar de foto sin espera.
+      [index + 1, index - 1].forEach((j) => {
+        const n = slides[(j + slides.length) % slides.length];
+        if (n) new Image().src = n.src;
+      });
+    }
+    img.addEventListener('load', () => (img.style.opacity = '1'));
+    img.style.transition = 'opacity 200ms';
+
+    function open(i: number, from: HTMLElement) {
+      const color = page!.dataset.color;
+      const main = mains.find((m) => m.color === color) ?? mains[0];
+      slides = [main, ...(details[color ?? ''] ?? details[main.color ?? ''] ?? [])];
+      opener = from;
+      thumbs.replaceChildren(
+        ...slides.map((sl, j) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.setAttribute('aria-label', `Ver foto ${j + 1} de ${slides.length}`);
+          const t = document.createElement('img');
+          t.src = sl.thumb;
+          t.alt = '';
+          t.loading = 'lazy';
+          b.append(t);
+          b.addEventListener('click', () => show(j));
+          return b;
+        }),
+      );
+      const many = slides.length > 1;
+      prevBtn.hidden = nextBtn.hidden = thumbs.hidden = !many;
+      dialog!.showModal();
+      show(i);
+      dialog!.querySelector<HTMLButtonElement>('[data-lb-close]')!.focus();
+    }
+    function close() {
+      dialog!.close();
+    }
+    dialog.addEventListener('close', () => {
+      reset();
+      opener?.focus({ preventScroll: true });
+    });
+
+    page.addEventListener('click', (e) => {
+      const t = (e.target as Element).closest<HTMLElement>('[data-zoom-open]');
+      if (!t) return;
+      e.preventDefault();
+      open(Number(t.dataset.zoomOpen) || 0, t);
+    });
+    dialog.querySelector('[data-lb-close]')!.addEventListener('click', close);
+    prevBtn.addEventListener('click', () => show(index - 1));
+    nextBtn.addEventListener('click', () => show(index + 1));
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') show(index + 1);
+      else if (e.key === 'ArrowLeft') show(index - 1);
+      else return;
+      e.preventDefault();
+    });
+
+    /* Gestos: toque/clic = acercar o alejar; arrastre = recorrer (acercada) o pasar de foto; pellizco = zoom. */
+    const pointers = new Map<number, { x: number; y: number }>();
+    let start = { x: 0, y: 0, t: 0, tx: 0, ty: 0, moved: false };
+    let pinch: { d: number; s: number } | null = null;
+    const dist = () => {
+      const [a, b] = [...pointers.values()];
+      return Math.hypot(a.x - b.x, a.y - b.y);
+    };
+    const mid = () => {
+      const [a, b] = [...pointers.values()];
+      return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+    };
+
+    stage.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      try {
+        stage.setPointerCapture(e.pointerId);
+      } catch {
+        /* puntero ya liberado */
+      }
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pointers.size === 2) {
+        pinch = { d: dist(), s };
+        start.moved = true;
+      } else {
+        start = { x: e.clientX, y: e.clientY, t: performance.now(), tx, ty, moved: false };
+      }
+    });
+
+    stage.addEventListener('pointermove', (e) => {
+      const isMouse = e.pointerType === 'mouse';
+      if (!pointers.has(e.pointerId)) {
+        if (isMouse && s > 1.01 && fineHover.matches) follow(e.clientX, e.clientY);
+        return;
+      }
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pinch && pointers.size === 2) {
+        const m = mid();
+        zoomTo(Math.min(4, Math.max(1, (pinch.s * dist()) / pinch.d)), m.x, m.y, false);
+        return;
+      }
+      const dx = e.clientX - start.x;
+      const dy = e.clientY - start.y;
+      if (!start.moved && Math.hypot(dx, dy) > 8) start.moved = true;
+      if (!start.moved) return;
+      if (s > 1.01) {
+        if (isMouse && fineHover.matches) follow(e.clientX, e.clientY);
+        else {
+          tx = start.tx + dx;
+          ty = start.ty + dy;
+          clamp();
+          apply();
+        }
+      } else if (slides.length > 1) {
+        tx = dx;
+        apply();
+      }
+    });
+
+    function end(e: PointerEvent) {
+      if (!pointers.has(e.pointerId)) return;
+      pointers.delete(e.pointerId);
+      if (pinch) {
+        if (pointers.size < 2) pinch = null;
+        if (pointers.size === 1) {
+          const [p] = [...pointers.values()];
+          start = { x: p.x, y: p.y, t: performance.now(), tx, ty, moved: true };
+        }
+        if (s <= 1.01) reset();
+        return;
+      }
+      if (e.type === 'pointercancel') return;
+      const dx = e.clientX - start.x;
+      if (!start.moved) {
+        // Toque o clic sin arrastrar.
+        if (s > 1.01) zoomTo(1, e.clientX, e.clientY);
+        else {
+          zoomTo(zoomMax(), e.clientX, e.clientY);
+          if (e.pointerType === 'mouse' && fineHover.matches) follow(e.clientX, e.clientY);
+        }
+        return;
+      }
+      if (s <= 1.01 && slides.length > 1) {
+        const fast = Math.abs(dx) / Math.max(1, performance.now() - start.t) > 0.5;
+        if (Math.abs(dx) > stage.clientWidth * 0.18 || (fast && Math.abs(dx) > 30)) show(index + (dx < 0 ? 1 : -1));
+        else {
+          tx = 0;
+          apply(true);
+        }
+      }
+    }
+    stage.addEventListener('pointerup', end);
+    stage.addEventListener('pointercancel', end);
+    window.addEventListener('resize', () => dialog.open && reset());
+  }
+</script>

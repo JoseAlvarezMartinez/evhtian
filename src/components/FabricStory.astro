@@ -1,0 +1,177 @@
+---
+/** La tela: bengalina elastizada, contada con situaciones reales de la jornada. */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { fabric } from '../data/catalog';
+
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/fabric/*.jpg', { eager: true });
+const img = (name: string) => files[`../assets/fabric/${name}.jpg`]?.default;
+---
+<section id="tela" class="fabric section" aria-labelledby="tela-title">
+  <div class="wrap">
+    <header class="fabric-head">
+      <div>
+        <h2 id="tela-title" data-reveal>{fabric.name}. <span class="accent">Se mueve con vos, no en tu contra.</span></h2>
+      </div>
+      <div class="fabric-intro">
+        <p data-reveal>{fabric.summary}</p>
+        <ul class="fibers" role="list" aria-label={`Composición: ${fabric.composition}`} data-reveal>
+          {fabric.fibers.map((f) => (
+            <li><strong>{f.name}</strong><span>{f.role}</span></li>
+          ))}
+        </ul>
+      </div>
+    </header>
+
+    <ul class="moments" role="list">
+      {fabric.points.map((pt, i) => {
+        const src = img(pt.image);
+        return (
+          <li class={`moment i-${i}`} data-reveal>
+            <figure>
+              <div class="moment-media">
+                {src && (
+                  <Picture
+                    src={src}
+                    formats={['avif', 'webp']}
+                    widths={[360, 540, 720, 960]}
+                    sizes="(min-width: 1100px) 22vw, (min-width: 700px) 45vw, 78vw"
+                    alt={pt.alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
+              </div>
+              <figcaption>
+                <h3>{pt.title}</h3>
+                <p>{pt.text}</p>
+              </figcaption>
+            </figure>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .fabric {
+    background: var(--paper-2);
+  }
+  .fabric-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 1rem + 3vw, 5rem);
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+  }
+  h2 {
+    font-size: var(--step-4);
+  }
+  h2 .accent {
+    display: block;
+    color: var(--gold-700);
+  }
+  .fabric-intro p {
+    font-size: var(--step-1);
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .fibers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: var(--s-5);
+  }
+  .fibers li {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--paper);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+  .fibers strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .moments {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 0.5rem + 1.2vw, 1.75rem);
+  }
+  figure {
+    display: grid;
+    gap: var(--s-4);
+  }
+  .moment-media {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--paper-3);
+  }
+  .moment-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease-out);
+  }
+  .moment:hover .moment-media :global(img) {
+    transform: scale(1.04);
+  }
+  h3 {
+    font-size: var(--step-1);
+    font-weight: 600;
+  }
+  figcaption p {
+    margin-top: var(--s-2);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+  .i-1 {
+    --i: 1;
+  }
+  .i-2 {
+    --i: 2;
+  }
+  .i-3 {
+    --i: 3;
+  }
+
+  @media (max-width: 1100px) {
+    .moments {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 860px) {
+    .fabric-head {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+  /* En el celular, carrusel horizontal con encastre */
+  @media (max-width: 600px) {
+    .moments {
+      display: flex;
+      gap: var(--s-4);
+      margin-inline: calc(-1 * var(--gutter));
+      padding-inline: var(--gutter);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter);
+      scrollbar-width: none;
+    }
+    .moments::-webkit-scrollbar {
+      display: none;
+    }
+    .moment {
+      flex: 0 0 78%;
+      scroll-snap-align: start;
+    }
+  }
+</style>

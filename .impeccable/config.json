@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/components/Lightbox.astro"
+        ],
+        "createdAt": "2026-11-25T16:04:35.533Z",
+        "reason": "Claude: the lightbox <img> gets its src from JS right before the dialog opens; it is never visible empty"
+      }
+    ]
+  }
+}

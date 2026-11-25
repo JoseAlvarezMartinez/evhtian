@@ -1,0 +1,225 @@
+---
+import Icon from './Icon.astro';
+import { colors, sizes, models, sizeChart, type ColorId, type ModelId } from '../data/catalog';
+import { whatsappHref } from '../config/site';
+const sizeAsk = whatsappHref('¡Hola Evhtian! Quiero que me ayuden a elegir mi talle.');
+
+interface Props {
+  uid: string;
+  model: ModelId;
+  color: ColorId;
+  selectableModel?: boolean;
+  compact?: boolean;
+}
+const { uid, model, color, selectableModel = false, compact = false } = Astro.props;
+const colorName = colors.find((c) => c.id === color)?.name;
+---
+<form class:list={['buy', compact && 'buy--compact']} data-buy data-model={model} novalidate>
+  {selectableModel && (
+    <fieldset class="seg">
+      <legend class="sr-only">Modelo</legend>
+      {models.map((m) => (
+        <label class="seg-opt">
+          <input type="radio" name={`${uid}-model`} value={m.id} checked={m.id === model} data-model-input />
+          <span>{m.name}</span>
+        </label>
+      ))}
+    </fieldset>
+  )}
+
+  <fieldset class="opt">
+    <legend class="sr-only">Color</legend>
+    <div class="opt-label" aria-hidden="true">
+      <span>Color</span>
+      <strong data-color-name>{colorName}</strong>
+    </div>
+    <div class="swatches">
+      {colors.map((c) => (
+        <label class:list={['swatch', `c-${c.id}`]} title={c.name}>
+          <input type="radio" name={`${uid}-color`} value={c.id} checked={c.id === color} aria-label={c.name} data-color-input />
+          <span class="swatch-dot"></span>
+        </label>
+      ))}
+    </div>
+  </fieldset>
+
+  <fieldset class="opt">
+    <legend class="sr-only">Talle</legend>
+    <div class="opt-label">
+      <span aria-hidden="true">Talle</span>
+      {!compact && (sizeChart.length
+        ? <a href="#talles" class="guide-link">Guía de talles</a>
+        : <a href={sizeAsk} class="guide-link" target="_blank" rel="noopener noreferrer">¿Dudás con el talle? Te asesoramos</a>)}
+    </div>
+    <div class="sizes">
+      {sizes.map((s) => (
+        <label class="size">
+          <input type="radio" name={`${uid}-size`} value={s} aria-label={`Talle ${s}`} data-size-input />
+          <span>{s}</span>
+        </label>
+      ))}
+    </div>
+    <p class="size-hint" data-size-hint aria-live="polite"></p>
+  </fieldset>
+
+  <div class="buy-row">
+    {!compact && (
+      <div class="qty" data-qty>
+        <button type="button" data-qty-dec aria-label="Restar uno" disabled><Icon name="minus" /></button>
+        <span class="qty-value tnum" data-qty-value aria-live="polite">1</span>
+        <button type="button" data-qty-inc aria-label="Sumar uno"><Icon name="plus" /></button>
+      </div>
+    )}
+    <button class="btn add-btn" type="submit" data-add-btn>
+      <span class="add-label"><Icon name="bag" /> Agregar al carrito</span>
+      <span class="add-done" aria-hidden="true"><Icon name="check" /> Agregado</span>
+    </button>
+  </div>
+</form>
+
+<style>
+  .buy {
+    display: grid;
+    gap: var(--s-4);
+  }
+  .opt {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+  }
+  .guide-link {
+    font-size: var(--step--1);
+    color: var(--gold-700);
+  }
+  .seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 4px;
+    margin: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    background: var(--paper-2);
+  }
+  .seg-opt {
+    position: relative;
+  }
+  .seg-opt input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  .seg-opt span {
+    display: grid;
+    place-items: center;
+    min-height: 2.5rem;
+    border-radius: var(--radius);
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink-3);
+    pointer-events: none;
+    transition:
+      background-color var(--dur-2) var(--ease-out),
+      color var(--dur-2) var(--ease-out),
+      box-shadow var(--dur-2) var(--ease-out);
+  }
+  .seg-opt input:checked + span {
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: var(--shadow-1);
+  }
+  .seg-opt input:focus-visible + span {
+    outline: 2px solid var(--gold-700);
+    outline-offset: 1px;
+  }
+  .size-hint:empty {
+    display: none;
+  }
+  .buy-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: stretch;
+  }
+  .add-btn {
+    flex: 1 1 12rem;
+    min-width: 0;
+    min-height: 2.875rem;
+    padding-inline: 1rem;
+  }
+  .add-label,
+  .add-done {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    transition:
+      transform 420ms var(--ease-out),
+      opacity 420ms var(--ease-out);
+  }
+  .add-done {
+    position: absolute;
+    inset: 0;
+    justify-content: center;
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  .add-btn.is-done {
+    --btn-bg: var(--ok);
+    --btn-bd: var(--ok);
+  }
+  .add-btn.is-done .add-label {
+    transform: translateY(-110%);
+    opacity: 0;
+  }
+  .add-btn.is-done .add-done {
+    transform: none;
+    opacity: 1;
+  }
+  .buy--compact {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'seg colors'
+      'sizes add';
+    align-items: center;
+    gap: var(--s-3) var(--s-5);
+  }
+  .buy--compact .seg {
+    grid-area: seg;
+    min-width: 12.5rem;
+  }
+  .buy--compact .opt:nth-of-type(2) {
+    grid-area: colors;
+  }
+  .buy--compact .opt:nth-of-type(3) {
+    grid-area: sizes;
+  }
+  .buy--compact .buy-row {
+    grid-area: add;
+  }
+  .buy--compact .opt-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .buy--compact .sizes {
+    grid-template-columns: repeat(4, 2.9rem);
+  }
+  .buy--compact .size-hint {
+    margin-top: var(--s-1);
+    white-space: nowrap;
+  }
+  @media (max-width: 560px) {
+    .buy--compact {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: 'seg' 'colors' 'sizes' 'add';
+    }
+    .buy--compact .sizes {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

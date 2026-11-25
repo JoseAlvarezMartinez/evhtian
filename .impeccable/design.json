@@ -1,0 +1,963 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-18T19:00:00+00:00",
+  "title": "Design System: Evhtian",
+  "extensions": {
+    "colorMeta": {
+      "gold-700": {
+        "role": "primary",
+        "displayName": "Oro Profundo",
+        "canonical": "#7c5f30",
+        "tonalRamp": [
+          "#150800",
+          "#2f1e02",
+          "#4e3915",
+          "#73592e",
+          "#987b4f",
+          "#baa07a",
+          "#ddc7a6",
+          "#feecd0"
+        ],
+        "note": "Único dorado para texto chico sobre papel (5.5:1)."
+      },
+      "gold-600": {
+        "role": "primary",
+        "displayName": "Bronce del Caduceo",
+        "canonical": "#9b7b40",
+        "tonalRamp": [
+          "#150800",
+          "#301e00",
+          "#4f3908",
+          "#755822",
+          "#997b44",
+          "#bba071",
+          "#dfc79f",
+          "#ffecca"
+        ]
+      },
+      "gold-400": {
+        "role": "primary",
+        "displayName": "Oro Medio",
+        "canonical": "#c8a766",
+        "tonalRamp": [
+          "#150800",
+          "#301e00",
+          "#4f3901",
+          "#75591b",
+          "#997b3f",
+          "#bba16e",
+          "#dec89c",
+          "#ffecc8"
+        ]
+      },
+      "gold-200": {
+        "role": "primary",
+        "displayName": "Champagne",
+        "canonical": "#e6d29a",
+        "tonalRamp": [
+          "#120a00",
+          "#2b2000",
+          "#493c13",
+          "#6d5c2c",
+          "#907f4d",
+          "#b3a478",
+          "#d7caa5",
+          "#f9eecf"
+        ],
+        "note": "El oro sobre negro: texto destacado en bandas, contador del carrito, hover del botón sobre negro."
+      },
+      "gold-50": {
+        "role": "primary",
+        "displayName": "Champagne Pálido",
+        "canonical": "#f7edc6",
+        "tonalRamp": [
+          "#0f0b00",
+          "#27210d",
+          "#443d23",
+          "#665e3e",
+          "#89805f",
+          "#ada587",
+          "#d1cbb1",
+          "#f4efd9"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "#15130f",
+        "tonalRamp": [
+          "#0c0b09",
+          "#23211f",
+          "#3f3d39",
+          "#605d59",
+          "#82807b",
+          "#a6a4a0",
+          "#cccac6",
+          "#f0eeeb"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Tinta Media",
+        "canonical": "#48433b",
+        "tonalRamp": [
+          "#0d0b07",
+          "#24211c",
+          "#403d36",
+          "#625d55",
+          "#857f77",
+          "#a9a49c",
+          "#cecac3",
+          "#f1eee8"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Tinta Suave",
+        "canonical": "#6b6458",
+        "tonalRamp": [
+          "#0e0b06",
+          "#25211a",
+          "#413c34",
+          "#635d52",
+          "#867f73",
+          "#aaa499",
+          "#cfcac1",
+          "#f2eee6"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Papel",
+        "canonical": "#fbfaf7",
+        "tonalRamp": [
+          "#0b0b0a",
+          "#222220",
+          "#3e3d3b",
+          "#5e5d5b",
+          "#81807e",
+          "#a5a4a2",
+          "#cbcac8",
+          "#efeeed"
+        ]
+      },
+      "paper-2": {
+        "role": "neutral",
+        "displayName": "Papel Lino",
+        "canonical": "#f4f1eb",
+        "tonalRamp": [
+          "#0c0b09",
+          "#23211f",
+          "#3f3d39",
+          "#605d59",
+          "#82807b",
+          "#a7a4a0",
+          "#cccac6",
+          "#f0eeeb"
+        ]
+      },
+      "paper-3": {
+        "role": "neutral",
+        "displayName": "Papel Arena",
+        "canonical": "#ebe6dc",
+        "tonalRamp": [
+          "#0d0b07",
+          "#24211c",
+          "#403d36",
+          "#615d55",
+          "#848077",
+          "#a8a49c",
+          "#cdcac3",
+          "#f1eee8"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Filete",
+        "canonical": "#e2dbcf",
+        "tonalRamp": [
+          "#0d0b07",
+          "#25211b",
+          "#413c35",
+          "#625d53",
+          "#857f75",
+          "#a9a49b",
+          "#cfcac2",
+          "#f2eee7"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Filete Marcado",
+        "canonical": "#cfc5b4",
+        "tonalRamp": [
+          "#0e0b05",
+          "#262118",
+          "#433c31",
+          "#655c4f",
+          "#887f70",
+          "#aba496",
+          "#d0cabe",
+          "#f3eee4"
+        ]
+      },
+      "noir": {
+        "role": "neutral",
+        "displayName": "Negro Vitrina",
+        "canonical": "#0f0e0c",
+        "tonalRamp": [
+          "#0c0b0a",
+          "#222120",
+          "#3e3d3b",
+          "#5f5d5b",
+          "#81807d",
+          "#a5a4a2",
+          "#cbcac8",
+          "#efeeec"
+        ]
+      },
+      "noir-2": {
+        "role": "neutral",
+        "displayName": "Negro Tarjeta",
+        "canonical": "#1a1814",
+        "tonalRamp": [
+          "#0c0b09",
+          "#23211f",
+          "#3f3d39",
+          "#605d59",
+          "#82807b",
+          "#a6a4a0",
+          "#cccac6",
+          "#f0eeeb"
+        ]
+      },
+      "noir-line": {
+        "role": "neutral",
+        "displayName": "Filete Nocturno",
+        "canonical": "#3a3226",
+        "tonalRamp": [
+          "#0e0a06",
+          "#262119",
+          "#433c32",
+          "#645c50",
+          "#887f72",
+          "#aba398",
+          "#d0c9bf",
+          "#f3eee5"
+        ]
+      },
+      "on-noir": {
+        "role": "neutral",
+        "displayName": "Marfil sobre Negro",
+        "canonical": "#f3ede1",
+        "tonalRamp": [
+          "#0d0b07",
+          "#24211b",
+          "#403d35",
+          "#625d54",
+          "#858075",
+          "#a9a49b",
+          "#cecac2",
+          "#f1eee7"
+        ]
+      },
+      "on-noir-2": {
+        "role": "neutral",
+        "displayName": "Marfil Velado",
+        "canonical": "#bdb3a1",
+        "tonalRamp": [
+          "#0e0b05",
+          "#262118",
+          "#433c30",
+          "#655d4e",
+          "#887f6f",
+          "#aca495",
+          "#d1cabd",
+          "#f4eee3"
+        ]
+      },
+      "ok": {
+        "role": "status",
+        "displayName": "Verde Confirmado",
+        "canonical": "#3d6b45",
+        "tonalRamp": [
+          "#001002",
+          "#0c2812",
+          "#24462a",
+          "#3f6946",
+          "#618d67",
+          "#89b08e",
+          "#b3d5b7",
+          "#dbf7de"
+        ]
+      },
+      "danger": {
+        "role": "status",
+        "displayName": "Rojo Aviso",
+        "canonical": "#9b2c2c",
+        "tonalRamp": [
+          "#240000",
+          "#460106",
+          "#6e1b1b",
+          "#9c3634",
+          "#c65a55",
+          "#e6857e",
+          "#ffb1aa",
+          "#ffdad3"
+        ]
+      },
+      "garment-bordo": {
+        "role": "product",
+        "displayName": "Bordó",
+        "canonical": "#6b1f2e",
+        "tonalRamp": [
+          "#1e0005",
+          "#3d0f18",
+          "#622730",
+          "#8c434e",
+          "#b4656f",
+          "#d58e95",
+          "#f7b7bd",
+          "#ffdfe3"
+        ],
+        "note": "Clase .c-bordo: --g relleno, --g-edge #45121d, --g-seam #8f3a4c. Solo en producto."
+      },
+      "garment-rosa": {
+        "role": "product",
+        "displayName": "Rosa",
+        "canonical": "#d7a3ae",
+        "tonalRamp": [
+          "#170509",
+          "#32191f",
+          "#53323a",
+          "#7a5059",
+          "#9f727c",
+          "#c298a0",
+          "#e4bfc7",
+          "#ffe5eb"
+        ],
+        "note": "Clase .c-rosa: --g relleno, --g-edge #a8727f, --g-seam #c08893. Solo en producto."
+      },
+      "garment-negro": {
+        "role": "product",
+        "displayName": "Negro",
+        "canonical": "#222120",
+        "tonalRamp": [
+          "#0c0b0b",
+          "#222121",
+          "#3e3d3c",
+          "#5e5d5c",
+          "#81807f",
+          "#a5a4a3",
+          "#cbcac9",
+          "#efeeed"
+        ],
+        "note": "Clase .c-negro: --g relleno, --g-edge #0b0b0a, --g-seam #4a4744. Solo en producto."
+      },
+      "garment-marino": {
+        "role": "product",
+        "displayName": "Azul Marino",
+        "canonical": "#1f2b47",
+        "tonalRamp": [
+          "#060b18",
+          "#192133",
+          "#323d54",
+          "#505d7a",
+          "#72809f",
+          "#97a5c1",
+          "#bfcbe3",
+          "#e5efff"
+        ],
+        "note": "Clase .c-marino: --g relleno, --g-edge #111a2d, --g-seam #3b4b72. Solo en producto."
+      },
+      "garment-verde": {
+        "role": "product",
+        "displayName": "Verde Militar",
+        "canonical": "#4d5532",
+        "tonalRamp": [
+          "#0a0d01",
+          "#20240f",
+          "#3a4026",
+          "#5a6241",
+          "#7c8562",
+          "#a1a98a",
+          "#c7ceb4",
+          "#ecf2db"
+        ],
+        "note": "Clase .c-verde: --g relleno, --g-edge #30361e, --g-seam #6c7650. Solo en producto."
+      },
+      "garment-band": {
+        "role": "product",
+        "displayName": "Cintura Elastizada",
+        "canonical": "#1d1c1b",
+        "tonalRamp": [
+          "#0c0b0a",
+          "#222121",
+          "#3e3d3c",
+          "#5e5d5c",
+          "#81807f",
+          "#a5a4a3",
+          "#cbcac9",
+          "#efeeed"
+        ],
+        "note": "Cintura elastizada negra del pantalón Essential; fija en los cinco colores (borde #0b0b0a, pespuntes #3a3836)."
+      },
+      "sheen-highlight": {
+        "role": "primary",
+        "displayName": "Luz de Brillo",
+        "tonalRamp": [
+          "#100b00",
+          "#2c2509",
+          "#4b421e",
+          "#6d6135",
+          "#8e8256",
+          "#afa57f",
+          "#d2c9aa",
+          "#f5efd6"
+        ],
+        "usage": "Parada de gradiente de marca; nunca texto."
+      },
+      "sheen-champagne": {
+        "role": "primary",
+        "displayName": "Champagne de Brillo",
+        "tonalRamp": [
+          "#120900",
+          "#302300",
+          "#514010",
+          "#745e25",
+          "#968047",
+          "#b7a374",
+          "#d8c8a1",
+          "#faeecf"
+        ],
+        "usage": "Parada de gradiente de marca; nunca texto."
+      },
+      "sheen-brass": {
+        "role": "primary",
+        "displayName": "Latón",
+        "tonalRamp": [
+          "#150800",
+          "#342100",
+          "#563d0d",
+          "#7a5b22",
+          "#9d7c45",
+          "#bda072",
+          "#ddc69f",
+          "#ffecce"
+        ],
+        "usage": "Parada de gradiente de marca; nunca texto."
+      },
+      "sheen-bronze": {
+        "role": "primary",
+        "displayName": "Bronce de Brillo",
+        "tonalRamp": [
+          "#140800",
+          "#322106",
+          "#543d1b",
+          "#785b31",
+          "#9b7d51",
+          "#bba07c",
+          "#dcc5a7",
+          "#fdecd4"
+        ],
+        "usage": "Parada de gradiente de marca; nunca texto."
+      },
+      "mark-gold": {
+        "role": "primary",
+        "displayName": "Oro de Marca",
+        "tonalRamp": [
+          "#140800",
+          "#332100",
+          "#553e0e",
+          "#795c23",
+          "#9c7d46",
+          "#bca173",
+          "#dcc6a0",
+          "#feecce"
+        ],
+        "usage": "Parada de gradiente de marca; nunca texto."
+      },
+      "mark-glint": {
+        "role": "primary",
+        "displayName": "Destello de Marca",
+        "tonalRamp": [
+          "#0d0b06",
+          "#27251c",
+          "#454236",
+          "#656152",
+          "#878272",
+          "#a9a597",
+          "#ccc9bd",
+          "#f1efe5"
+        ],
+        "usage": "Parada de gradiente de marca; nunca texto."
+      },
+      "overlay-light": {
+        "role": "neutral",
+        "displayName": "Luz de Pliegue",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#5e5e5e",
+          "#7e7e7e",
+          "#a0a0a0",
+          "#c3c3c3",
+          "#e6e6e6",
+          "#ffffff"
+        ],
+        "usage": "Solo con transparencia sobre producto o foto."
+      },
+      "overlay-shade": {
+        "role": "neutral",
+        "displayName": "Sombra Neutra",
+        "tonalRamp": [
+          "#000000",
+          "#1b1b1b",
+          "#353535",
+          "#545454",
+          "#767676",
+          "#999999",
+          "#bdbdbd",
+          "#e2e2e2"
+        ],
+        "usage": "Solo con transparencia sobre producto o foto."
+      },
+      "rosa-shade": {
+        "role": "neutral",
+        "displayName": "Sombra Rosada",
+        "tonalRamp": [
+          "#190407",
+          "#3b191f",
+          "#603239",
+          "#874e56",
+          "#ab6f77",
+          "#ca949b",
+          "#eabbc1",
+          "#ffe4e8"
+        ],
+        "usage": "Solo con transparencia sobre producto o foto."
+      }
+    },
+    "gradients": [
+      {
+        "name": "gold-sheen",
+        "displayName": "Brillo Dorado",
+        "value": "linear-gradient(112deg, #f6e8b4 0%, #dcc283 32%, #b08c4f 64%, #7c5c33 100%)",
+        "purpose": "Solo piezas grandes: fondo del botón dorado (140% de ancho, se desplaza al pasar) y relleno del medidor de promo. Paradas: sheen-highlight, sheen-champagne, sheen-brass y un cierre que coincide con gold-700."
+      },
+      {
+        "name": "stage-glow",
+        "value": "radial-gradient(90% 70% at 50% 20%, #fffdf9 0%, rgb(255 253 249 / 0) 70%), #ebe6dc",
+        "purpose": "Escenario de producto en tarjeta y página de modelo."
+      },
+      {
+        "name": "noir-halo",
+        "value": "radial-gradient(70% 90% at 85% 10%, rgb(200 167 102 / 0.14), transparent 60%), #0f0e0c",
+        "purpose": "Bandas negras con oro (promo de equipo, franja de equipo)."
+      },
+      {
+        "name": "btn-sweep",
+        "value": "linear-gradient(105deg, transparent 30%, rgb(246 232 180 / 0.35) 50%, transparent 70%)",
+        "purpose": "Barrido de luz dorada que cruza los botones al pasar (900ms)."
+      },
+      {
+        "name": "mark-gold",
+        "value": "linear-gradient(118deg, #b9975a 0%, #9b7b40 45%, #6f5228 100%)",
+        "purpose": "Caduceo y logotipo sobre papel (máscara)."
+      },
+      {
+        "name": "mark-gold-light",
+        "value": "linear-gradient(118deg, #f6e8b4 0%, #dcc283 35%, #b08c4f 70%, #8a6a3b 100%)",
+        "purpose": "Caduceo y logotipo sobre negro (máscara)."
+      },
+      {
+        "name": "mark-glint",
+        "value": "linear-gradient(100deg, transparent 38%, rgb(255 250 230 / 0.95) 50%, transparent 62%)",
+        "purpose": "Destello que cruza la marca clara cada 7s."
+      },
+      {
+        "name": "tile-shade",
+        "value": "linear-gradient(160deg, var(--g-hi) 0%, transparent 45%), linear-gradient(0deg, rgb(0 0 0 / 0.22), transparent 55%), var(--g)",
+        "purpose": "Franjas de color oscuras; la Rosa usa rgb(255 255 255 / 0.3) arriba y rgb(120 60 70 / 0.18) abajo."
+      }
+    ],
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Solo el H1 del inicio; no se anima (LCP)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "H2 de sección y H1 de la página de modelo."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Nombre en tarjeta, franja de equipo, «Comprar es así de simple», precio en página de modelo."
+      },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "Chaqueta/pantalón, filas de pago, pasos, título del carrito."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Bajadas de sección en ink-2."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texto corrido."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Metadatos, notas, migas, chips de fibra y textos de los momentos de la tela."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Texto de botón en mayúsculas espaciadas."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Contador de la calculadora; cifras tabulares, un color por conjunto."
+      },
+      "accent": {
+        "displayName": "Acento dorado",
+        "purpose": ".accent: peso 500, derecha, gold-700 sobre papel o gold-200 sobre negro, dentro de un titular 600."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Chips sobre imagen, contador del carrito, indicador de scroll."
+      },
+      "display-compact": {
+        "displayName": "Display Compact",
+        "purpose": "H1 del inicio a 600px o menos."
+      },
+      "tile-name": {
+        "displayName": "Tile Name",
+        "purpose": "Nombre de cada franja de color."
+      },
+      "step-numeral": {
+        "displayName": "Step Numeral",
+        "purpose": "Números grandes de «Cómo comprar», en gold-600."
+      },
+      "menu": {
+        "displayName": "Menu",
+        "purpose": "Links del menú móvil."
+      },
+      "price-hero": {
+        "displayName": "Price Hero",
+        "purpose": "Precio del hero."
+      },
+      "item-title": {
+        "displayName": "Item Title",
+        "purpose": "Nombre del ítem en el carrito y precio del panel rápido."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-1",
+        "value": "0 1px 2px rgb(21 19 15 / 0.06), 0 2px 8px rgb(21 19 15 / 0.05)",
+        "purpose": "Opción elegida de un segmentado."
+      },
+      {
+        "name": "shadow-2",
+        "value": "0 10px 30px -12px rgb(21 19 15 / 0.22), 0 4px 10px -6px rgb(21 19 15 / 0.12)",
+        "purpose": "Hover de botones."
+      },
+      {
+        "name": "shadow-3",
+        "value": "0 30px 60px -24px rgb(21 19 15 / 0.35), 0 12px 24px -12px rgb(21 19 15 / 0.18)",
+        "purpose": "Tarjeta al pasar, panel rápido del hero, carrito, botón de WhatsApp."
+      },
+      {
+        "name": "calc-on-noir",
+        "value": "0 40px 80px -40px rgb(0 0 0 / 0.8)",
+        "purpose": "Tarjeta de la calculadora sobre negro."
+      },
+      {
+        "name": "garment-drop",
+        "value": "drop-shadow(0 22px 26px rgb(21 19 15 / 0.2)) drop-shadow(0 4px 6px rgb(21 19 15 / 0.12))",
+        "purpose": "Filtro de la ilustración del ambo."
+      },
+      {
+        "name": "focus-ring",
+        "value": "outline: 2px solid #7c5f30; outline-offset: 3px",
+        "purpose": "Foco global; los campos usan borde tinta + halo 0 0 0 3px #f7edc6."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Curva por defecto de todo cambio de estado y entrada."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.65, 0, 0.35, 1)",
+        "purpose": "Loops: indicador de scroll, brillo del caduceo."
+      },
+      {
+        "name": "dur-1",
+        "value": "160ms",
+        "purpose": "Presión de botón, hover de botones de ícono."
+      },
+      {
+        "name": "dur-2",
+        "value": "320ms",
+        "purpose": "Hover y selección de controles."
+      },
+      {
+        "name": "dur-3",
+        "value": "700ms",
+        "purpose": "Elevación de tarjeta, fundido de fotos, cambio de vista."
+      },
+      {
+        "name": "hero-entrance",
+        "value": "soft-up 1s ease-out backwards, delays 0.45s a 0.95s",
+        "purpose": "Entradas con fill backwards: reposo visible; el H1 no se anima."
+      },
+      {
+        "name": "hero-cycle",
+        "value": "setInterval 2800ms tras 2400ms",
+        "purpose": "El visor del hero recorre los cinco colores hasta cualquier interacción; pausa al pasar el puntero."
+      },
+      {
+        "name": "reveal",
+        "value": "translateY(28px) a 0, 900ms, delay var(--i) × 90ms",
+        "purpose": "data-reveal (fade, rise-blur); solo con .js y sin reduced-motion."
+      },
+      {
+        "name": "card-lift",
+        "value": "translateY(-4px) + shadow-3, 700ms; imagen scale(1.03) 1.2s",
+        "purpose": "Hover de la tarjeta de modelo."
+      },
+      {
+        "name": "cart-slide",
+        "value": "translateX(100%) a 0, 520ms, @starting-style",
+        "purpose": "Entrada del carrito con fondo tinta 45% + blur 3px."
+      },
+      {
+        "name": "garment-recolor",
+        "value": "fill/stroke 600ms ease-out",
+        "purpose": "Cambio de color de la ilustración."
+      },
+      {
+        "name": "moment-zoom",
+        "value": "img scale(1.04), 1.2s ease-out, dentro del recorte",
+        "purpose": "Hover de cada momento de la tela; sin elevación ni sombra."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "xs",
+        "value": "420px"
+      },
+      {
+        "name": "sm",
+        "value": "480px",
+        "purpose": "Ajustes del hero, header y calculadora de equipo."
+      },
+      {
+        "name": "compact-form",
+        "value": "560px"
+      },
+      {
+        "name": "hero-mobile",
+        "value": "600px",
+        "purpose": "H1 compacto; la tela pasa a carrusel horizontal con scroll-snap (78% por tarjeta)."
+      },
+      {
+        "name": "promo-short",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "760px",
+        "purpose": "Colección a una columna de 28rem como máximo."
+      },
+      {
+        "name": "fabric-head",
+        "value": "860px",
+        "purpose": "Encabezado de la tela a una columna."
+      },
+      {
+        "name": "footer",
+        "value": "820px"
+      },
+      {
+        "name": "lg",
+        "value": "900px"
+      },
+      {
+        "name": "hero-stack",
+        "value": "960px",
+        "purpose": "Hero y PDP pasan a una columna."
+      },
+      {
+        "name": "fabric-grid",
+        "value": "1100px",
+        "purpose": "Momentos de la tela: de 4 a 2 columnas."
+      }
+    ],
+    "constraints": [
+      "CSP de Astro (security.csp): hashes para cada script propio; sin atributos style en el marcado; CSS en archivos (inlineStylesheets: never). img-src 'self' data:.",
+      "Estados dinámicos con clases, CSSOM desde los scripts (p. ej. ancho del medidor de promo) o selectores :has() (aviso de efectivo del carrito).",
+      "ProductVisual usa las fotos de src/assets/products (estado publicado: los dos modelos tienen las 5); la ilustración Garment queda como respaldo.",
+      "FabricStory toma sus fotos de src/assets/fabric/<imagen>.jpg; un momento sin foto se renderiza sin imagen.",
+      "Pagos: transferencia, Mercado Pago y efectivo (solo zona Tigre); cada uno con label, short, icon y detail en site.payments. Sin cuotas.",
+      "Sizes solo se renderiza si sizeChart tiene datos; sin datos, la consulta de talle va a WhatsApp."
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón primario",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Acción principal sobre papel: tinta llena con barrido de luz dorada al pasar.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Elegí tu ambo <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></button>",
+      "css": ".ds-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:3.25rem;padding:.85rem 1.6rem;border:1px solid var(--btn-bd);border-radius:var(--radius,2px);background:var(--btn-bg);color:var(--btn-fg);font-family:var(--font-ui,'Montserrat Variable',Montserrat,system-ui,sans-serif);font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;overflow:hidden;isolation:isolate;cursor:pointer;transition:background-color 320ms cubic-bezier(.16,1,.3,1),color 320ms cubic-bezier(.16,1,.3,1),border-color 320ms cubic-bezier(.16,1,.3,1),transform 160ms cubic-bezier(.16,1,.3,1),box-shadow 320ms cubic-bezier(.16,1,.3,1)} .ds-btn::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 30%,rgb(246 232 180/.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform 900ms cubic-bezier(.16,1,.3,1)} .ds-btn:hover::after{transform:translateX(120%)} .ds-btn:hover{box-shadow:0 10px 30px -12px rgb(21 19 15/.22),0 4px 10px -6px rgb(21 19 15/.12)} .ds-btn:active{transform:translateY(1px)} .ds-btn:focus-visible{outline:2px solid #7c5f30;outline-offset:3px} .ds-btn svg{width:1.15em;height:1.15em} .ds-btn-primary{--btn-bg:#15130f;--btn-fg:#fbfaf7;--btn-bd:#15130f}"
+    },
+    {
+      "name": "Botón ghost",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Acción secundaria sobre papel; se llena de tinta al pasar.",
+      "html": "<button class=\"ds-btn ds-btn-ghost\">Comprá en equipo −30%</button>",
+      "css": ".ds-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:3.25rem;padding:.85rem 1.6rem;border:1px solid var(--btn-bd);border-radius:var(--radius,2px);background:var(--btn-bg);color:var(--btn-fg);font-family:var(--font-ui,'Montserrat Variable',Montserrat,system-ui,sans-serif);font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;overflow:hidden;isolation:isolate;cursor:pointer;transition:background-color 320ms cubic-bezier(.16,1,.3,1),color 320ms cubic-bezier(.16,1,.3,1),border-color 320ms cubic-bezier(.16,1,.3,1),transform 160ms cubic-bezier(.16,1,.3,1),box-shadow 320ms cubic-bezier(.16,1,.3,1)} .ds-btn::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 30%,rgb(246 232 180/.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform 900ms cubic-bezier(.16,1,.3,1)} .ds-btn:hover::after{transform:translateX(120%)} .ds-btn:hover{box-shadow:0 10px 30px -12px rgb(21 19 15/.22),0 4px 10px -6px rgb(21 19 15/.12)} .ds-btn:active{transform:translateY(1px)} .ds-btn:focus-visible{outline:2px solid #7c5f30;outline-offset:3px} .ds-btn svg{width:1.15em;height:1.15em} .ds-btn-ghost{--btn-bg:transparent;--btn-fg:#15130f;--btn-bd:#15130f} .ds-btn-ghost:hover{--btn-bg:#15130f;--btn-fg:#fbfaf7}"
+    },
+    {
+      "name": "Botón dorado",
+      "kind": "button",
+      "refersTo": "button-gold",
+      "description": "Brillo Dorado para las bandas negras y el envío por WhatsApp; el gradiente se desplaza al pasar.",
+      "html": "<button class=\"ds-btn ds-btn-gold\">Enviar pedido por WhatsApp</button>",
+      "css": ".ds-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:3.25rem;padding:.85rem 1.6rem;border:1px solid var(--btn-bd);border-radius:var(--radius,2px);background:var(--btn-bg);color:var(--btn-fg);font-family:var(--font-ui,'Montserrat Variable',Montserrat,system-ui,sans-serif);font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;overflow:hidden;isolation:isolate;cursor:pointer;transition:background-color 320ms cubic-bezier(.16,1,.3,1),color 320ms cubic-bezier(.16,1,.3,1),border-color 320ms cubic-bezier(.16,1,.3,1),transform 160ms cubic-bezier(.16,1,.3,1),box-shadow 320ms cubic-bezier(.16,1,.3,1)} .ds-btn::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 30%,rgb(246 232 180/.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform 900ms cubic-bezier(.16,1,.3,1)} .ds-btn:hover::after{transform:translateX(120%)} .ds-btn:hover{box-shadow:0 10px 30px -12px rgb(21 19 15/.22),0 4px 10px -6px rgb(21 19 15/.12)} .ds-btn:active{transform:translateY(1px)} .ds-btn:focus-visible{outline:2px solid #7c5f30;outline-offset:3px} .ds-btn svg{width:1.15em;height:1.15em} .ds-btn-gold{--btn-fg:#15130f;--btn-bd:#b08c4f;background:linear-gradient(112deg,#f6e8b4 0%,#dcc283 32%,#b08c4f 64%,#7c5c33 100%);background-size:140% 100%;background-position:0 0;transition:background-position 700ms cubic-bezier(.16,1,.3,1),transform 160ms,box-shadow 320ms} .ds-btn-gold:hover{background-position:100% 0}"
+    },
+    {
+      "name": "Botón sobre negro",
+      "kind": "button",
+      "refersTo": "button-on-noir",
+      "description": "Secundario dentro de bandas negras: borde oro medio, se llena de champagne al pasar.",
+      "html": "<div class=\"ds-noir\"><button class=\"ds-btn ds-btn-on-noir\">Pasale la promo a tu equipo</button></div>",
+      "css": ".ds-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:3.25rem;padding:.85rem 1.6rem;border:1px solid var(--btn-bd);border-radius:var(--radius,2px);background:var(--btn-bg);color:var(--btn-fg);font-family:var(--font-ui,'Montserrat Variable',Montserrat,system-ui,sans-serif);font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;overflow:hidden;isolation:isolate;cursor:pointer;transition:background-color 320ms cubic-bezier(.16,1,.3,1),color 320ms cubic-bezier(.16,1,.3,1),border-color 320ms cubic-bezier(.16,1,.3,1),transform 160ms cubic-bezier(.16,1,.3,1),box-shadow 320ms cubic-bezier(.16,1,.3,1)} .ds-btn::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 30%,rgb(246 232 180/.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform 900ms cubic-bezier(.16,1,.3,1)} .ds-btn:hover::after{transform:translateX(120%)} .ds-btn:hover{box-shadow:0 10px 30px -12px rgb(21 19 15/.22),0 4px 10px -6px rgb(21 19 15/.12)} .ds-btn:active{transform:translateY(1px)} .ds-btn:focus-visible{outline:2px solid #7c5f30;outline-offset:3px} .ds-btn svg{width:1.15em;height:1.15em} .ds-noir{background:#0f0e0c;padding:24px;border-radius:4px} .ds-btn-on-noir{--btn-bg:transparent;--btn-fg:#f3ede1;--btn-bd:#c8a766} .ds-btn-on-noir:hover{--btn-bg:#e6d29a;--btn-fg:#15130f}"
+    },
+    {
+      "name": "Muestras de color",
+      "kind": "chip",
+      "refersTo": "swatch",
+      "description": "Radios nativos invisibles sobre puntos de prenda; anillo de tinta en la opción elegida.",
+      "html": "<div class=\"ds-swatches\"><label class=\"ds-swatch\" title=\"Bordó\"><input type=\"radio\" name=\"ds-c\" checked aria-label=\"Bordó\"><span class=\"ds-dot ds-bordo\"></span></label><label class=\"ds-swatch\" title=\"Rosa\"><input type=\"radio\" name=\"ds-c\"  aria-label=\"Rosa\"><span class=\"ds-dot ds-rosa\"></span></label><label class=\"ds-swatch\" title=\"Negro\"><input type=\"radio\" name=\"ds-c\"  aria-label=\"Negro\"><span class=\"ds-dot ds-negro\"></span></label><label class=\"ds-swatch\" title=\"Azul marino\"><input type=\"radio\" name=\"ds-c\"  aria-label=\"Azul marino\"><span class=\"ds-dot ds-marino\"></span></label><label class=\"ds-swatch\" title=\"Verde militar\"><input type=\"radio\" name=\"ds-c\"  aria-label=\"Verde militar\"><span class=\"ds-dot ds-verde\"></span></label></div>",
+      "css": ".ds-swatches{display:flex;gap:.6rem} .ds-swatch{position:relative;display:inline-grid;place-items:center;width:2.5rem;height:2.5rem;border-radius:50%;cursor:pointer} .ds-swatch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer} .ds-dot{width:1.85rem;height:1.85rem;border-radius:50%;box-shadow:inset 0 0 0 1px rgb(0 0 0/.12),inset 0 6px 10px -6px rgb(255 255 255/.5);transition:transform 320ms cubic-bezier(.16,1,.3,1)} .ds-swatch::after{content:'';position:absolute;inset:0;border-radius:50%;border:1px solid transparent;transform:scale(.85);transition:border-color 320ms,transform 320ms cubic-bezier(.16,1,.3,1)} .ds-swatch:hover .ds-dot{transform:scale(1.08)} .ds-swatch:has(input:checked)::after{border-color:#15130f;transform:scale(1)} .ds-swatch:has(input:focus-visible){outline:2px solid #7c5f30;outline-offset:2px} .ds-bordo{background:#6b1f2e} .ds-rosa{background:#d7a3ae} .ds-negro{background:#222120} .ds-marino{background:#1f2b47} .ds-verde{background:#4d5532}"
+    },
+    {
+      "name": "Selector de talle",
+      "kind": "chip",
+      "refersTo": "size-option",
+      "description": "Grilla de 4 talles; tinta llena al elegir.",
+      "html": "<div class=\"ds-sizes\"><label class=\"ds-size\"><input type=\"radio\" name=\"ds-t\"  aria-label=\"Talle XS\"><span>XS</span></label><label class=\"ds-size\"><input type=\"radio\" name=\"ds-t\"  aria-label=\"Talle S\"><span>S</span></label><label class=\"ds-size\"><input type=\"radio\" name=\"ds-t\" checked aria-label=\"Talle M\"><span>M</span></label><label class=\"ds-size\"><input type=\"radio\" name=\"ds-t\"  aria-label=\"Talle L\"><span>L</span></label></div>",
+      "css": ".ds-sizes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem;max-width:20rem} .ds-size{position:relative} .ds-size input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer} .ds-size span{display:grid;place-items:center;min-height:2.75rem;border:1px solid #cfc5b4;border-radius:2px;background:#fbfaf7;color:#15130f;font-family:'Montserrat Variable',Montserrat,system-ui,sans-serif;font-size:.875rem;font-weight:500;letter-spacing:.08em;pointer-events:none;transition:background-color 320ms,color 320ms,border-color 320ms} .ds-size:hover span{border-color:#15130f} .ds-size input:checked+span{background:#15130f;border-color:#15130f;color:#fbfaf7} .ds-size input:focus-visible+span{outline:2px solid #7c5f30;outline-offset:2px}"
+    },
+    {
+      "name": "Campo de texto",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Campo del carrito y del asesor: filete marcado, foco con borde tinta y halo champagne.",
+      "html": "<label class=\"ds-field\"><span>Localidad <em>(opcional)</em></span><input type=\"text\" placeholder=\"Rosario\"></label>",
+      "css": ".ds-field{display:grid;gap:.25rem;max-width:18rem;font-family:'Montserrat Variable',Montserrat,system-ui,sans-serif;font-size:.8125rem;color:#48433b} .ds-field em{font-style:normal;color:#6b6458} .ds-field input{min-height:2.75rem;padding:.5rem .75rem;border:1px solid #cfc5b4;border-radius:2px;background:#fbfaf7;color:#15130f;font:inherit;font-size:1rem;caret-color:#7c5f30;transition:border-color 320ms} .ds-field input:hover{border-color:#6b6458} .ds-field input:focus-visible{outline:none;border-color:#15130f;box-shadow:0 0 0 3px #f7edc6}"
+    },
+    {
+      "name": "Navegación",
+      "kind": "nav",
+      "description": "Links en mayúsculas espaciadas sobre header translúcido; subrayado bronce que se dibuja al pasar.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\">Colección</a><a href=\"#\">Promo equipo</a><a href=\"#\">La tela</a><a href=\"#\">Pagos</a></nav>",
+      "css": ".ds-nav{display:flex;gap:2rem;padding:1.25rem 1.5rem;background:rgb(251 250 247/.86);border-bottom:1px solid #e2dbcf} .ds-nav a{position:relative;font-family:'Montserrat Variable',Montserrat,system-ui,sans-serif;font-size:.8125rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:#48433b;padding-block:.5rem;transition:color 320ms} .ds-nav a::after{content:'';position:absolute;left:0;right:0;bottom:.15rem;height:1px;background:#9b7b40;transform:scaleX(0);transform-origin:right;transition:transform 320ms cubic-bezier(.16,1,.3,1)} .ds-nav a:hover{color:#15130f} .ds-nav a:hover::after{transform:scaleX(1);transform-origin:left} .ds-nav a:focus-visible{outline:2px solid #7c5f30;outline-offset:3px}"
+    },
+    {
+      "name": "Tarjeta de modelo",
+      "kind": "card",
+      "refersTo": "product-card",
+      "description": "Presentación de un modelo en el inicio; sube 4px con sombra flotante y lleva a su página.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-media\"><span class=\"ds-card-chip\">Chaqueta + pantalón</span><div class=\"ds-card-garment\"></div></div><div class=\"ds-card-body\"><div class=\"ds-card-title\"><h3>Ambo Essential</h3><p>$60.000</p></div><p class=\"ds-card-tag\">Recto, cómodo y elegante.</p><div class=\"ds-card-foot\"><span class=\"ds-card-cta\">Ver el modelo <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></span></div></div></article>",
+      "css": ".ds-card{max-width:22rem;background:#fbfaf7;border:1px solid #e2dbcf;border-radius:4px;overflow:hidden;font-family:'Montserrat Variable',Montserrat,system-ui,sans-serif;color:#15130f;transition:box-shadow 700ms cubic-bezier(.16,1,.3,1),transform 700ms cubic-bezier(.16,1,.3,1),border-color 700ms} .ds-card:hover{box-shadow:0 30px 60px -24px rgb(21 19 15/.35),0 12px 24px -12px rgb(21 19 15/.18);transform:translateY(-4px);border-color:#cfc5b4} .ds-card-media{position:relative;aspect-ratio:4/5;background:radial-gradient(90% 70% at 50% 20%,#fffdf9 0%,rgb(255 253 249/0) 70%),#ebe6dc;display:grid;place-items:center} .ds-card-garment{width:46%;height:70%;border-radius:4px;background:#6b1f2e;filter:drop-shadow(0 22px 26px rgb(21 19 15/.2))} .ds-card-chip{position:absolute;left:1rem;top:1rem;padding:.35rem .7rem;border:1px solid #cfc5b4;border-radius:2px;background:rgb(251 250 247/.85);font-size:.6875rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#48433b} .ds-card-body{display:grid;gap:.5rem;padding:1.5rem} .ds-card-title{display:flex;justify-content:space-between;align-items:baseline;gap:1rem} .ds-card-title h3{margin:0;font-size:1.6rem;font-weight:600;letter-spacing:-.02em} .ds-card-title p{margin:0;font-weight:600;font-variant-numeric:tabular-nums lining-nums} .ds-card-tag{margin:0;color:#7c5f30;font-weight:500} .ds-card-foot{margin-top:.75rem;padding-top:1rem;border-top:1px solid #e2dbcf} .ds-card-cta{display:inline-flex;align-items:center;gap:.5rem;font-size:.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase} .ds-card-cta svg{width:1rem;height:1rem;transition:transform 320ms cubic-bezier(.16,1,.3,1)} .ds-card:hover .ds-card-cta svg{transform:translateX(4px)}"
+    },
+    {
+      "name": "Medidor de promo",
+      "kind": "custom",
+      "description": "Franja del carrito que muestra el avance hacia la promo de equipo; pasa a negro y oro al alcanzarla.",
+      "html": "<div class=\"ds-pm\"><p>Te faltan <strong>2 ambos</strong> para el 30% off.</p><div class=\"ds-pm-bar\"><span></span></div></div><div class=\"ds-pm is-on\"><p>¡Promo equipo activada! <strong>30% off</strong> en todo el pedido.</p><div class=\"ds-pm-bar\"><span class=\"full\"></span></div></div>",
+      "css": ".ds-pm{max-width:26rem;padding:1rem 1.5rem;background:#f4f1eb;border-bottom:1px solid #e2dbcf;font-family:'Montserrat Variable',Montserrat,system-ui,sans-serif} .ds-pm p{margin:0 0 .5rem;font-size:.85rem;color:#48433b} .ds-pm strong{color:#15130f;font-weight:500} .ds-pm-bar{height:4px;border-radius:4px;background:#e2dbcf;overflow:hidden} .ds-pm-bar span{display:block;height:100%;width:50%;background:linear-gradient(112deg,#f6e8b4 0%,#dcc283 32%,#b08c4f 64%,#7c5c33 100%);transition:width 700ms cubic-bezier(.16,1,.3,1)} .ds-pm-bar span.full{width:100%} .ds-pm.is-on{background:#0f0e0c;border-color:#0f0e0c} .ds-pm.is-on p{color:#e6d29a} .ds-pm.is-on strong{color:#f3ede1} .ds-pm.is-on .ds-pm-bar{background:#3a3226}"
+    },
+    {
+      "name": "Momentos de la tela",
+      "kind": "custom",
+      "refersTo": "fabric-moment",
+      "description": "Banda Lino de FabricStory: chips de fibra y momentos con foto 4:5, título y texto; la foto se acerca al pasar.",
+      "html": "<div class=\"ds-fab\"><ul class=\"ds-fibers\" role=\"list\"><li><strong>Rayón</strong><span>suavidad al tacto</span></li><li><strong>Nylon 28%</strong><span>resistencia y durabilidad</span></li><li><strong>Spandex 4%</strong><span>elasticidad y ajuste</span></li></ul><ul class=\"ds-moments\" role=\"list\"><li><figure><div class=\"ds-moment-media\"><div class=\"ds-moment-img\"></div></div><figcaption><h3>Se estira con vos</h3><p>Te agachás y la tela acompaña.</p></figcaption></figure></li><li><figure><div class=\"ds-moment-media\"><div class=\"ds-moment-img\"></div></div><figcaption><h3>Libertad de movimiento</h3><p>Te estirás sin que tire.</p></figcaption></figure></li></ul></div>",
+      "css": ".ds-fab{max-width:34rem;padding:1.5rem;background:#f4f1eb;font-family:'Montserrat Variable',Montserrat,system-ui,sans-serif;color:#15130f}.ds-fibers{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 1.5rem;padding:0;list-style:none}.ds-fibers li{display:inline-flex;align-items:baseline;gap:.4rem;padding:.45rem .8rem;border:1px solid #cfc5b4;border-radius:2px;background:#fbfaf7;font-size:.875rem;color:#48433b}.ds-fibers strong{font-weight:600;color:#15130f}.ds-moments{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:0;padding:0;list-style:none}.ds-moments figure{display:grid;gap:1rem;margin:0}.ds-moment-media{aspect-ratio:4/5;border-radius:4px;overflow:hidden;background:#ebe6dc}.ds-moment-img{width:100%;height:100%;background:radial-gradient(90% 70% at 50% 20%,#fffdf9 0%,rgb(255 253 249/0) 70%),#ebe6dc;transition:transform 1.2s cubic-bezier(.16,1,.3,1)}.ds-moments li:hover .ds-moment-img{transform:scale(1.04)}.ds-moments h3{margin:0;font-size:1.1rem;font-weight:600}.ds-moments p{margin:.5rem 0 0;font-size:.875rem;line-height:1.6;color:#48433b}"
+    }
+  ],
+  "narrative": {
+    "northStar": "La Vitrina Dorada",
+    "overview": "Evhtian es una tienda de ambos de mujer que sigue el canon de la categoría, con FIGS y Jaanuu como vara de calidad. Fondo marfil apenas cálido, tinta casi negra y el dorado del logo en dos registros: un gradiente para las piezas grandes y un oro profundo legible para el texto. La página se lee como una vitrina ordenada: secciones amplias, filetes finos, ningún adorno que no sea el producto. Las bandas negras con oro (barra de promo, promo de equipo, franja de equipo en la página de modelo, pie) son el único contraste fuerte.\n\nToda la tipografía es Montserrat Variable, alojada en el propio sitio. Esta decisión reemplaza a la pareja Bodoni Moda + Jost del contrato de dirección: el usuario rechazó la serif de alto contraste por fina y confusa, sobre todo en los números. Los titulares van en 600. La frase dorada de cada titular (`.accent`) va en 500 y derecha, nunca en itálica. Los números van en negrita, con cifras tabulares y un solo color por conjunto.\n\nEl color de las prendas vive solo en el producto. Hay cinco colores: bordó, rosa, negro, azul marino y verde militar. Recolorean la foto o la ilustración, las muestras y las franjas de color, y no se usan en la interfaz. En el inicio, cada modelo aparece solo como tarjeta de presentación, y la compra ocurre en la página de detalle (`/ambos/essential/`, `/ambos/terra/`). Las prendas se muestran con fotos reales generadas con IA; la ilustración SVG queda solo como respaldo. La tela se cuenta con cuatro fotos de situaciones de la jornada, también generadas con IA, sin diagramas ni íconos técnicos.",
+    "keyCharacteristics": [
+      "Papel marfil, tinta negra cálida y dorado del logo. Las bandas negras con oro marcan los momentos de promo y el pie.",
+      "Una sola familia, Montserrat Variable, con jerarquía por peso (400 / 500 / 600 / 700) y escala fluida.",
+      "Formas casi rectas (radios de 2px y 4px). Los círculos quedan para las muestras, los botones de ícono y el botón de WhatsApp.",
+      "El producto es la única fuente de color. Los visores cambian de modelo y color sin recargar la página.",
+      "Movimiento suave con curva `ease-out` de cola larga, siempre con respaldo para `prefers-reduced-motion`.",
+      "CSP estricta: sin atributos `style` en el marcado. El estado visual se maneja con clases o con CSSOM desde el script."
+    ],
+    "rules": [
+      {
+        "name": "The Product-Only Color Rule",
+        "body": "Los cinco colores de prenda aparecen solo en el producto: fotos, ilustración, muestras, puntos y franjas. Ningún botón, fondo ni texto de interfaz los usa.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Gold Rule",
+        "body": "Sobre papel, el texto dorado es siempre gold-700. Sobre negro, siempre gold-200. El gradiente y sus paradas (sheen-*, mark-*) quedan para superficies grandes y para la marca, nunca para texto.",
+        "section": "colors"
+      },
+      {
+        "name": "The Noir Band Rule",
+        "body": "El negro de pantalla completa solo aparece en las bandas de promo y equipo y en el pie, siempre acompañado de oro. Una sección común nunca se oscurece por decoración.",
+        "section": "colors"
+      },
+      {
+        "name": "The One-Family Rule",
+        "body": "Todo es Montserrat Variable. No hay serif, itálica ni segunda familia. La frase dorada de un titular se marca con `.accent`: peso 500, derecha y color gold-700 (gold-200 sobre negro). En el titular de la tela, el `.accent` pasa a bloque y ocupa su propia línea.",
+        "section": "typography"
+      },
+      {
+        "name": "The Clean Numbers Rule",
+        "body": "Los precios, cantidades y totales van en negrita, con `font-variant-numeric: tabular-nums lining-nums` (clase `.tnum`) y un solo color por conjunto. Nunca se mezclan colores ni pesos dentro de una misma cifra.",
+        "section": "typography"
+      },
+      {
+        "name": "The Lift-On-Intent Rule",
+        "body": "Las superficies están planas en reposo. La sombra crece con la intención: la tarjeta sube 4px y pasa a shadow-3, y el botón gana shadow-2. Solo lo que flota sobre la página (carrito, panel rápido, botón de WhatsApp) tiene sombra permanente. Las fotos de la tela no llevan sombra: al pasar, solo la imagen se acerca.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do usar Montserrat Variable en todo: titulares en 600, `.accent` en 500 derecha, números en negrita con `.tnum`.",
+      "Do escribir el texto dorado sobre papel en gold-700 y sobre negro en gold-200. El gradiente queda para el botón dorado y el medidor de promo.",
+      "Do aplicar el color de prenda con una clase `c-<color>` y leer `--g`, `--g-edge`, `--g-seam` y `--g-hi`. La cintura del Essential queda negra.",
+      "Do construir cada vista de producto nueva con `ProductVisual` y el patrón visor (`data-viewer` + `setViewer`), para que las fotos y el respaldo ilustrado se elijan solos.",
+      "Do contar la tela con fotos de uso real en 4:5 (`src/assets/fabric`) y textos cortos. Cada momento nuevo suma una foto y un título, no un ícono.",
+      "Do dar a cada medio de pago una etiqueta larga y una corta, y avisar las restricciones de un medio en el lugar donde se elige, como el `.pay-note` del efectivo.",
+      "Do usar los tintes de overlay (overlay-light, overlay-shade, rosa-shade) solo con transparencia, sobre producto o foto.",
+      "Do dejar visibles por defecto las entradas animadas (`backwards`, o la clase `.js` con `.is-in`) y mantener el H1 sin animar.",
+      "Do cambiar estados visuales con clases o con CSSOM desde `main.ts`, como el ancho del medidor de promo.",
+      "Do encabezar listas y tablas con un filete de tinta de 1px y separar filas con line."
+    ],
+    "donts": [
+      "Don't escribir atributos `style` en el marcado ni scripts en línea sin hash: Astro `security.csp` genera los hashes de scripts y el CSS sale en archivos propios (`inlineStylesheets: 'never'`).",
+      "Don't usar serif, itálica ni una segunda familia. Bodoni Moda y Jost quedaron reemplazadas.",
+      "Don't mezclar colores o pesos dentro de una misma cifra ni pintar números con gradiente.",
+      "Don't usar los colores de prenda en botones, fondos o texto de interfaz.",
+      "Don't poner un formulario de compra en el inicio. Ahí, los modelos son tarjetas de presentación que llevan a su página.",
+      "Don't oscurecer secciones comunes. El negro es solo de las bandas de promo y equipo y del pie.",
+      "Don't redondear más allá de 4px en superficies rectangulares. Las píldoras son solo del botón de WhatsApp y del contador del carrito.",
+      "Don't mostrar cuotas ni financiación. Los medios de pago son transferencia, Mercado Pago y efectivo (solo Tigre)."
+    ]
+  }
+}

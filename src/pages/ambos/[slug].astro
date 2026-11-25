@@ -1,0 +1,499 @@
+---
+import { Picture } from 'astro:assets';
+import Shop from '../../layouts/Shop.astro';
+import ProductVisual from '../../components/ProductVisual.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import BuyForm from '../../components/BuyForm.astro';
+import FabricStory from '../../components/FabricStory.astro';
+import Sizes from '../../components/Sizes.astro';
+import Icon from '../../components/Icon.astro';
+import { colors, models, type ColorId, type Model } from '../../data/catalog';
+import Lightbox from '../../components/Lightbox.astro';
+import { detailPhotos, hasAllPhotos, hasColorDetails } from '../../data/photos';
+import { site, formatARS, whatsappHref } from '../../config/site';
+
+export function getStaticPaths() {
+  return models.map((model) => ({ params: { slug: model.id }, props: { model } }));
+}
+
+interface Props {
+  model: Model;
+}
+const { model } = Astro.props;
+const defaults: Record<string, ColorId> = { essential: 'bordo', terra: 'marino' };
+const color = defaults[model.id];
+const other = models.find((m) => m.id !== model.id)!;
+// Si cada color tiene sus detalles, se arma un juego por color y se muestra el del color elegido.
+const detailSets = hasColorDetails(model.id)
+  ? colors.map((c) => ({ color: c.id as ColorId | undefined, label: c.name.toLowerCase(), imgs: detailPhotos(model.id, c.id) }))
+  : [{ color: undefined, label: '', imgs: detailPhotos(model.id) }];
+const zoomable = hasAllPhotos(model.id);
+const ask = whatsappHref(`¡Hola Evhtian! Quiero consultar por el ambo ${model.name}.`);
+---
+<Shop
+  title={`Ambo ${model.name}`}
+  description={`Ambo ${model.name} para mujer en bengalina elastizada: ${model.teaser} ${formatARS(site.price)} el conjunto, cinco colores y talles XS a L.`}
+>
+  <div class="wrap crumbs">
+    <nav aria-label="Ruta de navegación">
+      <ol role="list">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/#coleccion">Colección</a></li>
+        <li aria-current="page">Ambo {model.name}</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class={`wrap pdp c-${color}`} data-product data-viewer data-product-page data-model={model.id} data-color={color} aria-labelledby="pdp-title">
+    <div class="pdp-gallery">
+      <div class="pdp-main">
+        <ProductVisual model={model.id} color={color} uid={`pdp-${model.id}`} eager sizes="(min-width: 960px) 40vw, 100vw" />
+        <span class="pdp-chip">Chaqueta + pantalón · <span data-viewer-color-name></span></span>
+        {zoomable && (
+          <button class="pdp-zoom" type="button" data-zoom-open="0" aria-label={`Ampliar la foto del ambo ${model.name}`}>
+            <span class="pdp-zoom-badge" aria-hidden="true"><Icon name="zoom" /> Ampliar</span>
+          </button>
+        )}
+      </div>
+      {detailSets.map((set) => set.imgs.length > 0 && (
+        <div
+          class:list={['pdp-details', set.color && 'pdp-set', set.color === color && 'is-active']}
+          data-color-view={set.color}
+        >
+          {set.imgs.map((img, i) => (
+            <button class="pdp-detail" type="button" data-zoom-open={i + 1} aria-label={`Ampliar la foto ${i + 2} del ambo ${model.name}`}>
+              <Picture
+                src={img}
+                formats={['avif', 'webp']}
+                widths={[480, 800, 1200]}
+                sizes="(min-width: 960px) 20vw, 50vw"
+                alt={set.color ? `Ambo ${model.name} en ${set.label} (foto ${i + 2})` : `Detalle del ambo ${model.name} (${i + 1})`}
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          ))}
+        </div>
+      ))}
+    </div>
+
+    <div class="pdp-info">
+      <h1 id="pdp-title">Ambo {model.name}</h1>
+      <p class="pdp-tagline">{model.tagline}</p>
+      <p class="pdp-price tnum">
+        <s class="pdp-list">{formatARS(site.listPrice)}</s>
+        <span class="pdp-amount">{formatARS(site.price)}</span>
+        <span class="pdp-sub">Chaqueta + pantalón</span>
+        <span class="pdp-sale"><strong>{site.sale.name}.</strong> Aprovechala, dura hasta el {site.sale.until}.</span>
+      </p>
+      <p class="pdp-desc">{model.description}</p>
+      <BuyForm uid="pdp" model={model.id} color={color} />
+      <p class="pdp-team">
+        <Icon name="users" />
+        <span>¿Compran en equipo? Con {site.promo.minItems} ambos o más en un mismo pedido, <strong>ahorran {site.promo.percent}%</strong> en todo el pedido.</span>
+      </p>
+      <ul class="pdp-pay" role="list">
+        {site.payments.map((p) => <li><Icon name={p.icon} /> {p.short}</li>)}
+      </ul>
+      <div class="pdp-links">
+        <a class="link-arrow" href={ask} target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" /> Consultar por WhatsApp</a>
+      </div>
+    </div>
+  </section>
+  {zoomable && <Lightbox model={model.id} />}
+
+  <section class="spec section" aria-labelledby="spec-title">
+    <div class="wrap">
+      <header class="section-head">
+        <h2 id="spec-title" data-reveal>Cada detalle, <span class="accent">pensado para tu jornada.</span></h2>
+      </header>
+      <div class="spec-grid">
+        <div class="spec-col" data-reveal>
+          <h3>Chaqueta</h3>
+          <dl>
+            {model.jacket.map((f) => (
+              <div><dt><Icon name="check" /> {f.title}</dt><dd>{f.text}</dd></div>
+            ))}
+          </dl>
+        </div>
+        <div class="spec-col i-1" data-reveal>
+          <h3>Pantalón</h3>
+          <dl>
+            {model.pants.map((f) => (
+              <div><dt><Icon name="check" /> {f.title}</dt><dd>{f.text}</dd></div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FabricStory />
+  <Sizes />
+
+  <section class="team-band" aria-labelledby="team-band-title">
+    <div class="wrap team-band-inner">
+      <div>
+        <h2 id="team-band-title">Vestite con tu equipo y ahorren <span class="pct">{site.promo.percent}%</span></h2>
+        <p>Con {site.promo.minItems} ambos o más en un mismo pedido, el {site.promo.percent}% off se aplica a todo. Cada una elige su modelo, color y talle.</p>
+      </div>
+      <a class="btn btn--gold" href="/#equipo">Calcular cuánto ahorran <Icon name="arrow" /></a>
+    </div>
+  </section>
+
+  <section class="other section" aria-labelledby="other-title">
+    <div class="wrap other-grid">
+      <header>
+        <h2 id="other-title">Conocé también el <span class="accent">ambo {other.name}.</span></h2>
+        <p>{other.teaser} La misma tela, otra actitud.</p>
+      </header>
+      <ProductCard model={other} color={defaults[other.id]} uid={`other-${other.id}`} />
+    </div>
+  </section>
+</Shop>
+
+<style>
+  .crumbs {
+    padding-top: var(--s-5);
+  }
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: var(--step--1);
+    color: var(--ink-3);
+  }
+  .crumbs li + li::before {
+    content: '/';
+    margin-right: 0.5rem;
+    color: var(--line-strong);
+  }
+  .crumbs a {
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+  .crumbs a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+  .crumbs [aria-current] {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .pdp {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    gap: clamp(2rem, 1rem + 4vw, 5rem);
+    align-items: start;
+    padding-block: var(--s-5) var(--section);
+  }
+  .pdp-gallery {
+    display: grid;
+    gap: var(--s-3);
+  }
+  .pdp-main {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(90% 70% at 50% 20%, #fffdf9 0%, rgb(255 253 249 / 0) 70%),
+      var(--paper-3);
+    overflow: hidden;
+  }
+  .pdp-main :global(.pv--art) {
+    padding: 8% 22% 8%;
+  }
+  .pdp-chip {
+    position: absolute;
+    left: var(--s-4);
+    top: var(--s-4);
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: rgb(251 250 247 / 0.85);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .pdp-zoom {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+  }
+  .pdp-zoom-badge {
+    position: absolute;
+    right: var(--s-4);
+    bottom: var(--s-4);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.8rem 0.45rem 0.6rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: rgb(251 250 247 / 0.9);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink);
+    transition:
+      background-color 160ms,
+      border-color 160ms;
+  }
+  .pdp-zoom-badge :global(svg) {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+  .pdp-zoom:hover .pdp-zoom-badge,
+  .pdp-zoom:focus-visible .pdp-zoom-badge {
+    border-color: var(--ink);
+    background: var(--paper);
+  }
+  .pdp-zoom:focus-visible {
+    outline-offset: -4px;
+  }
+  .pdp-detail {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+  }
+  .pdp-detail :global(img) {
+    transition: opacity 160ms;
+  }
+  .pdp-detail:hover :global(img) {
+    opacity: 0.88;
+  }
+  .pdp-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+  /* Un juego de detalles por color: solo se ve el del color elegido. */
+  .pdp-set:not(.is-active) {
+    display: none;
+  }
+  /* Con tres detalles, una fila de tres en vez de dejar una foto sola abajo. */
+  .pdp-details:has(> :nth-child(3):last-child) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .pdp-details :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    background: var(--paper-3);
+  }
+
+  .pdp-info {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+  .pdp-tagline {
+    margin-top: var(--s-2);
+    font-size: var(--step-2);
+    font-weight: 500;
+    color: var(--gold-700);
+  }
+  .pdp-price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.85rem;
+    margin-top: var(--s-5);
+    padding-block: var(--s-4);
+    border-block: 1px solid var(--line);
+  }
+  .pdp-list {
+    font-size: var(--step-1);
+    color: var(--ink-3);
+    text-decoration-thickness: 1px;
+  }
+  .pdp-amount {
+    font-size: var(--step-3);
+    font-weight: 600;
+    line-height: 1;
+  }
+  .pdp-sub {
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+  .pdp-sale {
+    flex-basis: 100%;
+    margin-top: var(--s-2);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+  .pdp-sale strong {
+    color: var(--gold-700);
+    font-weight: 600;
+  }
+  .pdp-desc {
+    margin-block: var(--s-5);
+    color: var(--ink-2);
+  }
+  .pdp-team {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-top: var(--s-5);
+    padding: var(--s-4);
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+  .pdp-team :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--gold-700);
+    flex: none;
+    margin-top: 0.1rem;
+  }
+  .pdp-team strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .pdp-pay {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-2) var(--s-4);
+    margin-top: var(--s-5);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+  .pdp-pay li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .pdp-pay :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--gold-700);
+    flex: none;
+  }
+  .pdp-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-6);
+    margin-top: var(--s-5);
+  }
+
+  .spec {
+    background: var(--paper-2);
+  }
+  .section-head .accent,
+  .other .accent {
+    color: var(--gold-700);
+  }
+  .spec-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2rem, 1rem + 3vw, 4rem);
+  }
+  .spec-col h3 {
+    font-size: var(--step-2);
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--ink);
+  }
+  .spec-col dl > div {
+    padding-block: var(--s-4);
+    border-bottom: 1px solid var(--line);
+  }
+  .spec-col dt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+  }
+  .spec-col dt :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--gold-700);
+  }
+  .spec-col dd {
+    margin-top: var(--s-1);
+    padding-left: 1.6rem;
+    color: var(--ink-2);
+    font-size: var(--step--1);
+  }
+  .i-1 {
+    --i: 1;
+  }
+
+  .team-band {
+    background:
+      radial-gradient(70% 120% at 90% 0%, rgb(200 167 102 / 0.16), transparent 60%),
+      var(--noir);
+    color: var(--on-noir);
+    padding-block: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+  .team-band-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+  }
+  .team-band h2 {
+    font-size: var(--step-3);
+    color: var(--on-noir);
+  }
+  .team-band .pct {
+    color: var(--gold-200);
+  }
+  .team-band p {
+    margin-top: var(--s-2);
+    color: var(--on-noir-2);
+    max-width: 44rem;
+  }
+
+  .other-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+    gap: clamp(2rem, 1rem + 4vw, 6rem);
+    align-items: center;
+  }
+  .other h2 {
+    font-size: var(--step-4);
+  }
+  .other header p {
+    margin-top: var(--s-4);
+    color: var(--ink-2);
+    font-size: var(--step-1);
+  }
+
+  @media (max-width: 960px) {
+    .pdp,
+    .other-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .pdp-info {
+      position: static;
+    }
+  }
+  @media (max-width: 700px) {
+    .spec-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 420px) {
+    .pdp-pay {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

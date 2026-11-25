@@ -1,0 +1,94 @@
+---
+/**
+ * Guía de talles: solo aparece cuando hay medidas cargadas en src/data/catalog.ts (sizeChart).
+ * Mientras no las haya, la consulta de talle se hace por WhatsApp desde la ficha del modelo.
+ */
+import Icon from './Icon.astro';
+import { sizes, sizeChart } from '../data/catalog';
+import { whatsappHref } from '../config/site';
+const askHref = whatsappHref('¡Hola Evhtian! Quiero que me ayuden a elegir mi talle.');
+---
+{sizeChart.length > 0 && (
+  <section id="talles" class="sizes-sec section" aria-labelledby="talles-title">
+    <div class="wrap sizes-grid">
+      <div class="sizes-copy">
+        <h2 id="talles-title" data-reveal>Tu talle, <span class="accent">sin dudas.</span></h2>
+        <p data-reveal>
+          Trabajamos los talles {sizes.join(', ')} con un calce pensado para el cuerpo femenino. ¿Estás entre dos talles? Escribinos y te
+          recomendamos el ideal.
+        </p>
+        <a class="btn" href={askHref} target="_blank" rel="noopener noreferrer" data-reveal>
+          <Icon name="whatsapp" /> Consultar mi talle
+        </a>
+      </div>
+      <div class="chart" data-reveal="fade">
+        <table>
+          <caption class="sr-only">Medidas por talle en centímetros</caption>
+          <thead><tr><th scope="col">Talle</th><th scope="col">Busto</th><th scope="col">Cintura</th><th scope="col">Cadera</th></tr></thead>
+          <tbody class="tnum">
+            {sizeChart.map((r) => (
+              <tr><th scope="row">{r.size}</th><td>{r.busto}</td><td>{r.cintura}</td><td>{r.cadera}</td></tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="chart-note">Medidas del cuerpo en centímetros.</p>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .sizes-sec {
+    background: var(--paper-2);
+  }
+  .sizes-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 1rem + 4vw, 6rem);
+    align-items: center;
+  }
+  h2 {
+    font-size: var(--step-4);
+  }
+  h2 .accent {
+    color: var(--gold-700);
+  }
+  .sizes-copy p {
+    margin-block: var(--s-5);
+    font-size: var(--step-1);
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 34rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th,
+  td {
+    padding: 0.9rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+  thead th {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600;
+    border-bottom-color: var(--ink);
+  }
+  tbody th {
+    font-weight: 600;
+  }
+  .chart-note {
+    margin-top: var(--s-3);
+    font-size: var(--step--1);
+    color: var(--ink-3);
+  }
+  @media (max-width: 900px) {
+    .sizes-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

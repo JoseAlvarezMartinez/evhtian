@@ -1,0 +1,165 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../config/site';
+const steps = [
+  { title: 'Elegí tu ambo', text: 'Modelo, color y talle. ¿Compran en equipo? Sumen todo en un mismo pedido y activen el 20% off.' },
+  { title: 'Revisá tu pedido', text: 'En el carrito ves el total al instante y si ya activaste la promo de equipo.' },
+  { title: 'Confirmá por WhatsApp', text: 'Tu pedido nos llega completo y te respondemos personalmente para coordinar pago y entrega.' },
+];
+---
+<section id="pagos" class="payments section" aria-labelledby="pagos-title">
+  <div class="wrap pay-grid">
+    <header class="section-head pay-head">
+      <h2 id="pagos-title" data-reveal>Pagá como te quede <em class="accent">más cómodo.</em></h2>
+      <p data-reveal>Sin vueltas ni sorpresas: elegís cómo pagar al confirmar tu pedido.</p>
+    </header>
+    <ul class="ledger" role="list">
+      {site.payments.map((p, i) => (
+        <li class:list={['row', p.id === 'mercadopago' && 'row--feature', `i-${i}`]} data-reveal>
+          <span class="row-icon"><Icon name={p.icon} /></span>
+          <span class="row-label">{p.label}</span>
+          <span class="row-detail">{p.detail}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="wrap how" aria-labelledby="como-title">
+    <h3 id="como-title" data-reveal>Tu ambo, en tres pasos</h3>
+    <ol class="steps" role="list">
+      {steps.map((s, i) => (
+        <li class={`step i-${i}`} data-reveal>
+          <span class="step-n tnum" aria-hidden="true">{i + 1}</span>
+          <div>
+            <p class="step-title">{s.title}</p>
+            <p class="step-text">{s.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .pay-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 1rem + 4vw, 6rem);
+    align-items: start;
+  }
+  .pay-head {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+  }
+  .pay-head h2 em {
+    color: var(--gold-700);
+  }
+  .ledger {
+    border-top: 1px solid var(--ink);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--s-4);
+    align-items: center;
+    padding-block: clamp(1.25rem, 1rem + 1vw, 2rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .row-icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    color: var(--gold-700);
+  }
+  .row-icon :global(svg) {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+  .row-label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-2);
+    line-height: 1.1;
+  }
+  .row-detail {
+    color: var(--ink-2);
+  }
+  .row--feature .row-icon {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--gold-200);
+  }
+  .row--feature .row-label {
+    color: var(--gold-700);
+  }
+  .i-1 { --i: 1; }
+  .i-2 { --i: 2; }
+  .i-3 { --i: 3; }
+
+  .how {
+    margin-top: clamp(4rem, 3rem + 4vw, 7rem);
+    padding-top: clamp(3rem, 2rem + 3vw, 5rem);
+    border-top: 1px solid var(--line);
+  }
+  .how h3 {
+    font-size: var(--step-3);
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-6);
+    counter-reset: none;
+  }
+  .step {
+    display: flex;
+    gap: var(--s-4);
+    align-items: flex-start;
+  }
+  .step-n {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 3.5rem;
+    line-height: 0.85;
+    color: var(--gold-600);
+    flex: none;
+    width: 2.5rem;
+  }
+  .step-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-2);
+    line-height: 1.1;
+    margin-bottom: var(--s-2);
+  }
+  .step-text {
+    color: var(--ink-2);
+    max-width: 30ch;
+  }
+  @media (max-width: 900px) {
+    .pay-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .pay-head {
+      position: static;
+      margin-bottom: 0;
+    }
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .row {
+      grid-template-columns: 3rem minmax(0, 1fr);
+      row-gap: var(--s-1);
+    }
+    .row-detail {
+      grid-column: 2;
+    }
+  }
+</style>

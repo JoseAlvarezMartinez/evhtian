@@ -1,0 +1,232 @@
+---
+import Icon from './Icon.astro';
+import BrandMark from './BrandMark.astro';
+import { site, formatARS } from '../config/site';
+
+const shareText = `Mirá estos ambos de Evhtian: si juntamos ${site.promo.minItems} o más en un mismo pedido, tenemos ${site.promo.percent}% off en todo. ¿Armamos el pedido del equipo?`;
+const start = site.promo.minItems;
+const full = start * site.price;
+const promo = full * (1 - site.promo.percent / 100);
+---
+<section id="equipo" class="team section" aria-labelledby="equipo-title">
+  <BrandMark kind="mark" tone="gold-light" class="team-mark" />
+  <div class="wrap team-grid">
+    <div class="team-copy">
+      <h2 id="equipo-title" data-reveal>
+        Vestite con tu equipo y ahorren <span class="pct">{site.promo.percent}%</span>
+      </h2>
+      <p class="lead" data-reveal>
+        Sumá a tu servicio, tu residencia o tus compañeras de guardia: con
+        <strong>{site.promo.minItems} ambos o más en un mismo pedido</strong>, el {site.promo.percent}% off se aplica a todo el pedido.
+        Cada una elige su modelo, su color y su talle.
+      </p>
+      <p class="sub" data-reveal>
+        Un equipo que se ve impecable transmite confianza desde el primer saludo. Y la que organiza se lleva el aplauso.
+      </p>
+      <div class="team-ctas" data-reveal>
+        <a class="btn btn--gold" href="#coleccion">Armar el pedido del equipo <Icon name="arrow" /></a>
+        <a class="btn btn--on-noir" data-share-team data-share-text={shareText} href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer">
+          <Icon name="share" /> Compartir con mi equipo
+        </a>
+      </div>
+    </div>
+
+    <div class="calc" data-calc data-reveal="rise-blur" aria-labelledby="calc-title">
+      <p id="calc-title" class="calc-title">¿Cuántos ambos suman entre todas?</p>
+      <div class="calc-stepper">
+        <button type="button" data-calc-dec aria-label="Restar un ambo"><Icon name="minus" /></button>
+        <output class="calc-n tnum" data-calc-n aria-live="polite">{start}</output>
+        <button type="button" data-calc-inc aria-label="Sumar un ambo"><Icon name="plus" /></button>
+      </div>
+      <dl class="calc-rows tnum">
+        <div>
+          <dt>Precio de lista</dt>
+          <dd><s data-calc-full>{formatARS(full)}</s></dd>
+        </div>
+        <div class="calc-total">
+          <dt>Pagan con la promo</dt>
+          <dd data-calc-total>{formatARS(promo)}</dd>
+        </div>
+        <div>
+          <dt>Cada ambo queda en</dt>
+          <dd data-calc-each>{formatARS(site.price * (1 - site.promo.percent / 100))}</dd>
+        </div>
+        <div class="calc-save">
+          <dt>Se ahorran</dt>
+          <dd data-calc-save>{formatARS(full - promo)}</dd>
+        </div>
+      </dl>
+      <p class="calc-note" data-calc-note aria-live="polite">Promo activada: el {site.promo.percent}% off va en todo el pedido.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .team {
+    position: relative;
+    background:
+      radial-gradient(70% 90% at 85% 10%, rgb(200 167 102 / 0.14), transparent 60%),
+      var(--noir);
+    color: var(--on-noir);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .team :global(.team-mark) {
+    position: absolute;
+    width: min(46rem, 80vw);
+    right: -12rem;
+    top: 50%;
+    translate: 0 -50%;
+    opacity: 0.07;
+    z-index: -1;
+  }
+  .team-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(2.5rem, 1rem + 5vw, 7rem);
+    align-items: center;
+  }
+  h2 {
+    font-size: var(--step-4);
+    font-weight: 600;
+    color: var(--on-noir);
+  }
+  .pct {
+    display: inline-block;
+    color: var(--gold-200);
+  }
+  .lead {
+    margin-top: var(--s-5);
+    font-size: var(--step-1);
+    line-height: 1.55;
+    color: var(--on-noir-2);
+    max-width: 36rem;
+  }
+  .lead strong {
+    color: var(--on-noir);
+    font-weight: 500;
+  }
+  .sub {
+    margin-top: var(--s-4);
+    color: var(--on-noir-2);
+    max-width: 36rem;
+  }
+  .team-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+
+  .calc {
+    padding: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+    border: 1px solid var(--noir-line);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.04), rgb(255 255 255 / 0.01)), var(--noir-2);
+    box-shadow: 0 40px 80px -40px rgb(0 0 0 / 0.8);
+  }
+  .calc-title {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-200);
+    text-align: center;
+  }
+  .calc-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-6);
+    margin-block: var(--s-4) var(--s-6);
+  }
+  .calc-stepper button {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1px solid var(--gold-600);
+    background: none;
+    color: var(--gold-200);
+    transition:
+      background-color var(--dur-2) var(--ease-out),
+      color var(--dur-2) var(--ease-out);
+  }
+  .calc-stepper button:hover {
+    background: var(--gold-200);
+    color: var(--ink);
+  }
+  .calc-stepper button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    background: none;
+    color: var(--gold-200);
+  }
+  .calc-stepper :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .calc-n {
+    min-width: 3ch;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 2.2rem + 2.6vw, 4.25rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums lining-nums;
+    color: var(--on-noir);
+  }
+  .calc-rows {
+    display: grid;
+  }
+  .calc-rows > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-4);
+    padding-block: 0.85rem;
+    border-top: 1px solid var(--noir-line);
+  }
+  dt {
+    color: var(--on-noir-2);
+    font-size: var(--step--1);
+  }
+  dd {
+    font-weight: 600;
+    color: var(--on-noir);
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  s {
+    color: inherit;
+    text-decoration-thickness: 1px;
+  }
+  .calc-total dd {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .calc-note {
+    margin-top: var(--s-4);
+    font-size: var(--step--1);
+    color: var(--gold-200);
+    text-align: center;
+  }
+  @media (max-width: 900px) {
+    .team-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .team :global(.team-mark) {
+      display: none;
+    }
+  }
+  @media (max-width: 480px) {
+    .team-ctas .btn {
+      flex: 1 1 100%;
+      white-space: normal;
+      text-align: center;
+    }
+  }
+</style>

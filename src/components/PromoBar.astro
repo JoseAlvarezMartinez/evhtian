@@ -1,0 +1,68 @@
+---
+import { site, formatARS } from '../config/site';
+---
+<div class="promo-bar">
+  <p class="wrap">
+    <span class="promo-long"><strong>{site.sale.name}:</strong> ambos a {formatARS(site.price)} hasta el {site.sale.until}.</span>
+    <span class="sep" aria-hidden="true"></span>
+    <span class="promo-long"><strong>Comprá con tu equipo y ahorren {site.promo.percent}%</strong> en todo el pedido, desde {site.promo.minItems} ambos.</span>
+    <span class="promo-short"><strong>Fin de año: {formatARS(site.price)}</strong> hasta el {site.sale.until}</span>
+    <a href="/#equipo">Ver promo</a>
+  </p>
+</div>
+
+<style>
+  .promo-bar {
+    background: var(--noir);
+    color: var(--on-noir);
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+  }
+  .promo-bar p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    min-height: 2.5rem;
+    padding-block: 0.45rem;
+    text-align: center;
+  }
+  strong {
+    font-weight: 500;
+    color: var(--gold-200);
+  }
+  .sep {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold-400);
+  }
+  a {
+    color: var(--gold-200);
+    text-decoration: underline;
+    text-decoration-color: rgb(230 210 154 / 0.5);
+    font-weight: 500;
+  }
+  a:hover {
+    text-decoration-color: currentColor;
+  }
+  .promo-short {
+    display: none;
+  }
+  @media (max-width: 640px) {
+    .sep,
+    .promo-alt,
+    .promo-long {
+      display: none;
+    }
+    .promo-short {
+      display: inline;
+    }
+    .promo-bar p {
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      font-size: 0.75rem;
+    }
+  }
+</style>

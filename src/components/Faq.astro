@@ -1,0 +1,119 @@
+---
+import Icon from './Icon.astro';
+import { site, formatARS, cashZone } from '../config/site';
+const faqs = [
+  {
+    q: '¿Cómo hago mi pedido?',
+    a: 'Elegís modelo, color y talle, lo sumás al carrito y tocás «Enviar pedido por WhatsApp». Tu pedido nos llega con todo el detalle y te respondemos personalmente para coordinar el pago y la entrega.',
+  },
+  {
+    q: '¿El ambo incluye chaqueta y pantalón?',
+    a: `Sí. Cada ambo es el conjunto completo, chaqueta y pantalón, a ${formatARS(site.price)}. Podés elegir el modelo, el color y el talle que quieras.`,
+  },
+  {
+    q: '¿De qué tela son los ambos?',
+    a: 'De bengalina elastizada: rayón, nylon y spandex. El rayón le da suavidad al tacto, el 28% de nylon resistencia y durabilidad, y el 4% de spandex la elasticidad justa para un calce firme que se adapta a tu cuerpo sin perder la forma. Essential y Terra comparten la misma tela.',
+  },
+  {
+    q: '¿Cómo funciona la promo de equipo?',
+    a: `Con ${site.promo.minItems} ambos o más en un mismo pedido, el ${site.promo.percent}% off se aplica sobre el total. Pueden combinar modelos, colores y talles, y el carrito calcula el descuento automáticamente.`,
+  },
+  {
+    q: '¿Qué medios de pago aceptan?',
+    a: `Transferencia bancaria y Mercado Pago. Si tu entrega es en la zona de ${cashZone}, también podés pagar en efectivo al recibir tu ambo.`,
+  },
+  {
+    q: '¿Cómo sé qué talle elegir?',
+    a: 'Escribinos por WhatsApp y te asesoramos personalmente según el talle que usás habitualmente, para que aciertes desde el primer pedido.',
+  },
+  {
+    q: '¿Cómo me llega el pedido?',
+    a: 'Cuando confirmás tu pedido por WhatsApp, coordinamos con vos la entrega y el medio de pago que elegiste.',
+  },
+];
+---
+<section id="preguntas" class="faq section" aria-labelledby="preguntas-title">
+  <div class="wrap faq-grid">
+    <header class="section-head">
+      <h2 id="preguntas-title" data-reveal>Preguntas frecuentes</h2>
+      <p data-reveal>¿Te quedó alguna duda? Escribinos por WhatsApp o Instagram: te responde una persona, no un robot.</p>
+    </header>
+    <div class="list">
+      {faqs.map((f, i) => (
+        <details class="item" name="faq" open={i === 0}>
+          <summary>
+            <span>{f.q}</span>
+            <Icon name="plus" class="faq-icon" />
+          </summary>
+          <div class="answer"><p>{f.a}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 1rem + 4vw, 6rem);
+    align-items: start;
+  }
+  .list {
+    border-top: 1px solid var(--ink);
+  }
+  .item {
+    border-bottom: 1px solid var(--line);
+    interpolate-size: allow-keywords;
+  }
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-4);
+    padding-block: 1.4rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--step-1);
+    line-height: 1.2;
+    transition: color var(--dur-2) var(--ease-out);
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary:hover {
+    color: var(--gold-700);
+  }
+  summary :global(.faq-icon) {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+    color: var(--gold-700);
+    transition: transform 500ms var(--ease-out);
+  }
+  .item[open] summary :global(.faq-icon) {
+    transform: rotate(45deg);
+  }
+  .item::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height 500ms var(--ease-out),
+      content-visibility 500ms allow-discrete;
+  }
+  .item[open]::details-content {
+    height: auto;
+  }
+  .answer p {
+    padding-bottom: 1.5rem;
+    color: var(--ink-2);
+    max-width: 60ch;
+  }
+  @media (max-width: 900px) {
+    .faq-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

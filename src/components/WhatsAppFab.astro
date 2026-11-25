@@ -1,0 +1,64 @@
+---
+import Icon from './Icon.astro';
+import { whatsappHref } from '../config/site';
+const href = whatsappHref('¡Hola Evhtian! Quiero consultar por los ambos.');
+---
+<a class="fab" href={href} target="_blank" rel="noopener noreferrer" aria-label="Escribinos por WhatsApp">
+  <Icon name="whatsapp" />
+  <span class="fab-label">¿Te asesoramos?</span>
+</a>
+
+<style>
+  .fab {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 30;
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    height: 3.5rem;
+    padding: 0 1.05rem;
+    border-radius: 2rem;
+    background: var(--ink);
+    color: var(--gold-200);
+    text-decoration: none;
+    box-shadow: var(--shadow-3);
+    transition:
+      gap 500ms var(--ease-out),
+      background-color var(--dur-2) var(--ease-out),
+      transform var(--dur-2) var(--ease-out);
+  }
+  .fab :global(svg) {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: none;
+  }
+  .fab-label {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--paper);
+    transition: max-width 500ms var(--ease-out);
+  }
+  .fab:hover,
+  .fab:focus-visible {
+    gap: 0.6rem;
+    transform: translateY(-2px);
+  }
+  .fab:hover .fab-label,
+  .fab:focus-visible .fab-label {
+    max-width: 12rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .fab {
+      animation: fab-in 800ms var(--ease-out) 2s backwards;
+    }
+  }
+  @keyframes fab-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.9); }
+    to { opacity: 1; transform: none; }
+  }
+</style>

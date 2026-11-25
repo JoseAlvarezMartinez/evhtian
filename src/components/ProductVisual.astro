@@ -1,0 +1,79 @@
+---
+/**
+ * Vista del ambo: foto real si existe (una por color, apiladas para cambiar de color sin recargar),
+ * o la ilustración recoloreable como respaldo.
+ */
+import { Picture } from 'astro:assets';
+import Garment from './Garment.astro';
+import { colors, models, type ColorId, type ModelId } from '../data/catalog';
+import { hasAllPhotos, photoFor } from '../data/photos';
+
+interface Props {
+  model: ModelId;
+  color: ColorId;
+  uid: string;
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+const { model, color, uid, sizes = '(min-width: 900px) 45vw, 92vw', eager = false, class: cls } = Astro.props;
+const name = models.find((m) => m.id === model)?.name;
+const usePhotos = hasAllPhotos(model);
+---
+<div class:list={['pv', usePhotos ? 'pv--photo' : 'pv--art', cls]}>
+  {usePhotos ? (
+    colors.map((c) => {
+      const img = photoFor(model, c.id)!;
+      const active = c.id === color;
+      return (
+        <Picture
+          src={img}
+          formats={['avif', 'webp']}
+          widths={[480, 720, 960, 1280, 1600]}
+          sizes={sizes}
+          alt={`Ambo ${name} en ${c.name.toLowerCase()}`}
+          class:list={['pv-img', active && 'is-active']}
+          data-color-view={c.id}
+          loading={eager && active ? 'eager' : 'lazy'}
+          fetchpriority={eager && active ? 'high' : 'auto'}
+          decoding="async"
+        />
+      );
+    })
+  ) : (
+    <Garment model={model} uid={uid} label={`Ilustración del ambo ${name}`} />
+  )}
+</div>
+
+<style>
+  .pv {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .pv--art {
+    display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    place-items: center;
+  }
+  .pv--art :global(.garment) {
+    width: 100%;
+    height: 100%;
+  }
+  .pv--photo :global(picture),
+  .pv--photo :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--pv-pos, 50% 6%);
+  }
+  .pv--photo :global(.pv-img) {
+    opacity: 0;
+    transition: opacity 700ms var(--ease-out);
+  }
+  .pv--photo :global(.pv-img.is-active) {
+    opacity: 1;
+  }
+</style>

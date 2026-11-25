@@ -1,0 +1,465 @@
+---
+import Icon from './Icon.astro';
+import { site, cashZone } from '../config/site';
+---
+<dialog class="cart" id="cart" aria-labelledby="cart-title" data-cart>
+  <div class="cart-inner">
+    <header class="cart-head">
+      <h2 id="cart-title">Tu pedido <span class="cart-n tnum" data-cart-heading-count></span></h2>
+      <button class="icon-btn" type="button" data-cart-close aria-label="Cerrar carrito"><Icon name="close" /></button>
+    </header>
+
+    <div class="promo-meter" data-promo-meter>
+      <p class="pm-text" data-promo-text aria-live="polite"></p>
+      <div class="pm-bar" aria-hidden="true"><span data-promo-fill></span></div>
+    </div>
+
+    <div class="cart-body">
+      <ul class="items" role="list" data-cart-items></ul>
+      <div class="empty" data-cart-empty>
+        <p class="empty-title">Tu pedido está vacío</p>
+        <p>Elegí tu ambo y armá tu pedido en menos de un minuto.</p>
+        <a class="btn" href="/#coleccion" data-cart-close>Ver la colección</a>
+      </div>
+
+    <form class="cart-foot" data-checkout novalidate>
+      <dl class="totals tnum">
+        <div><dt>Subtotal</dt><dd data-subtotal>$0</dd></div>
+        <div class="discount" data-discount-row hidden><dt>Promo equipo −{site.promo.percent}%</dt><dd data-discount>−$0</dd></div>
+        <div class="total"><dt>Total</dt><dd data-total>$0</dd></div>
+      </dl>
+
+      <fieldset class="pay">
+        <legend>¿Cómo querés pagar?</legend>
+        <div class="pay-opts">
+          {site.payments.map((p, i) => (
+            <label class="pay-opt">
+              <input type="radio" name="pago" value={p.id === 'efectivo' ? `${p.label} (${cashZone})` : p.label} checked={i === 0} data-pay={p.id} />
+              <span><Icon name={p.icon} /> {p.short}</span>
+            </label>
+          ))}
+        </div>
+        <p class="pay-note">El pago en efectivo es solo para entregas en la zona de {cashZone}.</p>
+      </fieldset>
+
+      <div class="fields">
+        <label>
+          <span>Tu nombre <em>(opcional)</em></span>
+          <input type="text" name="nombre" autocomplete="name" maxlength="60" />
+        </label>
+        <label>
+          <span>Localidad <em>(opcional)</em></span>
+          <input type="text" name="localidad" autocomplete="address-level2" maxlength="60" />
+        </label>
+      </div>
+
+      <div class="send-bar">
+        <button class="btn btn--gold btn--block send" type="submit" data-send>
+          <Icon name="whatsapp" /> Enviar pedido por WhatsApp
+        </button>
+        <p class="fine">Te respondemos personalmente para confirmar disponibilidad, pago y entrega.</p>
+      </div>
+    </form>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .cart {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(100vw, 30rem);
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: var(--shadow-3);
+    transform: translateX(100%);
+    transition:
+      transform 520ms var(--ease-out),
+      overlay 520ms allow-discrete,
+      display 520ms allow-discrete;
+  }
+  .cart[open] {
+    transform: none;
+  }
+  @starting-style {
+    .cart[open] {
+      transform: translateX(100%);
+    }
+  }
+  .cart::backdrop {
+    background: rgb(15 14 12 / 0);
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+    transition:
+      background-color 520ms var(--ease-out),
+      backdrop-filter 520ms var(--ease-out),
+      overlay 520ms allow-discrete,
+      display 520ms allow-discrete;
+  }
+  .cart[open]::backdrop {
+    background: rgb(15 14 12 / 0.45);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+  }
+  @starting-style {
+    .cart[open]::backdrop {
+      background: rgb(15 14 12 / 0);
+      backdrop-filter: blur(0);
+    }
+  }
+  .cart-inner {
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    height: 100%;
+  }
+  .cart-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s-4) var(--s-5);
+    border-bottom: 1px solid var(--line);
+  }
+  .cart-head h2 {
+    font-size: var(--step-2);
+  }
+  .cart-n {
+    font-family: var(--font-ui);
+    font-size: var(--step--1);
+    color: var(--ink-3);
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--ink);
+  }
+  .icon-btn:hover {
+    background: var(--paper-2);
+  }
+  .icon-btn :global(svg) {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .promo-meter {
+    padding: var(--s-4) var(--s-5);
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .pm-text {
+    font-size: var(--step--1);
+    color: var(--ink-2);
+    margin-bottom: var(--s-2);
+  }
+  .pm-text :global(strong) {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .pm-bar {
+    height: 4px;
+    border-radius: 4px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .pm-bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--gold-sheen);
+    transition: width 700ms var(--ease-out);
+  }
+  .promo-meter.is-on {
+    background: var(--noir);
+    border-color: var(--noir);
+  }
+  .promo-meter.is-on .pm-text {
+    color: var(--gold-200);
+  }
+  .promo-meter.is-on .pm-text :global(strong) {
+    color: var(--on-noir);
+  }
+  .promo-meter.is-on .pm-bar {
+    background: var(--noir-line);
+  }
+
+  .cart-body {
+    overflow-y: auto;
+    padding: var(--s-2) var(--s-5) 0;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  .empty {
+    display: grid;
+    justify-items: center;
+    gap: var(--s-3);
+    padding-block: var(--s-8);
+    text-align: center;
+    color: var(--ink-2);
+  }
+  .empty-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-2);
+    color: var(--ink);
+  }
+  .empty .btn {
+    margin-top: var(--s-3);
+  }
+  .cart.has-items .empty {
+    display: none;
+  }
+  .cart:not(.has-items) .cart-foot {
+    display: none;
+  }
+
+  .cart-foot {
+    display: grid;
+    gap: var(--s-4);
+    padding-top: var(--s-5);
+  }
+  .send-bar {
+    position: sticky;
+    bottom: 0;
+    display: grid;
+    gap: var(--s-2);
+    margin-inline: calc(-1 * var(--s-5));
+    padding: var(--s-4) var(--s-5) max(var(--s-5), env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, rgb(251 250 247 / 0.85), var(--paper) 30%);
+    border-top: 1px solid var(--line);
+  }
+  .totals {
+    display: grid;
+    gap: var(--s-1);
+  }
+  .totals > div {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+  .totals .discount {
+    color: var(--ok);
+  }
+  .totals .total {
+    margin-top: var(--s-1);
+    padding-top: var(--s-2);
+    border-top: 1px solid var(--line);
+    color: var(--ink);
+    align-items: baseline;
+  }
+  .totals .total dt {
+    font-size: var(--step-0);
+    font-weight: 500;
+  }
+  .totals .total dd {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-3);
+    line-height: 1;
+  }
+  .pay-note {
+    display: none;
+    margin-top: var(--s-2);
+    font-size: 0.8125rem;
+    color: var(--gold-700);
+  }
+  .pay:has(input[data-pay='efectivo']:checked) .pay-note {
+    display: block;
+  }
+  .pay {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .pay legend {
+    margin-bottom: var(--s-2);
+    font-size: var(--step--1);
+    font-weight: 500;
+  }
+  .pay-opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-2);
+  }
+  .pay-opt {
+    position: relative;
+  }
+  .pay-opt input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  .pay-opt span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    font-size: 0.8125rem;
+    line-height: 1.2;
+    pointer-events: none;
+    transition:
+      border-color var(--dur-2) var(--ease-out),
+      background-color var(--dur-2) var(--ease-out);
+  }
+  .pay-opt span :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex: none;
+    color: var(--gold-700);
+  }
+  .pay-opt input:checked + span {
+    border-color: var(--ink);
+    background: var(--paper-2);
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+  .pay-opt input:focus-visible + span {
+    outline: 2px solid var(--gold-700);
+    outline-offset: 2px;
+  }
+  .fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-3);
+  }
+  .fields label {
+    display: grid;
+    gap: var(--s-1);
+    font-size: 0.8125rem;
+    color: var(--ink-2);
+  }
+  .fields em {
+    font-style: normal;
+    color: var(--ink-3);
+  }
+  .fields input {
+    min-height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--paper);
+    font-size: 1rem;
+    transition: border-color var(--dur-2) var(--ease-out);
+  }
+  .fields input:hover {
+    border-color: var(--ink-3);
+  }
+  .fields input:focus-visible {
+    outline: none;
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px var(--gold-50);
+  }
+  .send {
+    min-height: 3.5rem;
+  }
+  .fine {
+    font-size: 0.75rem;
+    color: var(--ink-3);
+    text-align: center;
+  }
+
+  /* Ítems (renderizados por JS) */
+  .items :global(.item) {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+    gap: var(--s-4);
+    align-items: center;
+    padding-block: var(--s-4);
+    border-bottom: 1px solid var(--line);
+    animation: item-in 500ms var(--ease-out);
+  }
+  @keyframes item-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  .items :global(.thumb) {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    border-radius: var(--radius-lg);
+    background: var(--paper-3);
+    padding: 0.35rem 0.9rem;
+  }
+  .items :global(.thumb--photo) {
+    padding: 0;
+    overflow: hidden;
+  }
+  .items :global(.thumb--photo img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+  .items :global(.thumb svg) {
+    height: 100%;
+    width: auto;
+    filter: drop-shadow(0 4px 4px rgb(21 19 15 / 0.2));
+  }
+  .items :global(.it-name) {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+  .items :global(.it-meta) {
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+  }
+  .items :global(.it-controls) {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-top: var(--s-2);
+  }
+  .items :global(.qty button) {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  .items :global(.it-remove) {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 0;
+    background: none;
+    color: var(--ink-3);
+    border-radius: 50%;
+  }
+  .items :global(.it-remove:hover) {
+    color: var(--danger);
+    background: var(--paper-2);
+  }
+  .items :global(.it-remove svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .items :global(.it-price) {
+    font-weight: 500;
+    text-align: right;
+    align-self: start;
+    padding-top: 0.15rem;
+  }
+
+  @media (max-width: 420px) {
+    .pay-opts,
+    .fields {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

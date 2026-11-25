@@ -1,0 +1,66 @@
+---
+/** Logo de Evhtian dibujado con máscara: el color lo pone el CSS (dorado o tinta). */
+interface Props {
+  kind: 'mark' | 'wordmark';
+  tone?: 'gold' | 'gold-light' | 'ink';
+  class?: string;
+  sheen?: boolean;
+}
+const { kind, tone = 'gold', class: cls, sheen = false } = Astro.props;
+---
+<span class:list={['bm', `bm--${kind}`, `bm--${tone}`, sheen && 'bm--sheen', cls]} aria-hidden="true"></span>
+
+<style>
+  .bm {
+    display: block;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+  .bm--mark {
+    aspect-ratio: 560 / 571;
+    -webkit-mask-image: url('/brand/mark-mask.webp');
+    mask-image: url('/brand/mark-mask.webp');
+  }
+  .bm--wordmark {
+    aspect-ratio: 720 / 58;
+    -webkit-mask-image: url('/brand/wordmark-mask.webp');
+    mask-image: url('/brand/wordmark-mask.webp');
+  }
+  .bm--gold {
+    background: linear-gradient(118deg, #b9975a 0%, #9b7b40 45%, #6f5228 100%);
+  }
+  .bm--gold-light {
+    background: linear-gradient(118deg, #f6e8b4 0%, #dcc283 35%, #b08c4f 70%, #8a6a3b 100%);
+  }
+  .bm--ink {
+    background: var(--ink);
+  }
+  .bm--sheen {
+    background-size: 100% 100%;
+    position: relative;
+  }
+  .bm--sheen.bm--gold-light {
+    background:
+      linear-gradient(100deg, transparent 38%, rgb(255 250 230 / 0.95) 50%, transparent 62%) no-repeat,
+      linear-gradient(118deg, #f6e8b4 0%, #dcc283 35%, #b08c4f 70%, #8a6a3b 100%);
+    background-size: 250% 100%, 100% 100%;
+    background-position: 160% 0, 0 0;
+    animation: bm-sheen 7s var(--ease-in-out) 1.6s infinite;
+  }
+  .bm--sheen.bm--gold {
+    background:
+      linear-gradient(100deg, transparent 38%, rgb(255 244 205 / 0.9) 50%, transparent 62%) no-repeat,
+      linear-gradient(118deg, #c9a766 0%, #9b7b40 45%, #6f5228 100%);
+    background-size: 250% 100%, 100% 100%;
+    background-position: 160% 0, 0 0;
+    animation: bm-sheen 7s var(--ease-in-out) 1.6s infinite;
+  }
+  @keyframes bm-sheen {
+    0% { background-position: 160% 0, 0 0; }
+    35%, 100% { background-position: -60% 0, 0 0; }
+  }
+</style>

@@ -1,0 +1,149 @@
+---
+import Icon from './Icon.astro';
+import { colors } from '../data/catalog';
+---
+<section id="colores" class="colors section" aria-labelledby="colores-title">
+  <div class="wrap">
+    <header class="section-head">
+      <h2 id="colores-title" data-reveal>Cinco colores. <em class="accent">Cada uno dice algo de vos.</em></h2>
+      <p data-reveal>¿Cuál es el tuyo? Tocalo y mirá los dos modelos en ese color.</p>
+    </header>
+  </div>
+  <ul class="tiles" role="list">
+    {colors.map((c, i) => (
+      <li class:list={['tile', `c-${c.id}`, c.id === 'rosa' && 'tile--light', `i-${i}`]} data-reveal>
+        <button type="button" class="tile-btn" data-pick-color={c.id} aria-label={`Ver los ambos en ${c.name}`}>
+          <span class="tile-name">{c.name}</span>
+          <span class="tile-line">{c.line}</span>
+          <span class="tile-cta">Ver en {c.name.toLowerCase()} <Icon name="arrow" /></span>
+        </button>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .section-head h2 em {
+    color: var(--gold-700);
+  }
+  .tiles {
+    display: flex;
+    gap: 2px;
+    height: clamp(26rem, 20rem + 18vw, 36rem);
+    padding-inline: var(--gutter);
+    max-width: calc(var(--max) + 2 * var(--gutter));
+    margin-inline: auto;
+  }
+  .tile {
+    flex: 1 1 0;
+    min-width: 0;
+    background:
+      linear-gradient(160deg, var(--g-hi) 0%, transparent 45%),
+      linear-gradient(0deg, rgb(0 0 0 / 0.22), transparent 55%),
+      var(--g);
+    color: #f6f0e4;
+    transition: flex-grow 800ms var(--ease-out);
+  }
+  .tile:first-child {
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  }
+  .tile:last-child {
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  }
+  .tile--light {
+    color: var(--ink);
+    background:
+      linear-gradient(160deg, rgb(255 255 255 / 0.3) 0%, transparent 45%),
+      linear-gradient(0deg, rgb(120 60 70 / 0.18), transparent 55%),
+      var(--g);
+  }
+  .tile:hover,
+  .tile:focus-within {
+    flex-grow: 2.4;
+  }
+  .tile-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--s-3);
+    width: 100%;
+    height: 100%;
+    padding: var(--s-6) var(--s-5);
+    border: 0;
+    background: none;
+    color: inherit;
+    text-align: left;
+    overflow: hidden;
+  }
+  .tile-btn:focus-visible {
+    outline: 2px solid var(--gold-200);
+    outline-offset: -6px;
+  }
+  .tile-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 1rem + 1.7vw, 2.6rem);
+    line-height: 1;
+    min-width: 0;
+  }
+  .tile-line,
+  .tile-cta {
+    max-width: 22rem;
+  }
+  .tile-line {
+    font-size: var(--step--1);
+    line-height: 1.45;
+    opacity: 0.92;
+  }
+  .tile-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: var(--s-2);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .tile-cta :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+  .tile-cta :global(svg) {
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  .tile:hover .tile-cta :global(svg),
+  .tile:focus-within .tile-cta :global(svg) {
+    transform: translateX(4px);
+  }
+  .i-1 { --i: 1; }
+  .i-2 { --i: 2; }
+  .i-3 { --i: 3; }
+  .i-4 { --i: 4; }
+
+  @media (hover: none), (max-width: 900px) {
+    .tiles {
+      flex-direction: column;
+      height: auto;
+    }
+    .tile,
+    .tile:first-child,
+    .tile:last-child {
+      border-radius: 0;
+    }
+    .tile:first-child {
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+    .tile:last-child {
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+    .tile-btn {
+      min-height: 9.5rem;
+      padding: var(--s-5);
+    }
+    .tile-line {
+      font-size: var(--step-0);
+    }
+  }
+</style>

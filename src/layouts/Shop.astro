@@ -1,0 +1,53 @@
+---
+/** Armazón de la tienda: barra de promo, header, carrito, footer y WhatsApp en todas las páginas. */
+import Base from './Base.astro';
+import PromoBar from '../components/PromoBar.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CartDrawer from '../components/CartDrawer.astro';
+import WhatsAppFab from '../components/WhatsAppFab.astro';
+import Garment from '../components/Garment.astro';
+import { Image } from 'astro:assets';
+import { colors, models } from '../data/catalog';
+import { photoFor } from '../data/photos';
+import { site } from '../config/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+
+if (!site.contact.whatsapp) {
+  console.warn('\n[evhtian] ⚠ Falta el número de WhatsApp en src/config/site.ts: los pedidos no llegan a ningún número.\n');
+}
+---
+<Base title={title} description={description}>
+  <PromoBar />
+  <Header />
+  <main id="contenido">
+    <slot />
+  </main>
+  <Footer />
+  <CartDrawer />
+  <WhatsAppFab />
+
+  <!-- Miniaturas del carrito: foto por color si existe, si no la ilustración -->
+  {models.map((m) => (
+    <template id={`tpl-garment-${m.id}`}><Garment model={m.id} uid={`tpl-${m.id}`} /></template>
+  ))}
+  {models.flatMap((m) =>
+    colors.map((c) => {
+      const img = photoFor(m.id, c.id);
+      return img ? (
+        <template id={`tpl-thumb-${m.id}-${c.id}`}>
+          <Image src={img} width={144} height={180} format="webp" alt="" />
+        </template>
+      ) : null;
+    }),
+  )}
+</Base>
+
+<script>
+  import '../scripts/main.ts';
+</script>

@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import BrandMark from '../components/BrandMark.astro';
+---
+<Base title="Página no encontrada" noindex>
+  <main id="contenido" class="nf">
+    <BrandMark kind="mark" tone="gold" class="nf-mark" />
+    <h1>Esta página se fue de guardia.</h1>
+    <p>El link que seguiste no existe o cambió. Volvé al inicio: tu ambo te está esperando.</p>
+    <a class="btn" href="/">Volver al inicio</a>
+  </main>
+</Base>
+
+<style>
+  .nf {
+    min-height: 100dvh;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: var(--s-5);
+    padding: var(--gutter);
+    text-align: center;
+  }
+  .nf :global(.nf-mark) {
+    width: 4.5rem;
+  }
+  h1 {
+    font-size: var(--step-4);
+    max-width: 18ch;
+  }
+  p {
+    color: var(--ink-2);
+    max-width: 36ch;
+  }
+</style>

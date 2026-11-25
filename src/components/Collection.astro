@@ -1,0 +1,54 @@
+---
+import ProductCard from './ProductCard.astro';
+import { models, type ColorId } from '../data/catalog';
+import { site, formatARS } from '../config/site';
+
+const defaults: Record<string, ColorId> = { essential: 'bordo', terra: 'marino' };
+---
+<section id="coleccion" class="collection section" aria-labelledby="coleccion-title">
+  <div class="wrap">
+    <header class="section-head section-head--center">
+      <h2 id="coleccion-title" data-reveal>Dos siluetas. <span class="accent">Cero concesiones.</span></h2>
+      <p data-reveal>
+        Un clásico que nunca falla y un moderno que no pasa desapercibido. Los dos en bengalina elastizada, cinco colores y
+        talles XS a L, a {formatARS(site.price)} el conjunto. Elegí el tuyo y descubrí cada detalle.
+      </p>
+    </header>
+
+    <div class="cards">
+      {models.map((m, i) => (
+        <div class={`card-wrap i-${i}`} data-reveal>
+          <ProductCard model={m} color={defaults[m.id]} uid={`card-${m.id}`} />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .collection {
+    background: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 18%, var(--paper-2) 82%, var(--paper) 100%);
+  }
+  .section-head h2 .accent {
+    color: var(--gold-700);
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 0.5rem + 2vw, 2.5rem);
+    max-width: 56rem;
+    margin-inline: auto;
+  }
+  .card-wrap {
+    display: grid;
+  }
+  .i-1 {
+    --i: 1;
+  }
+  @media (max-width: 760px) {
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: 28rem;
+    }
+  }
+</style>

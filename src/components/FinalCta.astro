@@ -1,0 +1,120 @@
+---
+import Icon from './Icon.astro';
+import { Picture } from 'astro:assets';
+import Garment from './Garment.astro';
+import { site, instagramHref } from '../config/site';
+import { teamPhoto } from '../data/photos';
+const team = teamPhoto();
+---
+<section class="final section" aria-labelledby="final-title">
+  <div class="wrap final-grid">
+    <div class:list={['final-art', team && 'final-art--photo']}>
+      {team ? (
+        <Picture src={team} formats={['avif', 'webp']} widths={[600, 900, 1300]} sizes="(min-width: 900px) 45vw, 92vw" alt="Equipo de profesionales de la salud con ambos Evhtian en distintos colores" loading="lazy" class="final-photo" />
+      ) : (
+        <Fragment>
+          <Garment model="terra" color="negro" uid="final-1" class="fa fa-1" />
+          <Garment model="essential" color="bordo" uid="final-2" class="fa fa-2" />
+          <Garment model="terra" color="rosa" uid="final-3" class="fa fa-3" />
+        </Fragment>
+      )}
+    </div>
+    <div class="final-copy">
+      <h2 id="final-title" data-reveal>Tu próxima guardia <em class="accent">puede empezar distinta.</em></h2>
+      <p data-reveal>
+        Elegí tu ambo hoy y sentí la diferencia desde el primer pase de sala: más cómoda, más segura, impecable. Pagás por
+        transferencia o Mercado Pago, y en Tigre también en efectivo al recibir.
+      </p>
+      <div class="final-ctas" data-reveal>
+        <a class="btn" href="#coleccion">Elegir mi ambo <Icon name="arrow" /></a>
+        <a class="btn btn--ghost" href={instagramHref} target="_blank" rel="noopener noreferrer"><Icon name="instagram" /> Seguinos en Instagram</a>
+      </div>
+      <p class="ig-line" data-reveal>Nuevos colores, ideas para combinar y lanzamientos, primero en <a href={instagramHref} target="_blank" rel="noopener noreferrer">@{site.contact.instagram}</a>.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final {
+    overflow: clip;
+  }
+  .final-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 1rem + 4vw, 6rem);
+    align-items: center;
+  }
+  .final-art {
+    position: relative;
+    aspect-ratio: 1 / 0.9;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(80% 70% at 50% 25%, #fffdf9, rgb(255 253 249 / 0) 70%),
+      var(--paper-3);
+  }
+  .final-art {
+    overflow: hidden;
+  }
+  .final-art--photo {
+    aspect-ratio: 4 / 3;
+  }
+  .final-art :global(.final-photo) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .final-art :global(.fa) {
+    position: absolute;
+    height: 74%;
+    width: auto;
+    top: 13%;
+  }
+  .final-art :global(.fa-1) {
+    left: 6%;
+    transform: rotate(-7deg);
+  }
+  .final-art :global(.fa-2) {
+    left: 50%;
+    translate: -50% -3%;
+    z-index: 1;
+  }
+  .final-art :global(.fa-3) {
+    right: 6%;
+    transform: rotate(7deg);
+  }
+  h2 {
+    font-size: var(--step-4);
+    font-weight: 600;
+  }
+  h2 em {
+    display: block;
+    color: var(--gold-700);
+  }
+  .final-copy p {
+    margin-top: var(--s-5);
+    font-size: var(--step-1);
+    color: var(--ink-2);
+    max-width: 32rem;
+  }
+  .final-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+  .final-copy .ig-line {
+    font-size: var(--step--1);
+    color: var(--ink-3);
+  }
+  .ig-line a {
+    color: var(--gold-700);
+  }
+  @media (max-width: 900px) {
+    .final-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .final-art {
+      order: 2;
+    }
+  }
+</style>

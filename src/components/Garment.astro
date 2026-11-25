@@ -1,0 +1,135 @@
+---
+/**
+ * Ilustración plana (flat lay) de cada ambo, dibujada a partir de las fotos de referencia
+ * (brand/referencias). Se recolorea con una clase c-<color> en un ancestro o en el propio SVG.
+ */
+import type { ColorId, ModelId } from '../data/catalog';
+
+interface Props {
+  model: ModelId;
+  color?: ColorId;
+  uid: string;
+  class?: string;
+  label?: string;
+}
+const { model, color, uid, class: cls, label } = Astro.props;
+const shadeTop = `gs-t-${uid}`;
+const shadeBottom = `gs-b-${uid}`;
+
+// Chaquetas cuello V
+const essentialTop =
+  'M156 22 L200 116 L244 22 C262 26 284 32 302 42 L356 118 L322 146 L296 112 C290 150 284 180 286 206 C288 236 294 262 298 292 Q200 304 102 292 C106 262 112 236 114 206 C116 180 110 150 104 112 L78 146 L44 118 L98 42 C116 32 138 26 156 22 Z';
+const terraTop =
+  'M156 22 L200 112 L244 22 C262 26 284 32 302 42 L356 118 L322 146 L296 112 C289 150 282 178 284 204 C286 232 292 258 296 286 Q200 298 104 286 C108 258 114 232 116 204 C118 178 111 150 104 112 L78 146 L44 118 L98 42 C116 32 138 26 156 22 Z';
+
+// Pantalones
+const essentialLegs =
+  'M125 316 L275 316 C279 410 284 500 290 586 L212 586 L204 404 Q200 396 196 404 L188 586 L110 586 C116 500 121 410 125 316 Z';
+const terraLegs =
+  'M124 316 L276 316 C284 400 296 500 304 586 L212 586 L204 404 Q200 396 196 404 L188 586 L96 586 C104 500 116 400 124 316 Z';
+---
+<svg
+  class:list={['garment', `garment--${model}`, color && `c-${color}`, cls]}
+  viewBox="30 10 340 590"
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  data-garment={model}
+>
+  <defs>
+    <linearGradient id={shadeTop} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.16" />
+      <stop offset="0.45" stop-color="#fff" stop-opacity="0" />
+      <stop offset="1" stop-color="#000" stop-opacity="0.26" />
+    </linearGradient>
+    <linearGradient id={shadeBottom} x1="0" y1="0" x2="1" y2="0.6">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.12" />
+      <stop offset="0.5" stop-color="#000" stop-opacity="0.04" />
+      <stop offset="1" stop-color="#000" stop-opacity="0.24" />
+    </linearGradient>
+  </defs>
+
+  {model === 'essential' ? (
+    <g>
+      {/* Pantalón recto con cintura elastizada negra */}
+      <g>
+        <path class="g-fill" d={essentialLegs} />
+        <path class="g-shade" fill={`url(#${shadeBottom})`} d={essentialLegs} />
+        <path class="g-band" d="M127 284 L273 284 L275 316 L125 316 Z" />
+        <path class="g-band-line" d="M128 291 L272 291 M127 309 L274 309" />
+        <path class="g-seam" d="M138 318 L139 328 M152 318 L152 330 M166 318 L166 327 M234 318 L234 327 M248 318 L248 330 M262 318 L261 328" />
+        <path class="g-seam" d="M200 316 L200 398" />
+        <path class="g-seam" d="M133 322 Q152 338 155 376" />
+        <path class="g-seam" d="M267 322 Q248 338 245 376" />
+        <path class="g-seam" d="M230 420 L264 418 L266 476 L232 478 Z" />
+        <path class="g-stitch" d="M230 432 L264 430" />
+        <path class="g-fold" d="M157 430 L152 570" />
+        <path class="g-fold" d="M243 490 L247 570" />
+        <path class="g-stitch" d="M113 576 L187 576" />
+        <path class="g-stitch" d="M213 576 L287 576" />
+      </g>
+      {/* Chaqueta cuello V con bolsillo frontal */}
+      <g>
+        <path class="g-fill" d={essentialTop} />
+        <path class="g-shade" fill={`url(#${shadeTop})`} d={essentialTop} />
+        <path class="g-inner" d="M156 22 C176 35 224 35 244 22 L237 31 C220 42 180 42 163 31 Z" />
+        <path class="g-seam" d="M165 27 L200 101 L235 27" />
+        <path class="g-stitch" d="M172 28 L200 88 L228 28" />
+        <path class="g-seam" d="M98 42 C105 66 107 90 104 112" />
+        <path class="g-seam" d="M302 42 C295 66 293 90 296 112" />
+        <path class="g-stitch" d="M51 112 L84 139" />
+        <path class="g-stitch" d="M349 112 L316 139" />
+        <path class="g-inner" d="M330 127 L337 121 L344 127 L337 133 Z" />
+        <path class="g-seam" d="M150 142 C146 182 150 232 154 290" />
+        <path class="g-seam" d="M250 142 C252 164 252 180 250 196" />
+        <path class="g-seam" d="M216 198 L284 196 L287 262 Q287 272 277 272 L226 272 Q216 272 216 262 Z" />
+        <path class="g-stitch" d="M216 205 L284 203" />
+        <path class="g-seam" d="M238 205 L238 238" />
+        <path class="g-seam" d="M216 238 Q252 250 287 236" />
+        <path class="g-seam" d="M104 292 L107 274 M296 292 L293 274" />
+        <path class="g-fold" d="M128 124 Q140 164 133 200" />
+        <path class="g-fold" d="M70 104 L92 86" />
+        <path class="g-stitch" d="M109 284 Q200 295 291 284" />
+      </g>
+    </g>
+  ) : (
+    <g>
+      {/* Pantalón de pierna amplia con bolsillos laterales con tapa */}
+      <g>
+        <path class="g-fill" d={terraLegs} />
+        <path class="g-shade" fill={`url(#${shadeBottom})`} d={terraLegs} />
+        <path class="g-fill" d="M126 280 L274 280 L276 316 L124 316 Z" />
+        <path class="g-seam" d="M136 284 L136 312 M148 284 L148 312 M160 284 L160 312 M172 284 L172 312 M228 284 L228 312 M240 284 L240 312 M252 284 L252 312 M264 284 L264 312" />
+        <path class="g-edge" d="M124 316 L276 316" />
+        <path class="g-seam" d="M200 316 L200 398" />
+        <path class="g-seam" d="M132 322 Q150 338 152 372" />
+        <path class="g-seam" d="M268 322 Q250 338 248 372" />
+        <path class="g-seam" d="M104 432 L138 430 L141 494 L109 496 Z" />
+        <path class="g-seam" d="M103 446 L139 444" />
+        <path class="g-seam" d="M296 432 L262 430 L259 494 L291 496 Z" />
+        <path class="g-seam" d="M297 446 L261 444" />
+        <path class="g-fold" d="M152 420 Q150 500 146 570" />
+        <path class="g-fold" d="M248 520 Q250 545 252 570" />
+        <path class="g-stitch" d="M99 578 L187 578" />
+        <path class="g-stitch" d="M213 578 L301 578" />
+      </g>
+      {/* Chaqueta cuello V entallada */}
+      <g>
+        <path class="g-fill" d={terraTop} />
+        <path class="g-shade" fill={`url(#${shadeTop})`} d={terraTop} />
+        <path class="g-inner" d="M156 22 C176 35 224 35 244 22 L237 31 C220 42 180 42 163 31 Z" />
+        <path class="g-seam" d="M165 27 L200 97 L235 27" />
+        <path class="g-stitch" d="M172 28 L200 84 L228 28" />
+        <path class="g-seam" d="M98 42 C105 66 107 90 104 112" />
+        <path class="g-seam" d="M302 42 C295 66 293 90 296 112" />
+        <path class="g-stitch" d="M51 112 L84 139" />
+        <path class="g-stitch" d="M349 112 L316 139" />
+        <path class="g-seam" d="M150 140 C146 180 150 228 154 284" />
+        <path class="g-seam" d="M250 140 C254 180 250 228 246 284" />
+        <path class="g-fold" d="M128 124 Q140 164 133 200" />
+        <path class="g-fold" d="M70 104 L92 86" />
+        <path class="g-stitch" d="M110 278 Q200 290 290 278" />
+      </g>
+    </g>
+  )}
+</svg>
