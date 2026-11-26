@@ -115,7 +115,7 @@ export const models: Model[] = [
 ];
 
 export const colors: Color[] = [
-  { id: 'bordo', name: 'Rojo', hex: '#A9303C', line: 'Para la que entra al quirófano como si fuera una gala.' },
+  { id: 'bordo', name: 'Bordó', hex: '#A9303C', line: 'Para la que entra al quirófano como si fuera una gala.' },
   { id: 'rosa', name: 'Rosa', hex: '#B98175', line: 'Dulce a la vista, firme en cada decisión.' },
   { id: 'negro', name: 'Negro', hex: '#111115', line: 'El clásico absoluto. Elegancia sin pedir permiso.' },
   { id: 'marino', name: 'Azul marino', hex: '#303B57', line: 'Autoridad serena. El color de la confianza.' },
