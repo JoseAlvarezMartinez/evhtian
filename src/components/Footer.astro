@@ -2,6 +2,7 @@
 import BrandMark from './BrandMark.astro';
 import Icon from './Icon.astro';
 import { site, instagramHref, whatsappHref } from '../config/site';
+import { regretHref } from '../config/shipping';
 const year = new Date().getFullYear();
 const wa = whatsappHref('¡Hola Evhtian! Tengo una consulta.');
 ---
@@ -19,7 +20,6 @@ const wa = whatsappHref('¡Hola Evhtian! Tengo una consulta.');
           <ul role="list">
             <li><a href="/#coleccion">Colección</a></li>
             <li><a href="/#colores">Colores</a></li>
-            <li><a href="/#equipo">Promo equipo</a></li>
             <li><a href="/#tela">La tela</a></li>
           </ul>
         </div>
@@ -27,6 +27,8 @@ const wa = whatsappHref('¡Hola Evhtian! Tengo una consulta.');
           <p class="f-title">Ayuda</p>
           <ul role="list">
             <li><a href="/#pagos">Medios de pago</a></li>
+            <li><a href="/#envios">Envíos</a></li>
+            <li><a href="/#cambios">Cambios</a></li>
             <li><a href="/#preguntas">Preguntas frecuentes</a></li>
             <li><a href={wa} target="_blank" rel="noopener noreferrer">Escribinos</a></li>
           </ul>
@@ -48,6 +50,7 @@ const wa = whatsappHref('¡Hola Evhtian! Tengo una consulta.');
     </div>
     <div class="f-bottom">
       <p>© {year} {site.name}. Todos los derechos reservados.</p>
+      <a class="regret" href={regretHref} target="_blank" rel="noopener noreferrer">Botón de arrepentimiento</a>
       <p>Hecho para las que cuidan.</p>
     </div>
   </div>
@@ -138,6 +141,11 @@ const wa = whatsappHref('¡Hola Evhtian! Tengo una consulta.');
     justify-content: space-between;
     gap: var(--s-3);
     padding-top: var(--s-5);
+  }
+  .regret {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--gold-400);
   }
   ::selection {
     background: var(--gold-400);

@@ -2,7 +2,7 @@
 import ProductVisual from './ProductVisual.astro';
 import BrandMark from './BrandMark.astro';
 import Icon from './Icon.astro';
-import { site, formatARS } from '../config/site';
+import { site, formatARS, saleOff, saleSaving } from '../config/site';
 import { colors, models } from '../data/catalog';
 ---
 <section class="hero" aria-labelledby="hero-title">
@@ -19,14 +19,18 @@ import { colors, models } from '../data/catalog';
     </div>
 
     <div class="hero-actions">
+      <div class="hero-price tnum">
+        <p class="hp-top"><span class="sale-badge hp-off">{saleOff}% OFF</span> {site.sale.name} · hasta el {site.sale.until}</p>
+        <p class="hp-line">
+          <s class="was"><span class="sr-only">Antes: </span>{formatARS(site.listPrice)}</s>
+          <strong><span class="sr-only">Ahora: </span>{formatARS(site.price)}</strong>
+        </p>
+        <p class="hp-note"><span class="saving">Ahorrás {formatARS(saleSaving)}</span> en el conjunto completo: chaqueta y pantalón.</p>
+      </div>
       <div class="hero-ctas">
         <a class="btn" href="#coleccion">Elegir mi ambo <Icon name="arrow" /></a>
-        <a class="btn btn--ghost" href="#equipo"><Icon name="users" /> Ahorrá {site.promo.percent}% con tu equipo</a>
+        <a class="btn btn--ghost" href="#colores">Ver los 5 colores</a>
       </div>
-      <p class="hero-price tnum">
-        <s>{formatARS(site.listPrice)}</s> <strong>{formatARS(site.price)}</strong> el conjunto completo: chaqueta y pantalón
-        <span class="hero-sale">{site.sale.name}, hasta el {site.sale.until}.</span>
-      </p>
       <ul class="hero-proof" role="list">
         <li><Icon name="wallet" /> Transferencia o Mercado Pago</li>
         <li><Icon name="cash" /> Efectivo al recibir en Tigre</li>
@@ -59,7 +63,7 @@ import { colors, models } from '../data/catalog';
             <button type="button" class:list={['dot', `c-${c.id}`]} data-set-color={c.id} aria-pressed={c.id === 'bordo' ? 'true' : 'false'} aria-label={c.name} title={c.name}><span></span></button>
           ))}
         </div>
-        <p class="quick-price tnum"><s>{formatARS(site.listPrice)}</s> <strong>{formatARS(site.price)}</strong> <span>chaqueta + pantalón</span></p>
+        <p class="quick-price tnum"><span class="qp-was"><s class="was">{formatARS(site.listPrice)}</s> <span class="sale-badge">−{saleOff}%</span></span> <strong>{formatARS(site.price)}</strong> <span>chaqueta + pantalón</span></p>
         <a class="btn quick-cta" href="/ambos/essential/?color=bordo" data-viewer-link>Conocer el modelo <Icon name="arrow" /></a>
       </div>
     </div>
@@ -130,30 +134,54 @@ import { colors, models } from '../data/catalog';
     display: flex;
     flex-wrap: wrap;
     gap: var(--s-3);
-    margin-top: var(--s-6);
+    margin-top: var(--s-5);
   }
   .hero-price {
-    margin-top: var(--s-5);
+    margin-top: var(--s-6);
+  }
+  .hp-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
     font-size: var(--step--1);
-    color: var(--ink-3);
-  }
-  .hero-price s,
-  .quick-price s {
-    color: var(--ink-3);
-    margin-right: 0.2rem;
-  }
-  .hero-sale {
-    display: block;
-    margin-top: 0.25rem;
+    font-weight: 600;
     color: var(--gold-700);
+  }
+  .hp-off {
+    font-size: 0.8125rem;
+  }
+  .hp-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--s-4);
+    margin-top: var(--s-3);
+  }
+  .hp-line .was {
+    font-size: var(--step-2);
     font-weight: 500;
   }
-  .hero-price strong {
+  .hp-line strong {
     font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: var(--step-4);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
     color: var(--ink);
-    margin-right: 0.2rem;
+  }
+  .hp-note {
+    margin-top: var(--s-2);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+  .qp-was {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .qp-was .sale-badge {
+    font-size: 0.6875rem;
   }
   .hero-proof {
     display: flex;
@@ -386,8 +414,8 @@ import { colors, models } from '../data/catalog';
       animation: soft-up 1s var(--ease-out) backwards;
     }
     .hero-sub { animation-delay: 0.45s; }
-    .hero-ctas { animation-delay: 0.58s; }
-    .hero-price { animation-delay: 0.7s; }
+    .hero-price { animation-delay: 0.58s; }
+    .hero-ctas { animation-delay: 0.7s; }
     .hero-proof { animation-delay: 0.82s; }
     .stage {
       animation: stage-in 1.5s var(--ease-out) 0.1s backwards;
@@ -444,7 +472,7 @@ import { colors, models } from '../data/catalog';
       width: 100%;
       margin-inline: auto;
     }
-    .hero-ctas {
+    .hero-price {
       margin-top: var(--s-2);
     }
     .scroll-cue {

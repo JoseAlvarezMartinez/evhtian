@@ -7,3 +7,5 @@ dist/
 .impeccable/questions/
 .impeccable/mocks/
 .impeccable/review/
+.vercel
+.env*

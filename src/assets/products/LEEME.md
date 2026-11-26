@@ -7,7 +7,6 @@ Nombres esperados (JPG, PNG o WebP; vertical 2:3, idealmente 1600×2400 o más):
 - Vista principal por color: `essential-bordo.jpg`, `essential-rosa.jpg`, `essential-negro.jpg`, `essential-marino.jpg`, `essential-verde.jpg`, y lo mismo con `terra-…`.
 - Detalles (opcionales, se muestran en la galería de la página del modelo): `essential-detalle-1.jpg`, `essential-detalle-2.jpg`, … / `terra-detalle-1.jpg`, …
 - Detalles por color (opcionales): `essential-rosa-detalle-1.jpg`, … Si los 5 colores tienen los suyos, la galería cambia junto con el color elegido; si no, se usan los detalles generales.
-- Inicio: `equipo.jpg` (foto grupal del cierre «Tu próxima guardia…»; hoy es la foto que pasó la dueña).
 
 Un modelo pasa a fotos cuando tiene su vista principal en los 5 colores. Las fotos se optimizan solas al compilar (AVIF/WebP en varios tamaños).
 

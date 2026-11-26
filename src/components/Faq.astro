@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { site, formatARS, cashZone } from '../config/site';
+import { returnsPolicy, tigre } from '../config/shipping';
 const faqs = [
   {
     q: '¿Cómo hago mi pedido?',
@@ -15,10 +16,6 @@ const faqs = [
     a: 'De bengalina elastizada: rayón, nylon y spandex. El rayón le da suavidad al tacto, el 28% de nylon resistencia y durabilidad, y el 4% de spandex la elasticidad justa para un calce firme que se adapta a tu cuerpo sin perder la forma. Essential y Terra comparten la misma tela.',
   },
   {
-    q: '¿Cómo funciona la promo de equipo?',
-    a: `Con ${site.promo.minItems} ambos o más en un mismo pedido, el ${site.promo.percent}% off se aplica sobre el total. Pueden combinar modelos, colores y talles, y el carrito calcula el descuento automáticamente.`,
-  },
-  {
     q: '¿Qué medios de pago aceptan?',
     a: `Transferencia bancaria y Mercado Pago. Si tu entrega es en la zona de ${cashZone}, también podés pagar en efectivo al recibir tu ambo.`,
   },
@@ -28,7 +25,11 @@ const faqs = [
   },
   {
     q: '¿Cómo me llega el pedido?',
-    a: 'Cuando confirmás tu pedido por WhatsApp, coordinamos con vos la entrega y el medio de pago que elegiste.',
+    a: `En ${tigre.zone}, si confirmás tu pedido antes de las ${tigre.sameDayCutoff} h de un día hábil, te lo llevamos en mano ese mismo día. Al resto del país lo enviamos por Andreani, a tu domicilio o a la sucursal que elijas, con número de seguimiento: Andreani entrega en 2 a 3 días hábiles, algo más a las provincias más lejanas. El costo del envío te lo cotizamos por WhatsApp según tu dirección.`,
+  },
+  {
+    q: '¿Puedo cambiar el talle si no me queda?',
+    a: `Sí. Tenés ${returnsPolicy.exchangeDays} días corridos desde que lo recibís para cambiarlo por otro talle, color o modelo, con la prenda sin uso, sin lavar y con su etiqueta. No hacemos reembolsos: como la bengalina elastizada se amolda al cuerpo con el uso, por higiene solo hacemos cambios.`,
   },
 ];
 ---

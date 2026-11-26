@@ -1,6 +1,6 @@
 /**
  * Interacciones de la tienda: selección de producto, carrito (localStorage), checkout por WhatsApp,
- * calculadora de la promo de equipo, revelados al scroll y estado del header.
+ * revelados al scroll y estado del header.
  * Sin dependencias. Todo el texto se inserta con textContent (sin innerHTML con datos).
  */
 import { site, formatARS, whatsappHref } from '../config/site';
@@ -67,10 +67,7 @@ const sameItem = (a: Item, b: Omit<Item, 'qty'>) => a.model === b.model && a.col
 
 function totals() {
   const qty = cart.reduce((s, i) => s + i.qty, 0);
-  const subtotal = qty * site.price;
-  const promoOn = qty >= site.promo.minItems;
-  const discount = promoOn ? Math.round((subtotal * site.promo.percent) / 100) : 0;
-  return { qty, subtotal, discount, total: subtotal - discount, promoOn };
+  return { qty, total: qty * site.price, saving: qty * (site.listPrice - site.price) };
 }
 
 function addItem(item: Item) {
@@ -146,31 +143,8 @@ function thumb(item: Item) {
   return wrap;
 }
 
-function renderPromoMeter(qty: number, promoOn: boolean, discount: number) {
-  const meter = $('[data-promo-meter]');
-  const text = $('[data-promo-text]');
-  const fill = $('[data-promo-fill]');
-  if (!meter || !text || !fill) return;
-  const min = site.promo.minItems;
-  text.replaceChildren();
-  if (promoOn) {
-    text.append(el('strong', '', 'Promo equipo activada: '), `se ahorran ${formatARS(discount)} en este pedido.`);
-  } else if (qty === 0) {
-    text.append(`Sumá ${min} ambos o más y activá `, el('strong', '', `${site.promo.percent}% off`), ' en todo el pedido.');
-  } else {
-    const left = min - qty;
-    text.append(
-      `${plural(left, 'Te falta', 'Te faltan')} `,
-      el('strong', '', `${left} ${plural(left, 'ambo', 'ambos')}`),
-      ` para el ${site.promo.percent}% off de equipo.`,
-    );
-  }
-  fill.style.width = `${Math.min(qty / min, 1) * 100}%`;
-  meter.classList.toggle('is-on', promoOn);
-}
-
 function renderCart() {
-  const { qty, subtotal, discount, total, promoOn } = totals();
+  const { qty, total, saving } = totals();
 
   // Badge del header
   $$('[data-cart-count]').forEach((badge) => {
@@ -183,8 +157,6 @@ function renderCart() {
 
   const heading = $('[data-cart-heading-count]');
   if (heading) heading.textContent = qty ? `(${qty} ${plural(qty, 'ambo', 'ambos')})` : '';
-
-  renderPromoMeter(qty, promoOn, discount);
 
   if (itemsList) {
     itemsList.replaceChildren(
@@ -227,11 +199,10 @@ function renderCart() {
     const node = $(sel);
     if (node) node.textContent = value;
   };
-  set('[data-subtotal]', formatARS(subtotal));
-  set('[data-discount]', `−${formatARS(discount)}`);
   set('[data-total]', formatARS(total));
-  const discountRow = $('[data-discount-row]');
-  if (discountRow) discountRow.hidden = !promoOn;
+  set('[data-saving]', formatARS(saving));
+  const savingRow = $('[data-saving-row]');
+  if (savingRow) savingRow.hidden = saving <= 0;
 
   dialog?.classList.toggle('has-items', qty > 0);
 }
@@ -396,7 +367,7 @@ checkout?.addEventListener('submit', (e) => {
   const nombre = clean(data.get('nombre'));
   const localidad = clean(data.get('localidad'));
   const pago = clean(data.get('pago'));
-  const { qty, subtotal, discount, total, promoOn } = totals();
+  const { qty, total } = totals();
 
   const lines: (string | null)[] = [
     '¡Hola Evhtian! Quiero hacer este pedido:',
@@ -404,14 +375,12 @@ checkout?.addEventListener('submit', (e) => {
     ...cart.map((i) => `• ${i.qty} × Ambo ${modelName(i.model)} · ${colorName(i.color)} · Talle ${i.size}`),
     '',
     `Ambos: ${qty}`,
-    `Subtotal: ${formatARS(subtotal)}`,
-    promoOn ? `Promo equipo −${site.promo.percent}%: −${formatARS(discount)}` : null,
-    `Total: ${formatARS(total)}`,
+    `Total: ${formatARS(total)} (sin envío)`,
     pago ? `Forma de pago: ${pago}` : null,
     nombre ? `Nombre: ${nombre}` : null,
     localidad ? `Localidad: ${localidad}` : null,
     '',
-    '¿Me confirman disponibilidad y entrega? ¡Gracias!',
+    '¿Me confirman disponibilidad y el costo del envío? ¡Gracias!',
   ];
   const href = whatsappHref(lines.filter((l): l is string => l !== null).join('\n'));
   const link = el('a');
@@ -422,63 +391,6 @@ checkout?.addEventListener('submit', (e) => {
   link.click();
   link.remove();
 });
-
-/* Compartir la promo con el equipo */
-$$<HTMLAnchorElement>('[data-share-team]').forEach((a) =>
-  a.addEventListener('click', async (e) => {
-    if (!navigator.share) return;
-    e.preventDefault();
-    try {
-      await navigator.share({ title: 'Evhtian · Promo equipo', text: a.dataset.shareText ?? '', url: location.origin + location.pathname });
-    } catch {
-      /* la usuaria canceló */
-    }
-  }),
-);
-
-/* --------------------------------------------------------------------------
-   Calculadora de la promo de equipo
-   -------------------------------------------------------------------------- */
-(() => {
-  const calc = $('[data-calc]');
-  if (!calc) return;
-  const nEl = $('[data-calc-n]', calc);
-  const dec = $<HTMLButtonElement>('[data-calc-dec]', calc);
-  const inc = $<HTMLButtonElement>('[data-calc-inc]', calc);
-  const out = (sel: string, v: string) => {
-    const node = $(sel, calc);
-    if (node) node.textContent = v;
-  };
-  let n = site.promo.minItems;
-  const render = () => {
-    const full = n * site.price;
-    const on = n >= site.promo.minItems;
-    const promo = on ? full * (1 - site.promo.percent / 100) : full;
-    if (nEl) nEl.textContent = String(n);
-    out('[data-calc-full]', formatARS(full));
-    out('[data-calc-total]', formatARS(promo));
-    out('[data-calc-each]', formatARS(promo / n));
-    out('[data-calc-save]', formatARS(full - promo));
-    const left = site.promo.minItems - n;
-    out(
-      '[data-calc-note]',
-      on
-        ? `Promo activada: el ${site.promo.percent}% off va en todo el pedido.`
-        : `Sumen ${left} ${plural(left, 'ambo', 'ambos')} más y activan el ${site.promo.percent}% off en todo.`,
-    );
-    calc.classList.toggle('is-locked', !on);
-    if (dec) dec.disabled = n <= 1;
-    if (inc) inc.disabled = n >= 30;
-  };
-  dec?.addEventListener('click', () => {
-    n = Math.max(1, n - 1);
-    render();
-  });
-  inc?.addEventListener('click', () => {
-    n = Math.min(30, n + 1);
-    render();
-  });
-})();
 
 /* --------------------------------------------------------------------------
    Header, menú móvil y revelados

@@ -1,13 +1,11 @@
 ---
-import { site, formatARS } from '../config/site';
+import { site, formatARS, saleOff } from '../config/site';
 ---
 <div class="promo-bar">
   <p class="wrap">
-    <span class="promo-long"><strong>{site.sale.name}:</strong> ambos a {formatARS(site.price)} hasta el {site.sale.until}.</span>
-    <span class="sep" aria-hidden="true"></span>
-    <span class="promo-long"><strong>Comprá con tu equipo y ahorren {site.promo.percent}%</strong> en todo el pedido, desde {site.promo.minItems} ambos.</span>
-    <span class="promo-short"><strong>Fin de año: {formatARS(site.price)}</strong> hasta el {site.sale.until}</span>
-    <a href="/#equipo">Ver promo</a>
+    <span class="promo-long"><span class="pb-off">{saleOff}% OFF</span> <strong>{site.sale.name}:</strong> ambos de <s>{formatARS(site.listPrice)}</s> a <strong>{formatARS(site.price)}</strong> hasta el {site.sale.until}.</span>
+    <span class="promo-short"><span class="pb-off">{saleOff}% OFF</span> <s>{formatARS(site.listPrice)}</s> <strong>{formatARS(site.price)}</strong> hasta el {site.sale.until}</span>
+    <a href="/#coleccion">Ver ambos</a>
   </p>
 </div>
 
@@ -32,11 +30,21 @@ import { site, formatARS } from '../config/site';
     font-weight: 500;
     color: var(--gold-200);
   }
-  .sep {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--gold-400);
+  s {
+    color: var(--on-noir-2);
+    text-decoration-thickness: 1.5px;
+  }
+  .pb-off {
+    display: inline-block;
+    margin-right: 0.35rem;
+    padding: 0.2em 0.45em 0.16em;
+    border-radius: var(--radius);
+    background: var(--sale);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.92em;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
   }
   a {
     color: var(--gold-200);
@@ -51,13 +59,14 @@ import { site, formatARS } from '../config/site';
     display: none;
   }
   @media (max-width: 640px) {
-    .sep,
-    .promo-alt,
     .promo-long {
       display: none;
     }
     .promo-short {
       display: inline;
+    }
+    a {
+      display: none;
     }
     .promo-bar p {
       flex-wrap: nowrap;

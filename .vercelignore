@@ -1,0 +1,18 @@
+# Solo se sube lo necesario para compilar el sitio (src, public, configuración).
+brand/
+scripts/
+dist/
+.astro/
+.claude/
+.impeccable/
+node_modules/
+*.md
+*.png
+*.jpeg
+*.jpg
+*.webp
+*.avif
+!public/**
+!src/**
+.env*
+.vercel/

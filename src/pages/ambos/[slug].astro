@@ -10,7 +10,7 @@ import Icon from '../../components/Icon.astro';
 import { colors, models, type ColorId, type Model } from '../../data/catalog';
 import Lightbox from '../../components/Lightbox.astro';
 import { detailPhotos, hasAllPhotos, hasColorDetails } from '../../data/photos';
-import { site, formatARS, whatsappHref } from '../../config/site';
+import { site, formatARS, whatsappHref, saleOff, saleSaving } from '../../config/site';
 
 export function getStaticPaths() {
   return models.map((model) => ({ params: { slug: model.id }, props: { model } }));
@@ -49,6 +49,7 @@ const ask = whatsappHref(`¡Hola Evhtian! Quiero consultar por el ambo ${model.n
       <div class="pdp-main">
         <ProductVisual model={model.id} color={color} uid={`pdp-${model.id}`} eager sizes="(min-width: 960px) 40vw, 100vw" />
         <span class="pdp-chip">Chaqueta + pantalón · <span data-viewer-color-name></span></span>
+        <span class="sale-badge pdp-photo-off" aria-hidden="true">{saleOff}% OFF</span>
         {zoomable && (
           <button class="pdp-zoom" type="button" data-zoom-open="0" aria-label={`Ampliar la foto del ambo ${model.name}`}>
             <span class="pdp-zoom-badge" aria-hidden="true"><Icon name="zoom" /> Ampliar</span>
@@ -81,17 +82,14 @@ const ask = whatsappHref(`¡Hola Evhtian! Quiero consultar por el ambo ${model.n
       <h1 id="pdp-title">Ambo {model.name}</h1>
       <p class="pdp-tagline">{model.tagline}</p>
       <p class="pdp-price tnum">
-        <s class="pdp-list">{formatARS(site.listPrice)}</s>
-        <span class="pdp-amount">{formatARS(site.price)}</span>
-        <span class="pdp-sub">Chaqueta + pantalón</span>
+        <s class="pdp-list was"><span class="sr-only">Antes: </span>{formatARS(site.listPrice)}</s>
+        <span class="pdp-amount"><span class="sr-only">Ahora: </span>{formatARS(site.price)}</span>
+        <span class="sale-badge pdp-off">{saleOff}% OFF</span>
+        <span class="pdp-sub">Chaqueta + pantalón · <span class="saving">ahorrás {formatARS(saleSaving)}</span></span>
         <span class="pdp-sale"><strong>{site.sale.name}.</strong> Aprovechala, dura hasta el {site.sale.until}.</span>
       </p>
       <p class="pdp-desc">{model.description}</p>
       <BuyForm uid="pdp" model={model.id} color={color} />
-      <p class="pdp-team">
-        <Icon name="users" />
-        <span>¿Compran en equipo? Con {site.promo.minItems} ambos o más en un mismo pedido, <strong>ahorran {site.promo.percent}%</strong> en todo el pedido.</span>
-      </p>
       <ul class="pdp-pay" role="list">
         {site.payments.map((p) => <li><Icon name={p.icon} /> {p.short}</li>)}
       </ul>
@@ -130,16 +128,6 @@ const ask = whatsappHref(`¡Hola Evhtian! Quiero consultar por el ambo ${model.n
 
   <FabricStory />
   <Sizes />
-
-  <section class="team-band" aria-labelledby="team-band-title">
-    <div class="wrap team-band-inner">
-      <div>
-        <h2 id="team-band-title">Vestite con tu equipo y ahorren <span class="pct">{site.promo.percent}%</span></h2>
-        <p>Con {site.promo.minItems} ambos o más en un mismo pedido, el {site.promo.percent}% off se aplica a todo. Cada una elige su modelo, color y talle.</p>
-      </div>
-      <a class="btn btn--gold" href="/#equipo">Calcular cuánto ahorran <Icon name="arrow" /></a>
-    </div>
-  </section>
 
   <section class="other section" aria-labelledby="other-title">
     <div class="wrap other-grid">
@@ -217,6 +205,15 @@ const ask = whatsappHref(`¡Hola Evhtian! Quiero consultar por el ambo ${model.n
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink-2);
+  }
+  .pdp-photo-off {
+    position: absolute;
+    right: var(--s-4);
+    top: var(--s-4);
+    z-index: 2;
+    pointer-events: none;
+    font-size: 0.8125rem;
+    box-shadow: var(--shadow-1);
   }
   .pdp-zoom {
     position: absolute;
@@ -317,16 +314,22 @@ const ask = whatsappHref(`¡Hola Evhtian! Quiero consultar por el ambo ${model.n
     border-block: 1px solid var(--line);
   }
   .pdp-list {
-    font-size: var(--step-1);
-    color: var(--ink-3);
-    text-decoration-thickness: 1px;
+    font-size: var(--step-2);
+    font-weight: 500;
   }
   .pdp-amount {
-    font-size: var(--step-3);
-    font-weight: 600;
+    font-size: var(--step-4);
+    font-weight: 700;
     line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .pdp-off {
+    align-self: center;
+    font-size: 0.8125rem;
   }
   .pdp-sub {
+    flex-basis: 100%;
+    margin-top: var(--s-1);
     font-size: var(--step--1);
     color: var(--ink-2);
   }
@@ -343,29 +346,6 @@ const ask = whatsappHref(`¡Hola Evhtian! Quiero consultar por el ambo ${model.n
   .pdp-desc {
     margin-block: var(--s-5);
     color: var(--ink-2);
-  }
-  .pdp-team {
-    display: flex;
-    gap: 0.75rem;
-    align-items: flex-start;
-    margin-top: var(--s-5);
-    padding: var(--s-4);
-    background: var(--paper-2);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    font-size: var(--step--1);
-    color: var(--ink-2);
-  }
-  .pdp-team :global(svg) {
-    width: 1.25rem;
-    height: 1.25rem;
-    color: var(--gold-700);
-    flex: none;
-    margin-top: 0.1rem;
-  }
-  .pdp-team strong {
-    color: var(--ink);
-    font-weight: 600;
   }
   .pdp-pay {
     display: grid;
@@ -433,33 +413,6 @@ const ask = whatsappHref(`¡Hola Evhtian! Quiero consultar por el ambo ${model.n
   }
   .i-1 {
     --i: 1;
-  }
-
-  .team-band {
-    background:
-      radial-gradient(70% 120% at 90% 0%, rgb(200 167 102 / 0.16), transparent 60%),
-      var(--noir);
-    color: var(--on-noir);
-    padding-block: clamp(3rem, 2rem + 3vw, 5rem);
-  }
-  .team-band-inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s-5);
-  }
-  .team-band h2 {
-    font-size: var(--step-3);
-    color: var(--on-noir);
-  }
-  .team-band .pct {
-    color: var(--gold-200);
-  }
-  .team-band p {
-    margin-top: var(--s-2);
-    color: var(--on-noir-2);
-    max-width: 44rem;
   }
 
   .other-grid {

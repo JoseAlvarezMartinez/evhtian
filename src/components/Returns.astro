@@ -1,0 +1,285 @@
+---
+/**
+ * Cambios: solo cambios de talle, color o modelo, sin reembolsos (decisión de la dueña, 2026-11-26).
+ * Plazo en src/config/shipping.ts (returnsPolicy). El botón de arrepentimiento, obligatorio por ley,
+ * queda en el pie de página (Footer.astro).
+ */
+import Icon from './Icon.astro';
+import { whatsappHref } from '../config/site';
+import { returnsPolicy as rp, tigre } from '../config/shipping';
+
+const exchangeHref = whatsappHref('¡Hola Evhtian! Quiero hacer un cambio. Mi nombre es: \nAmbo que recibí (modelo, color y talle): \nLo quiero cambiar por: ');
+
+const policies = [
+  {
+    icon: 'exchange',
+    big: String(rp.exchangeDays),
+    unit: 'días',
+    title: 'Cambiá talle, color o modelo',
+    text: `Tenés ${rp.exchangeDays} días corridos desde que recibís tu ambo para cambiarlo por otro talle, color o modelo. La prenda tiene que estar sin uso, sin lavar y con su etiqueta.`,
+    note: `El envío del cambio corre por tu cuenta: por Andreani o con entrega en mano en ${tigre.zone}.`,
+  },
+  {
+    icon: 'shield',
+    big: 'Sin',
+    unit: 'costo',
+    word: true,
+    title: 'Si llega con una falla, va por nuestra cuenta',
+    text: 'Si tu ambo tiene una falla de fabricación o te llegó algo distinto a lo que pediste, te lo cambiamos por uno nuevo, con todos los envíos a nuestro cargo.',
+    note: 'Avisanos apenas lo notes, con una foto de la falla.',
+  },
+];
+
+const steps = [
+  { title: 'Escribinos', text: `Dentro de los ${rp.exchangeDays} días, por WhatsApp, con tu nombre, el ambo que recibiste y por cuál lo querés cambiar.` },
+  { title: 'Envialo', text: `Te decimos cómo mandarlo: por Andreani o, en ${tigre.zone}, en mano.` },
+  { title: 'Estrenalo', text: 'Revisamos la prenda y te enviamos tu nuevo ambo, en el talle, color o modelo que elegiste.' },
+];
+---
+<section id="cambios" class="returns section" aria-labelledby="cambios-title">
+  <div class="wrap">
+    <header class="section-head section-head--center">
+      <h2 id="cambios-title" data-reveal>Cambios, <em class="accent">sin vueltas.</em></h2>
+      <p data-reveal>Queremos que tu ambo te quede perfecto. Si el talle o el color no son los que imaginabas, te lo cambiamos.</p>
+    </header>
+
+    <ul class="cards" role="list">
+      {policies.map((p, i) => (
+        <li class={`card i-${i}`} data-reveal>
+          <div class="card-top">
+            <span class="card-icon"><Icon name={p.icon} /></span>
+            <p class="big tnum">
+              <span class:list={[p.word && 'big-word']}>{p.big}</span>
+              <small>{p.unit}</small>
+            </p>
+          </div>
+          <h3>{p.title}</h3>
+          <p class="card-text">{p.text}</p>
+          <p class="card-note">{p.note}</p>
+        </li>
+      ))}
+    </ul>
+
+    <div class="why" data-reveal>
+      <div>
+        <h3>¿Por qué cambios y no reembolsos?</h3>
+        <p>
+          Un ambo se usa pegado al cuerpo durante toda la guardia, y la bengalina elastizada, con su 4% de spandex, se amolda a tu silueta
+          desde la primera vez que te lo ponés. Por higiene, y para que cada clienta reciba una prenda impecable, como nueva, no hacemos
+          reembolsos. Lo que sí hacemos es asegurarnos de que te quedes con el ambo perfecto para vos.
+        </p>
+      </div>
+      <ul class="rules" role="list">
+        <li><Icon name="check" /> Solo hacemos cambios: no devolvemos dinero.</li>
+        <li><Icon name="check" /> Las prendas en promoción tienen las mismas condiciones de cambio.</li>
+        <li><Icon name="check" /> Los cambios están sujetos a stock. Si no está el talle o color que querés, elegís otro modelo o color.</li>
+        <li><Icon name="check" /> No aceptamos cambios de prendas usadas, lavadas o sin etiqueta, salvo falla de fabricación.</li>
+      </ul>
+    </div>
+
+    <div class="how">
+      <h3 data-reveal>Cómo hacer un cambio</h3>
+      <ol class="steps" role="list">
+        {steps.map((s, i) => (
+          <li class={`step i-${i}`} data-reveal>
+            <span class="step-n tnum" aria-hidden="true">{i + 1}</span>
+            <div>
+              <p class="step-title">{s.title}</p>
+              <p class="step-text">{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div class="ctas" data-reveal>
+        <a class="btn" href={exchangeHref} target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" /> Iniciar un cambio</a>
+      </div>
+      <p class="fine" data-reveal>Esta política no limita los derechos que te reconoce la Ley de Defensa del Consumidor.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .returns h2 em {
+    color: var(--gold-700);
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-4);
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-top: 2px solid var(--ink);
+    border-radius: var(--radius);
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--s-2);
+  }
+  .card-icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--gold-200);
+  }
+  .card-icon :global(svg) {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+  .big {
+    display: grid;
+    justify-items: end;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 3.25rem;
+    line-height: 0.9;
+    color: var(--ink);
+  }
+  .big-word {
+    font-size: 0.62em;
+    line-height: 1.2;
+  }
+  .big small {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-700);
+    margin-top: 0.35rem;
+  }
+  .card h3 {
+    font-size: var(--step-2);
+    font-weight: 600;
+    line-height: 1.15;
+  }
+  .card-text {
+    color: var(--ink-2);
+  }
+  .card-note {
+    margin-top: auto;
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--line);
+    font-size: var(--step--1);
+    color: var(--ink-3);
+  }
+  .i-1 { --i: 1; }
+  .i-2 { --i: 2; }
+
+  .why {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 1rem + 3vw, 4rem);
+    margin-top: var(--s-4);
+    padding: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+    background: var(--noir);
+    color: var(--on-noir-2);
+    border-radius: var(--radius);
+  }
+  .why h3 {
+    color: var(--on-noir);
+    font-size: var(--step-2);
+    font-weight: 600;
+    margin-bottom: var(--s-3);
+  }
+  .rules {
+    display: grid;
+    gap: var(--s-3);
+    align-content: center;
+  }
+  .rules li {
+    display: grid;
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+    gap: var(--s-3);
+    color: var(--on-noir);
+  }
+  .rules :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.15em;
+    color: var(--gold-400);
+  }
+
+  .how {
+    margin-top: clamp(3.5rem, 2.5rem + 4vw, 6rem);
+    display: grid;
+    justify-items: center;
+  }
+  .how h3 {
+    font-size: var(--step-3);
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-6);
+    width: 100%;
+  }
+  .step {
+    display: flex;
+    gap: var(--s-4);
+    align-items: flex-start;
+  }
+  .step-n {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 3.5rem;
+    line-height: 0.85;
+    color: var(--gold-600);
+    flex: none;
+    width: 2.5rem;
+  }
+  .step-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-2);
+    line-height: 1.1;
+    margin-bottom: var(--s-2);
+  }
+  .step-text {
+    color: var(--ink-2);
+    max-width: 30ch;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--s-3);
+    margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  }
+  .fine {
+    margin-top: var(--s-4);
+    max-width: 52ch;
+    text-align: center;
+    font-size: var(--step--1);
+    color: var(--ink-3);
+  }
+  @media (max-width: 960px) {
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .why {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 520px) {
+    .ctas {
+      display: grid;
+      width: 100%;
+    }
+  }
+</style>

@@ -33,5 +33,3 @@ export const detailPhotos = (model: ModelId, color?: ColorId) => {
 /** true si cada color del modelo tiene sus propios detalles: la galería cambia junto con el color. */
 export const hasColorDetails = (model: ModelId) =>
   colors.every((c) => detailsWithPrefix(`${model}-${c.id}-detalle-`).length > 0);
-
-export const teamPhoto = () => byName.get('equipo');

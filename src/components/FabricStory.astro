@@ -161,7 +161,11 @@ const img = (name: string) => files[`../assets/fabric/${name}.jpg`]?.default;
       gap: var(--s-4);
       margin-inline: calc(-1 * var(--gutter));
       padding-inline: var(--gutter);
+      /* Solo desplazamiento lateral: un gesto vertical sigue bajando la página. */
       overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x pan-y;
       scroll-snap-type: x mandatory;
       scroll-padding-inline: var(--gutter);
       scrollbar-width: none;
@@ -169,9 +173,11 @@ const img = (name: string) => files[`../assets/fabric/${name}.jpg`]?.default;
     .moments::-webkit-scrollbar {
       display: none;
     }
-    .moment {
+    .moments .moment {
       flex: 0 0 78%;
       scroll-snap-align: start;
+      /* Sin el corrimiento vertical de la entrada: dentro del carrusel generaba scroll vertical propio. */
+      transform: none;
     }
   }
 </style>

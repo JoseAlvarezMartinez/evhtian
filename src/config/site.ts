@@ -6,7 +6,7 @@ export const site = {
   name: 'Evhtian',
   tagline: 'Ambos médicos para mujer',
   description:
-    'Ambos médicos para mujer en bengalina elastizada: elegantes, cómodos e impecables toda la guardia. Essential y Terra en cinco colores, talles XS a L. 20% off comprando en equipo.',
+    'Ambos médicos para mujer en bengalina elastizada: elegantes, cómodos e impecables toda la guardia. Essential y Terra en cinco colores, talles XS a L.',
 
   /** Precio de cada ambo (chaqueta + pantalón), en pesos argentinos. */
   price: 60000,
@@ -17,13 +17,6 @@ export const site = {
     name: 'Promo de fin de año',
     /** Hasta cuándo dura, tal como se lee en la web. */
     until: '31 de diciembre',
-  },
-
-  promo: {
-    /** Cantidad mínima de ambos en un mismo pedido para activar la promo. TODO: confirmar (hoy: 4, "más de 3"). */
-    minItems: 4,
-    /** Descuento sobre el total del pedido, en porcentaje. */
-    percent: 20,
   },
 
   contact: {
@@ -48,6 +41,11 @@ export const site = {
     },
   ],
 } as const;
+
+/** Descuento de la promo vigente sobre el precio de lista, redondeado hacia abajo para no exagerar (130.000 → 60.000 = 53%). */
+export const saleOff = Math.floor((1 - site.price / site.listPrice) * 100);
+/** Cuánto se ahorra por ambo con la promo vigente. */
+export const saleSaving = site.listPrice - site.price;
 
 export type PaymentId = (typeof site.payments)[number]['id'];
 

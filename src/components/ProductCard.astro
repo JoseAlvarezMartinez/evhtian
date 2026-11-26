@@ -3,7 +3,7 @@
 import ProductVisual from './ProductVisual.astro';
 import Icon from './Icon.astro';
 import { colors, type ColorId, type Model } from '../data/catalog';
-import { site, formatARS } from '../config/site';
+import { site, formatARS, saleOff, saleSaving } from '../config/site';
 
 interface Props {
   model: Model;
@@ -19,15 +19,16 @@ const Heading = headingLevel;
   <div class="card-media">
     <ProductVisual model={model.id} color={color} uid={uid} sizes="(min-width: 900px) 44vw, 92vw" />
     <span class="card-chip">Chaqueta + pantalón</span>
+    <span class="sale-badge card-off">{saleOff}% OFF</span>
   </div>
   <div class="card-body">
     <div class="card-title">
       <Heading class="card-name">
         <a class="card-link" href={`${href}?color=${color}`} data-viewer-link>Ambo {model.name}</a>
       </Heading>
-      <p class="card-price tnum"><s>{formatARS(site.listPrice)}</s> {formatARS(site.price)}</p>
+      <p class="card-price tnum"><s class="was"><span class="sr-only">Antes: </span>{formatARS(site.listPrice)}</s> <span class="sr-only">Ahora: </span>{formatARS(site.price)}</p>
     </div>
-    <p class="card-sale">{site.sale.name} · hasta el {site.sale.until}</p>
+    <p class="card-sale"><span class="saving">Ahorrás {formatARS(saleSaving)}</span> · hasta el {site.sale.until}</p>
     <p class="card-tagline">{model.tagline}</p>
     <p class="card-teaser">{model.teaser}</p>
     <div class="card-foot">
@@ -108,12 +109,14 @@ const Heading = headingLevel;
   }
   .card-title {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline;
-    gap: var(--s-4);
+    gap: var(--s-1) var(--s-4);
   }
   .card-name {
     font-size: var(--step-3);
+    white-space: nowrap;
   }
   .card-link {
     text-decoration: none;
@@ -132,20 +135,26 @@ const Heading = headingLevel;
     outline: 2px solid var(--gold-700);
     outline-offset: 3px;
   }
+  .card-off {
+    position: absolute;
+    right: var(--s-4);
+    top: var(--s-4);
+    font-size: 0.8125rem;
+    box-shadow: var(--shadow-1);
+  }
   .card-price {
-    font-size: var(--step-1);
-    font-weight: 600;
+    font-size: var(--step-2);
+    font-weight: 700;
     white-space: nowrap;
   }
   .card-price s {
-    margin-right: 0.35rem;
-    font-size: 0.8em;
+    margin-right: 0.4rem;
+    font-size: 0.7em;
     font-weight: 500;
-    color: var(--ink-3);
   }
   .card-sale {
     font-size: var(--step--1);
-    font-weight: 600;
+    font-weight: 500;
     color: var(--gold-700);
   }
   .card-tagline {

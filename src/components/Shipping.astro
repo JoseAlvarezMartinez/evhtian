@@ -1,0 +1,131 @@
+---
+/**
+ * Envíos: entrega en el día en Tigre y Andreani al resto del país. El costo se cotiza por WhatsApp
+ * (decisión de la dueña, 2026-11-26: sin cotizador en la web). Valores en src/config/shipping.ts.
+ */
+import Icon from './Icon.astro';
+import { whatsappHref } from '../config/site';
+import { dispatchDays, tigre } from '../config/shipping';
+
+const quoteHref = whatsappHref('¡Hola Evhtian! Quiero cotizar el envío.\nLocalidad y código postal: \nCantidad de ambos: ');
+
+const facts = [
+  {
+    icon: 'pin',
+    title: `En ${tigre.zone}, te llega hoy`,
+    text: `Si confirmás tu pedido antes de las ${tigre.sameDayCutoff} h de un día hábil, te lo llevamos en mano ese mismo día. También podés pagar en efectivo al recibir.`,
+  },
+  {
+    icon: 'truck',
+    title: 'Al resto del país, por Andreani',
+    text: 'A tu domicilio o a la sucursal Andreani que elijas, con número de seguimiento. Andreani entrega en 2 a 3 días hábiles; a las provincias más lejanas puede tardar algo más.',
+  },
+  {
+    icon: 'bag',
+    title: `Despachamos en ${dispatchDays} días hábiles`,
+    text: 'En los envíos por Andreani, contamos desde que se confirma tu pago. Cada ambo viaja doblado con cuidado, en su bolsa, listo para estrenar.',
+  },
+];
+---
+<section id="envios" class="ship section" aria-labelledby="envios-title">
+  <div class="wrap ship-grid">
+    <div class="ship-copy">
+      <header class="section-head">
+        <h2 id="envios-title" data-reveal>Tu ambo, <em class="accent">en tu puerta.</em></h2>
+        <p data-reveal>
+          Enviamos a todo el país. El costo del envío te lo cotizamos por WhatsApp según tu dirección y la cantidad de ambos, así sabés el
+          total antes de pagar.
+        </p>
+      </header>
+      <a class="btn" href={quoteHref} target="_blank" rel="noopener noreferrer" data-reveal>
+        <Icon name="whatsapp" /> Cotizar mi envío
+      </a>
+    </div>
+
+    <ul class="facts" role="list">
+      {facts.map((f, i) => (
+        <li class={`fact i-${i}`} data-reveal>
+          <span class="fact-icon"><Icon name={f.icon} /></span>
+          <div>
+            <p class="fact-title">{f.title}</p>
+            <p class="fact-text">{f.text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .ship {
+    background: var(--paper-2);
+  }
+  .ship-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 1rem + 4vw, 6rem);
+    align-items: start;
+  }
+  .ship-copy {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+  }
+  .ship-copy .section-head {
+    margin-bottom: var(--s-6);
+  }
+  .ship-copy h2 em {
+    color: var(--gold-700);
+  }
+  .facts {
+    display: grid;
+    border-top: 1px solid var(--ink);
+  }
+  .fact {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: var(--s-4);
+    align-items: start;
+    padding-block: clamp(1.25rem, 1rem + 1vw, 2rem);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .fact-icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    color: var(--gold-700);
+  }
+  .i-0 .fact-icon {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--gold-200);
+  }
+  .fact-icon :global(svg) {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+  .fact-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-2);
+    line-height: 1.15;
+    margin-bottom: var(--s-2);
+  }
+  .fact-text {
+    color: var(--ink-2);
+    max-width: 52ch;
+  }
+  .i-1 { --i: 1; }
+  .i-2 { --i: 2; }
+
+  @media (max-width: 900px) {
+    .ship-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .ship-copy {
+      position: static;
+    }
+  }
+</style>

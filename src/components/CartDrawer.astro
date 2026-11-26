@@ -9,11 +9,6 @@ import { site, cashZone } from '../config/site';
       <button class="icon-btn" type="button" data-cart-close aria-label="Cerrar carrito"><Icon name="close" /></button>
     </header>
 
-    <div class="promo-meter" data-promo-meter>
-      <p class="pm-text" data-promo-text aria-live="polite"></p>
-      <div class="pm-bar" aria-hidden="true"><span data-promo-fill></span></div>
-    </div>
-
     <div class="cart-body">
       <ul class="items" role="list" data-cart-items></ul>
       <div class="empty" data-cart-empty>
@@ -24,10 +19,10 @@ import { site, cashZone } from '../config/site';
 
     <form class="cart-foot" data-checkout novalidate>
       <dl class="totals tnum">
-        <div><dt>Subtotal</dt><dd data-subtotal>$0</dd></div>
-        <div class="discount" data-discount-row hidden><dt>Promo equipo −{site.promo.percent}%</dt><dd data-discount>−$0</dd></div>
+        <div class="saving-row" data-saving-row hidden><dt>Ahorrás con la {site.sale.name.toLowerCase()}</dt><dd data-saving>$0</dd></div>
         <div class="total"><dt>Total</dt><dd data-total>$0</dd></div>
       </dl>
+      <p class="ship-note">El envío te lo cotizamos por WhatsApp según tu localidad.</p>
 
       <fieldset class="pay">
         <legend>¿Cómo querés pagar?</legend>
@@ -48,7 +43,7 @@ import { site, cashZone } from '../config/site';
           <input type="text" name="nombre" autocomplete="name" maxlength="60" />
         </label>
         <label>
-          <span>Localidad <em>(opcional)</em></span>
+          <span>Localidad <em>(para el envío)</em></span>
           <input type="text" name="localidad" autocomplete="address-level2" maxlength="60" />
         </label>
       </div>
@@ -57,7 +52,7 @@ import { site, cashZone } from '../config/site';
         <button class="btn btn--gold btn--block send" type="submit" data-send>
           <Icon name="whatsapp" /> Enviar pedido por WhatsApp
         </button>
-        <p class="fine">Te respondemos personalmente para confirmar disponibilidad, pago y entrega.</p>
+        <p class="fine">Te respondemos personalmente para confirmar disponibilidad, pago y el costo del envío.</p>
       </div>
     </form>
     </div>
@@ -153,47 +148,6 @@ import { site, cashZone } from '../config/site';
     height: 1.35rem;
   }
 
-  .promo-meter {
-    padding: var(--s-4) var(--s-5);
-    background: var(--paper-2);
-    border-bottom: 1px solid var(--line);
-  }
-  .pm-text {
-    font-size: var(--step--1);
-    color: var(--ink-2);
-    margin-bottom: var(--s-2);
-  }
-  .pm-text :global(strong) {
-    color: var(--ink);
-    font-weight: 500;
-  }
-  .pm-bar {
-    height: 4px;
-    border-radius: 4px;
-    background: var(--line);
-    overflow: hidden;
-  }
-  .pm-bar span {
-    display: block;
-    height: 100%;
-    width: 0;
-    background: var(--gold-sheen);
-    transition: width 700ms var(--ease-out);
-  }
-  .promo-meter.is-on {
-    background: var(--noir);
-    border-color: var(--noir);
-  }
-  .promo-meter.is-on .pm-text {
-    color: var(--gold-200);
-  }
-  .promo-meter.is-on .pm-text :global(strong) {
-    color: var(--on-noir);
-  }
-  .promo-meter.is-on .pm-bar {
-    background: var(--noir-line);
-  }
-
   .cart-body {
     overflow-y: auto;
     padding: var(--s-2) var(--s-5) 0;
@@ -249,8 +203,14 @@ import { site, cashZone } from '../config/site';
     font-size: var(--step--1);
     color: var(--ink-2);
   }
-  .totals .discount {
-    color: var(--ok);
+  .totals .saving-row {
+    color: var(--sale);
+    font-weight: 600;
+  }
+  .ship-note {
+    margin-top: calc(-1 * var(--s-2));
+    font-size: 0.8125rem;
+    color: var(--ink-3);
   }
   .totals .total {
     margin-top: var(--s-1);

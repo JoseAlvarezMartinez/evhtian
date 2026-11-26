@@ -1,7 +1,7 @@
 ---
 import ProductCard from './ProductCard.astro';
 import { models, type ColorId } from '../data/catalog';
-import { site, formatARS } from '../config/site';
+import { site, formatARS, saleOff } from '../config/site';
 
 const defaults: Record<string, ColorId> = { essential: 'bordo', terra: 'marino' };
 ---
@@ -11,7 +11,7 @@ const defaults: Record<string, ColorId> = { essential: 'bordo', terra: 'marino' 
       <h2 id="coleccion-title" data-reveal>Dos siluetas. <span class="accent">Cero concesiones.</span></h2>
       <p data-reveal>
         Un clásico que nunca falla y un moderno que no pasa desapercibido. Los dos en bengalina elastizada, cinco colores y
-        talles XS a L, a {formatARS(site.price)} el conjunto. Elegí el tuyo y descubrí cada detalle.
+        talles XS a L, a {formatARS(site.price)} el conjunto <span class="saving">({saleOff}% OFF, antes {formatARS(site.listPrice)})</span>. Elegí el tuyo y descubrí cada detalle.
       </p>
     </header>
 
