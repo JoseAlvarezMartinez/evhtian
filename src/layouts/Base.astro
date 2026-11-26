@@ -2,49 +2,62 @@
 import '@fontsource-variable/montserrat';
 import '../styles/global.css';
 import montserratLatin from '@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2?url';
-import { site } from '../config/site';
-import { models, colors } from '../data/catalog';
+import MetaPixel from '../components/MetaPixel.astro';
+import { site, homeDescription } from '../config/site';
+import { siteNodes } from '../lib/seo';
+
+/** Etiquetas Open Graph de producto (Meta las lee para el catálogo y las vistas previas). */
+export interface ProductMeta {
+  /** SKU de la variante que se muestra por defecto (el mismo ID que manda el Pixel). */
+  sku: string;
+  /** ID del modelo: agrupa las variantes de color. */
+  group: string;
+  price: number;
+  color: string;
+}
 
 interface Props {
+  /** Título completo de la pestaña y de Google. Sin título se usa el del inicio. */
   title?: string;
   description?: string;
   noindex?: boolean;
+  /** Imagen para compartir (URL absoluta). Sin imagen se usa /og.png. */
+  image?: { url: string; width: number; height: number; alt: string };
+  ogType?: 'website' | 'product';
+  product?: ProductMeta;
+  /** Nodos schema.org propios de la página: se suman al negocio y al sitio. */
+  schema?: Record<string, unknown>[];
 }
-const { title, description = site.description, noindex = false } = Astro.props;
-const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.tagline}`;
-const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL('/og.png', Astro.site);
+const {
+  title = site.homeTitle,
+  description = homeDescription,
+  noindex = false,
+  image,
+  ogType = 'website',
+  product,
+  schema = [],
+} = Astro.props;
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': models.map((m) => ({
-    '@type': 'Product',
-    name: `Ambo ${m.name}`,
-    brand: { '@type': 'Brand', name: site.name },
-    description: m.description,
-    color: colors.map((c) => c.name).join(', '),
-    material: 'Rayón, nylon (28%) y spandex (4%)',
-    size: 'XS, S, M, L',
-    offers: {
-      '@type': 'Offer',
-      price: site.price,
-      priceCurrency: 'ARS',
-      availability: 'https://schema.org/InStock',
-    },
-  })),
-};
+const origin = Astro.site!;
+const canonical = new URL(Astro.url.pathname, origin).href;
+const og = image ?? { url: new URL('/og.png', origin).href, width: 1200, height: 630, alt: `${site.name} · ${site.tagline}` };
+const jsonLd = noindex
+  ? null
+  : { '@context': 'https://schema.org', '@graph': [...siteNodes(origin, new URL('/icon-512.png', origin)), ...schema] };
 ---
 <!doctype html>
 <html lang="es-AR">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>{pageTitle}</title>
+    <title>{title}</title>
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex" />}
-    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+    {!noindex && <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content="#fbfaf7" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="format-detection" content="telephone=no" />
+    {site.meta.domainVerification && <meta name="facebook-domain-verification" content={site.meta.domainVerification} />}
 
     <link rel="preload" href={montserratLatin} as="font" type="font/woff2" crossorigin />
 
@@ -53,18 +66,44 @@ const jsonLd = {
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="es_AR" />
     <meta property="og:site_name" content={site.name} />
-    <meta property="og:title" content={pageTitle} />
+    <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image" content={og.url} />
+    <meta property="og:image:secure_url" content={og.url} />
+    <meta property="og:image:type" content={og.url.endsWith('.png') ? 'image/png' : 'image/jpeg'} />
+    <meta property="og:image:width" content={String(og.width)} />
+    <meta property="og:image:height" content={String(og.height)} />
+    <meta property="og:image:alt" content={og.alt} />
+    {product && (
+      <>
+        <meta property="product:brand" content={site.name} />
+        <meta property="product:availability" content="in stock" />
+        <meta property="product:condition" content="new" />
+        <meta property="product:price:amount" content={String(product.price)} />
+        <meta property="product:price:currency" content="ARS" />
+        <meta property="product:sale_price:amount" content={String(product.price)} />
+        <meta property="product:sale_price:currency" content="ARS" />
+        <meta property="product:original_price:amount" content={String(site.listPrice)} />
+        <meta property="product:original_price:currency" content="ARS" />
+        <meta property="product:sale_price_dates:end" content={site.sale.endsOn} />
+        <meta property="product:retailer_item_id" content={product.sku} />
+        <meta property="product:item_group_id" content={product.group} />
+        <meta property="product:color" content={product.color} />
+        <meta property="product:target_gender" content="female" />
+      </>
+    )}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={og.url} />
+    <meta name="twitter:image:alt" content={og.alt} />
 
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    {site.meta.pixelId && <MetaPixel id={site.meta.pixelId} />}
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>

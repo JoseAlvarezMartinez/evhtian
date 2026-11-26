@@ -12,6 +12,8 @@ import Lightbox from '../../components/Lightbox.astro';
 import { detailPhotos, hasAllPhotos, hasColorDetails } from '../../data/photos';
 import { site, formatARS, whatsappHref, saleOff, saleSaving } from '../../config/site';
 import { tigre, returnsPolicy } from '../../config/shipping';
+import { photoFor } from '../../data/photos';
+import { breadcrumbNode, productGroupNode, shareImage, skuFor } from '../../lib/seo';
 
 export function getStaticPaths() {
   return models.map((model) => ({ params: { slug: model.id }, props: { model } }));
@@ -30,10 +32,30 @@ const detailSets = hasColorDetails(model.id)
   : [{ color: undefined, label: '', imgs: detailPhotos(model.id) }];
 const zoomable = hasAllPhotos(model.id);
 const ask = whatsappHref(`¡Hola Evhtian! Quiero consultar por el ambo ${model.name}.`);
+
+// SEO: título, descripción, imagen para compartir y datos estructurados del modelo.
+const origin = Astro.site!;
+const pageUrl = new URL(`/ambos/${model.id}/`, origin);
+const colorName = colors.find((c) => c.id === color)!.name;
+const title = `Ambo ${model.name} para mujer en bengalina elastizada | ${site.name}`;
+const description = `Ambo ${model.name} para mujer en bengalina: ${model.summary}. 5 colores, talles XS a L, a ${formatARS(site.price)}. Envíos a todo el país.`;
+const cover = photoFor(model.id, color);
+const image = cover && { ...(await shareImage(cover, origin)), alt: `Ambo ${model.name} para mujer en ${colorName.toLowerCase()}, chaqueta y pantalón` };
+const schema = [
+  await productGroupNode(model, pageUrl, origin, model.description),
+  breadcrumbNode([
+    { name: 'Inicio', url: new URL('/', origin).href },
+    { name: `Ambo ${model.name}`, url: pageUrl.href },
+  ]),
+];
 ---
 <Shop
-  title={`Ambo ${model.name}`}
-  description={`Ambo ${model.name} para mujer en bengalina elastizada: ${model.teaser} ${formatARS(site.price)} el conjunto, cinco colores y talles XS a L.`}
+  title={title}
+  description={description}
+  image={image}
+  ogType="product"
+  product={{ sku: skuFor(model.id, color), group: model.id, price: site.price, color: colorName }}
+  schema={schema}
 >
   <div class="wrap crumbs">
     <nav aria-label="Ruta de navegación">

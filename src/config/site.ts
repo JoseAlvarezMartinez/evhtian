@@ -5,8 +5,11 @@
 export const site = {
   name: 'Evhtian',
   tagline: 'Ambos médicos para mujer',
+  /** Título de la página de inicio en Google y al compartir (ideal: menos de 60 caracteres). */
+  homeTitle: 'Ambos médicos para mujer en bengalina elastizada | Evhtian',
+  /** Descripción de la página de inicio en Google y al compartir (ideal: menos de 155 caracteres, se completa con el precio). */
   description:
-    'Ambos médicos para mujer en bengalina elastizada: elegantes, cómodos e impecables toda la guardia. Essential y Terra en cinco colores, talles XS a L. Envíos a todo el país.',
+    'Ambos médicos para mujer en bengalina elastizada, con moldería exclusiva. Essential y Terra en 5 colores, talles XS a L, a {precio}. Envíos a todo el país.',
 
   /** Precio de cada ambo (chaqueta + pantalón), en pesos argentinos. */
   price: 60000,
@@ -17,6 +20,19 @@ export const site = {
     name: 'Promo de fin de año',
     /** Hasta cuándo dura, tal como se lee en la web. */
     until: '31 de diciembre',
+    /** La misma fecha en formato AAAA-MM-DD: Google y Meta la leen como vencimiento del precio. Actualizar junto con `until`. */
+    endsOn: '2026-12-31',
+  },
+
+  /**
+   * Meta (Facebook / Instagram Ads).
+   * - pixelId: el ID numérico del Pixel (Administrador de eventos → Orígenes de datos). Vacío = el Pixel no se carga.
+   * - domainVerification: el código de verificación del dominio (Configuración del negocio → Seguridad de la marca →
+   *   Dominios → «Etiqueta meta»), solo el valor de content. Vacío = no se agrega la etiqueta.
+   */
+  meta: {
+    pixelId: '',
+    domainVerification: '',
   },
 
   contact: {
@@ -53,6 +69,9 @@ export type PaymentId = (typeof site.payments)[number]['id'];
 export const cashZone = 'Tigre, Buenos Aires';
 
 export const formatARS = (n: number) => '$' + Math.round(n).toLocaleString('es-AR');
+
+/** Descripción del inicio con el precio vigente. */
+export const homeDescription = site.description.replace('{precio}', formatARS(site.price));
 
 export const whatsappHref = (text: string) => {
   const base = site.contact.whatsapp ? `https://wa.me/${site.contact.whatsapp}` : 'https://wa.me/';

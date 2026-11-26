@@ -57,7 +57,16 @@ Pendientes marcados con `TODO` en el código:
 - [ ] **Promo**: confirmar si arranca en 3 o en 4 ambos (`promo.minItems`; hoy 4).
 - [ ] **Tabla de medidas** (opcional): si completás `sizeChart` en `catalog.ts`, aparece sola una sección de talles con la tabla y el link «Guía de talles» en cada modelo. Mientras tanto, la consulta de talle va por WhatsApp.
 - [ ] **Fotos de producto**: mientras no haya fotos, el sitio muestra ilustraciones dibujadas a partir de las fotos de referencia. Para pasar a fotos, copiá los archivos en `src/assets/products/` con los nombres que indica `src/assets/products/LEEME.md` (por ejemplo `essential-bordo.jpg`). Cada modelo pasa a fotos solo cuando tiene sus 5 colores. Se optimizan solas al compilar (AVIF/WebP en varios tamaños) y también se usan como miniaturas en el carrito.
+- [ ] **Meta Ads** (`site.ts` → `meta`): `pixelId` (ID numérico del Pixel) y `domainVerification` (código de la etiqueta meta para verificar el dominio). Vacíos, no se carga nada de Meta. Con el Pixel cargado se envían PageView, ViewContent (ficha), AddToCart, InitiateCheckout (enviar pedido) y Contact (cualquier link a WhatsApp), con los mismos SKU (`essential-bordo`, `terra-marino`…) que los datos estructurados, para armar el catálogo de Meta.
+- [ ] **Fin de la promo**: al cambiar `sale.until`, actualizar también `sale.endsOn` (AAAA-MM-DD), que Google y Meta leen como vencimiento del precio.
 - El dominio por defecto es `https://evhtian.com.ar`. Si publicás en otro, definí `SITE_URL`.
+
+## SEO
+
+- Título, descripción, canonical, Open Graph y etiquetas `product:*` de Meta en cada página (`src/layouts/Base.astro`). Las fichas usan la foto del producto como imagen al compartir.
+- Datos estructurados schema.org en JSON-LD (`src/lib/seo.ts`): negocio (OnlineStore), sitio, política de cambios, lista de modelos y preguntas frecuentes en el inicio; ProductGroup con una variante por color (foto, SKU, precio, precio tachado y vencimiento de la promo) y migas de pan en cada ficha.
+- `sitemap.xml` (con las fotos de cada color) y `robots.txt` se generan solos al compilar, con la URL de `SITE_URL`.
+- Una sola URL por página: todas terminan en `/` y Vercel redirige la versión sin barra.
 
 ## Publicar
 
@@ -73,7 +82,7 @@ Los encabezados de seguridad ya vienen configurados en `vercel.json` (Vercel) y 
 
 - **Content-Security-Policy estricta** generada por Astro en cada página: solo se ejecutan los scripts propios (con hash), sin scripts ni estilos externos.
 - Encabezados: `X-Frame-Options: DENY`, `frame-ancestors 'none'`, HSTS, `nosniff`, `Referrer-Policy` y `Permissions-Policy`.
-- Sin servicios de terceros, cookies ni rastreadores. Los datos del pedido solo viajan dentro del mensaje de WhatsApp que envía la clienta.
+- Sin servicios de terceros mientras el Pixel de Meta esté vacío. Si se configura, la CSP habilita solo `connect.facebook.net` y `www.facebook.com`. Los datos del pedido (nombre, localidad) nunca se mandan a Meta: solo viajan dentro del mensaje de WhatsApp que envía la clienta.
 - Los textos se insertan con `textContent` (nunca `innerHTML` con datos), así no hay riesgo de inyección.
 - Dependencias con versión fija (`.npmrc` → `save-exact`). `npm audit` reporta un aviso de `picomatch` que solo se usa al compilar. No llega al sitio publicado y todavía no tiene versión corregida.
 - Tipografía Montserrat autohospedada (woff2 variable, `font-display: swap`); logo como máscaras WebP de 17 KB y 5 KB. Página principal: unos 14 KB comprimida.

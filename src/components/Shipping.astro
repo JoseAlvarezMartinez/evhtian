@@ -47,7 +47,7 @@ const facts = [
         <li class={`fact i-${i}`} data-reveal>
           <span class="fact-icon"><Icon name={f.icon} /></span>
           <div>
-            <p class="fact-title">{f.title}</p>
+            <h3 class="fact-title">{f.title}</h3>
             <p class="fact-text">{f.text}</p>
           </div>
         </li>
@@ -107,6 +107,7 @@ const facts = [
     height: 1.35rem;
   }
   .fact-title {
+    letter-spacing: inherit;
     font-family: var(--font-display);
     font-weight: 600;
     font-size: var(--step-2);

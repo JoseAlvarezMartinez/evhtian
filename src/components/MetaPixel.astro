@@ -1,0 +1,14 @@
+---
+/**
+ * Pixel de Meta. Solo se renderiza si hay un ID en site.meta.pixelId (src/config/site.ts).
+ * El ID viaja en una etiqueta meta y lo lee src/scripts/pixel.ts: así no hay scripts en línea y la CSP queda estricta.
+ */
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+<meta name="evhtian:pixel" content={id} />
+<script>
+  import '../scripts/pixel.ts';
+</script>

@@ -4,7 +4,7 @@
  * Sin dependencias. Todo el texto se inserta con textContent (sin innerHTML con datos).
  */
 import { site, formatARS, whatsappHref } from '../config/site';
-import { models, colors, sizes, type ColorId, type ModelId, type SizeId } from '../data/catalog';
+import { models, colors, sizes, skuFor, type ColorId, type ModelId, type SizeId } from '../data/catalog';
 
 type Item = { model: ModelId; color: ColorId; size: SizeId; qty: number };
 
@@ -16,6 +16,9 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
 const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) =>
   Array.from(root.querySelectorAll<T>(sel));
+
+/** Evento del Pixel de Meta (ver src/scripts/pixel.ts). No hace nada si el Pixel no está configurado. */
+const track = (event: string, params?: Record<string, unknown>) => window.fbq?.('track', event, params);
 
 const modelName = (id: ModelId) => models.find((m) => m.id === id)?.name ?? id;
 const colorName = (id: ColorId) => colors.find((c) => c.id === id)?.name ?? id;
@@ -304,6 +307,14 @@ $$<HTMLFormElement>('form[data-buy]').forEach((form) => {
     }
     if (!color) return;
     addItem({ model, color, size, qty });
+    track('AddToCart', {
+      content_ids: [skuFor(model, color)],
+      contents: [{ id: skuFor(model, color), quantity: qty }],
+      content_name: `Ambo ${modelName(model)}`,
+      content_type: 'product',
+      value: site.price * qty,
+      currency: 'ARS',
+    });
     qty = 1;
     renderQty();
     if (addBtn) {
@@ -353,6 +364,15 @@ $$('[data-pick-color]').forEach((btn) =>
     if (input) input.checked = true;
   }
   syncForm(form);
+  const model = form.dataset.model as ModelId;
+  const shown = (selectedValue(form, 'data-color-input') ?? page?.getAttribute('data-color')) as ColorId;
+  track('ViewContent', {
+    content_ids: [skuFor(model, shown)],
+    content_name: `Ambo ${modelName(model)}`,
+    content_type: 'product',
+    value: site.price,
+    currency: 'ARS',
+  });
 })();
 
 /* --------------------------------------------------------------------------
@@ -383,13 +403,28 @@ checkout?.addEventListener('submit', (e) => {
     '¿Me confirman disponibilidad y el costo del envío? ¡Gracias!',
   ];
   const href = whatsappHref(lines.filter((l): l is string => l !== null).join('\n'));
+  track('InitiateCheckout', {
+    content_ids: cart.map((i) => skuFor(i.model, i.color)),
+    contents: cart.map((i) => ({ id: skuFor(i.model, i.color), quantity: i.qty })),
+    content_type: 'product',
+    num_items: qty,
+    value: total,
+    currency: 'ARS',
+  });
   const link = el('a');
+  link.dataset.noTrack = '';
   link.href = href;
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
   document.body.append(link);
   link.click();
   link.remove();
+});
+
+/* Cualquier link a WhatsApp (consultas, talles, cambios): evento Contact del Pixel. */
+document.addEventListener('click', (e) => {
+  const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="https://wa.me/"]');
+  if (a && !a.hasAttribute('data-no-track')) track('Contact');
 });
 
 /* --------------------------------------------------------------------------

@@ -16,6 +16,8 @@ export interface Model {
   tagline: string;
   /** Frase corta para la tarjeta de presentación del inicio. */
   teaser: string;
+  /** Resumen de chaqueta y pantalón para la descripción en Google y Meta (minúscula, sin punto final). */
+  summary: string;
   description: string;
   details: string[];
   jacket: Feature[];
@@ -74,6 +76,7 @@ export const models: Model[] = [
     name: 'Essential',
     tagline: 'El clásico que impone.',
     teaser: 'Cuello V que estiliza, bolsillos para todo y un pantalón recto con cintura elastizada que no aprieta.',
+    summary: 'chaqueta cuello V y pantalón recto con cintura elastizada',
     description:
       'El ambo que resuelve tu jornada con elegancia. La chaqueta cuello V estiliza la figura y sus bolsillos frontales amplios te dejan todo a mano. El pantalón recto, con cintura elastizada, bolsillos laterales y bolsillo cargo, acompaña sin apretar. Llegás impecable y terminás la guardia igual.',
     details: [
@@ -99,6 +102,7 @@ export const models: Model[] = [
     name: 'Terra',
     tagline: 'El moderno que enamora.',
     teaser: 'Líneas limpias, cuello V y un pantalón con cordón interno que ajustás a tu medida.',
+    summary: 'chaqueta cuello V de líneas limpias y pantalón con cordón interno',
     description:
       'Para la que quiere verse actual sin resignar comodidad. La chaqueta cuello V, de líneas limpias, arma una silueta moderna y prolija. El pantalón se ajusta con cordón interno exactamente a tu medida y suma bolsillos laterales para tener lo esencial a mano. La misma bengalina suave y elástica, con una actitud que no pasa desapercibida.',
     details: ['Cuello en V', 'Ajuste con cordón interno', 'Bolsillos laterales', 'Tela suave y elástica'],
@@ -125,6 +129,9 @@ export const sizes: SizeId[] = ['XS', 'S', 'M', 'L'];
  * TODO: completar con las medidas reales, por ejemplo: { size: 'XS', busto: '82–86', cintura: '62–66', cadera: '88–92' }
  */
 export const sizeChart: { size: SizeId; busto: string; cintura: string; cadera: string }[] = [];
+
+/** SKU de cada variante (modelo + color). Es el mismo ID en los datos estructurados, en Meta y en el Pixel. */
+export const skuFor = (model: string, color: string) => `${model}-${color}`;
 
 export const modelById = (id: string) => models.find((m) => m.id === id);
 export const colorById = (id: string) => colors.find((c) => c.id === id);
