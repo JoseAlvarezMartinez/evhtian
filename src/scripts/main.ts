@@ -3,7 +3,7 @@
  * revelados al scroll y estado del header.
  * Sin dependencias. Todo el texto se inserta con textContent (sin innerHTML con datos).
  */
-import { site, formatARS, whatsappHref } from '../config/site';
+import { site, formatARS, whatsappHref, installments } from '../config/site';
 import { models, colors, sizes, skuFor, type ColorId, type ModelId, type SizeId } from '../data/catalog';
 
 type Item = { model: ModelId; color: ColorId; size: SizeId; qty: number };
@@ -203,6 +203,12 @@ function renderCart() {
     if (node) node.textContent = value;
   };
   set('[data-total]', formatARS(total));
+  // Cuotas con débito (GOcuotas): monto fijo por ambo, siempre con el total en cuotas a la vista.
+  set(
+    '[data-cuotas-note]',
+    `${installments.count} cuotas de ${formatARS(installments.amount * qty)} con tu tarjeta de débito, a través de ${installments.provider}. ` +
+      `Total en cuotas: ${formatARS(installments.count * installments.amount * qty)}.`,
+  );
   set('[data-saving]', formatARS(saving));
   const savingRow = $('[data-saving-row]');
   if (savingRow) savingRow.hidden = saving <= 0;
@@ -327,6 +333,54 @@ $$<HTMLFormElement>('form[data-buy]').forEach((form) => {
   syncForm(form);
 });
 
+/* --------------------------------------------------------------------------
+   Guía de talles (ficha de modelo con medidas)
+   Se abre sola la primera vez que la clienta elige un talle, y siempre desde
+   «Guía de talles». Tocar una fila de la tabla elige ese talle en el formulario.
+   -------------------------------------------------------------------------- */
+(() => {
+  const guide = $<HTMLDialogElement>('[data-size-guide]');
+  const form = guide && $<HTMLFormElement>(`form[data-buy][data-model="${guide.dataset.model}"]`);
+  if (!guide || !form) return;
+  const body = $('[data-size-guide-body]', guide);
+  const confirm = $<HTMLButtonElement>('[data-size-guide-confirm]', guide);
+  let shown = false;
+
+  const sync = () => {
+    const size = selectedValue(form, 'data-size-input');
+    $$<HTMLElement>('[data-size-row]', guide).forEach((row) => {
+      const on = row.dataset.sizeRow === size;
+      row.classList.toggle('is-picked', on);
+      $('[data-size-pick]', row)?.setAttribute('aria-pressed', String(on));
+    });
+    if (confirm) confirm.textContent = size ? `Confirmar talle ${size}` : 'Entendido';
+  };
+  const open = () => {
+    if (guide.open) return;
+    shown = true;
+    sync();
+    if (body) body.scrollTop = 0;
+    guide.showModal();
+  };
+
+  form.addEventListener('change', (e) => {
+    if (!(e.target as Element).matches('[data-size-input]')) return;
+    sync();
+    // Solo cuando la elige la clienta (no la preselección por URL ni la fila de la tabla).
+    if (!shown && e.isTrusted) open();
+  });
+  $$('[data-size-guide-open]').forEach((b) => b.addEventListener('click', open));
+  $$('[data-size-guide-close], [data-size-guide-confirm]', guide).forEach((b) => b.addEventListener('click', () => guide.close()));
+  guide.addEventListener('click', (e) => {
+    if (e.target === guide) return guide.close();
+    const row = (e.target as Element).closest<HTMLElement>('[data-size-row]');
+    const input = row && $<HTMLInputElement>(`input[data-size-input][value="${row.dataset.sizeRow}"]`, form);
+    if (!input || input.checked) return;
+    input.checked = true;
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+})();
+
 /* Botones de modelo/color dentro de un visor (inicio y tarjetas) */
 let stopHeroCycle = () => {};
 document.addEventListener('click', (e) => {
@@ -387,6 +441,7 @@ checkout?.addEventListener('submit', (e) => {
   const nombre = clean(data.get('nombre'));
   const localidad = clean(data.get('localidad'));
   const pago = clean(data.get('pago'));
+  const enCuotas = checkout.querySelector<HTMLInputElement>('input[data-pay="gocuotas"]')?.checked;
   const { qty, total } = totals();
 
   const lines: (string | null)[] = [
@@ -397,6 +452,9 @@ checkout?.addEventListener('submit', (e) => {
     `Ambos: ${qty}`,
     `Total: ${formatARS(total)} (sin envío)`,
     pago ? `Forma de pago: ${pago}` : null,
+    enCuotas
+      ? `En cuotas: ${installments.count} × ${formatARS(installments.amount * qty)} = ${formatARS(installments.count * installments.amount * qty)}`
+      : null,
     nombre ? `Nombre: ${nombre}` : null,
     localidad ? `Localidad: ${localidad}` : null,
     '',

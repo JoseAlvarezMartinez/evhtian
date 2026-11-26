@@ -19,7 +19,7 @@ import { site, cashZone } from '../config/site';
 
     <form class="cart-foot" data-checkout novalidate>
       <dl class="totals tnum">
-        <div class="saving-row" data-saving-row hidden><dt>Ahorrás con la {site.sale.name.toLowerCase()}</dt><dd data-saving>$0</dd></div>
+        <div class="saving-row" data-saving-row hidden><dt>Ahorrás con {site.sale.phrase}</dt><dd data-saving>$0</dd></div>
         <div class="total"><dt>Total</dt><dd data-total>$0</dd></div>
       </dl>
       <p class="ship-note">El envío te lo cotizamos por WhatsApp según tu localidad.</p>
@@ -34,7 +34,8 @@ import { site, cashZone } from '../config/site';
             </label>
           ))}
         </div>
-        <p class="pay-note">El pago en efectivo es solo para entregas en la zona de {cashZone}.</p>
+        <p class="pay-note pay-note--cash">El pago en efectivo es solo para entregas en la zona de {cashZone}.</p>
+        <p class="pay-note pay-note--cuotas" data-cuotas-note aria-live="polite"></p>
       </fieldset>
 
       <div class="fields">
@@ -235,7 +236,8 @@ import { site, cashZone } from '../config/site';
     font-size: 0.8125rem;
     color: var(--gold-700);
   }
-  .pay:has(input[data-pay='efectivo']:checked) .pay-note {
+  .pay:has(input[data-pay='efectivo']:checked) .pay-note--cash,
+  .pay:has(input[data-pay='gocuotas']:checked) .pay-note--cuotas {
     display: block;
   }
   .pay {

@@ -1,37 +1,51 @@
 ---
 /**
- * Guía de talles: solo aparece cuando hay medidas cargadas en src/data/catalog.ts (sizeChart).
- * Mientras no las haya, la consulta de talle se hace por WhatsApp desde la ficha del modelo.
+ * Guía de talles en la página: solo aparece en la ficha de un modelo con medidas cargadas
+ * en src/data/catalog.ts (sizeCharts). Sin medidas, la consulta de talle se hace por WhatsApp.
+ * «Cómo medirte» abre el modal de SizeGuide.
  */
 import Icon from './Icon.astro';
-import { sizes, sizeChart } from '../data/catalog';
+import { models, sizesFor, sizeChartFor, type ModelId } from '../data/catalog';
+import { returnsPolicy } from '../config/shipping';
 import { whatsappHref } from '../config/site';
+
+interface Props {
+  model?: ModelId;
+}
+const { model } = Astro.props;
+const chart = sizeChartFor(model);
+const info = models.find((m) => m.id === model);
 const askHref = whatsappHref('¡Hola Evhtian! Quiero que me ayuden a elegir mi talle.');
 ---
-{sizeChart.length > 0 && (
+{chart.length > 0 && (
   <section id="talles" class="sizes-sec section" aria-labelledby="talles-title">
     <div class="wrap sizes-grid">
       <div class="sizes-copy">
         <h2 id="talles-title" data-reveal>Tu talle, <span class="accent">sin dudas.</span></h2>
         <p data-reveal>
-          Trabajamos los talles {sizes.join(', ')} con un calce pensado para el cuerpo femenino. ¿Estás entre dos talles? Escribinos y te
-          recomendamos el ideal.
+          El {info?.name} viene en talles {new Intl.ListFormat('es').format(sizesFor(model!))} y tiene un calce {info?.fit.name.toLowerCase()}: {info?.fit.text} Medite
+          con la cinta dando toda la vuelta al cuerpo, como un cinturón, y buscá tu fila en la tabla. ¿Estás entre dos talles? Escribinos y
+          te recomendamos el ideal.
         </p>
-        <a class="btn" href={askHref} target="_blank" rel="noopener noreferrer" data-reveal>
-          <Icon name="whatsapp" /> Consultar mi talle
-        </a>
+        <div class="sizes-actions" data-reveal>
+          <button class="btn" type="button" data-size-guide-open aria-haspopup="dialog"><Icon name="ruler" /> Cómo medirte</button>
+          <a class="btn btn--ghost" href={askHref} target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" /> Consultar mi talle</a>
+        </div>
       </div>
       <div class="chart" data-reveal="fade">
         <table>
-          <caption class="sr-only">Medidas por talle en centímetros</caption>
+          <caption class="sr-only">Medidas del cuerpo por talle, en centímetros</caption>
           <thead><tr><th scope="col">Talle</th><th scope="col">Busto</th><th scope="col">Cintura</th><th scope="col">Cadera</th></tr></thead>
           <tbody class="tnum">
-            {sizeChart.map((r) => (
+            {chart.map((r) => (
               <tr><th scope="row">{r.size}</th><td>{r.busto}</td><td>{r.cintura}</td><td>{r.cadera}</td></tr>
             ))}
           </tbody>
         </table>
-        <p class="chart-note">Medidas del cuerpo en centímetros.</p>
+        <p class="chart-note">
+          Medidas del cuerpo en centímetros, tomadas alrededor del cuerpo. Son un estimado: la bengalina se estira bastante. Si te queda
+          chico, lo cambiás dentro de los {returnsPolicy.exchangeDays} días (<a href="/#cambios">política de cambios</a>).
+        </p>
       </div>
     </div>
   </section>
@@ -52,6 +66,11 @@ const askHref = whatsappHref('¡Hola Evhtian! Quiero que me ayuden a elegir mi t
   }
   h2 .accent {
     color: var(--gold-700);
+  }
+  .sizes-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
   }
   .sizes-copy p {
     margin-block: var(--s-5);
@@ -80,6 +99,9 @@ const askHref = whatsappHref('¡Hola Evhtian! Quiero que me ayuden a elegir mi t
   }
   tbody th {
     font-weight: 600;
+  }
+  .chart-note a {
+    color: var(--gold-700);
   }
   .chart-note {
     margin-top: var(--s-3);

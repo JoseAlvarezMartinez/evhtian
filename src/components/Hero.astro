@@ -2,7 +2,7 @@
 import ProductVisual from './ProductVisual.astro';
 import BrandMark from './BrandMark.astro';
 import Icon from './Icon.astro';
-import { site, formatARS, saleOff, saleSaving } from '../config/site';
+import { site, formatARS, saleOff, saleSaving, installmentsPhrase, installmentsTotal } from '../config/site';
 import { colors, models } from '../data/catalog';
 ---
 <section class="hero" aria-labelledby="hero-title">
@@ -27,6 +27,7 @@ import { colors, models } from '../data/catalog';
           <strong><span class="sr-only">Ahora: </span>{formatARS(site.price)}</strong>
         </p>
         <p class="hp-note"><span class="saving">Ahorrás {formatARS(saleSaving)}</span> en el conjunto completo, chaqueta y pantalón.</p>
+        <p class="hp-note">O en <strong class="hp-cuotas">{installmentsPhrase}</strong> con débito (total {formatARS(installmentsTotal)}).</p>
       </div>
       <div class="hero-ctas">
         <a class="btn" href="#coleccion">Elegir mi ambo <Icon name="arrow" /></a>
@@ -187,6 +188,13 @@ import { colors, models } from '../data/catalog';
     margin-top: var(--s-2);
     font-size: var(--step--1);
     color: var(--ink-2);
+  }
+  .hp-note + .hp-note {
+    margin-top: var(--s-1);
+  }
+  .hp-cuotas {
+    color: var(--ink);
+    font-weight: 600;
   }
   .qp-was {
     display: flex;

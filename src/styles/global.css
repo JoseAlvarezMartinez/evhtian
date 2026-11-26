@@ -509,7 +509,9 @@ textarea {
 
 .sizes {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* Una columna por talle del modelo (Essential 4, Terra 3). */
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   gap: 0.5rem;
   border: 0;
   padding: 0;

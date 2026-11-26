@@ -6,11 +6,12 @@ import ProductCard from '../../components/ProductCard.astro';
 import BuyForm from '../../components/BuyForm.astro';
 import FabricStory from '../../components/FabricStory.astro';
 import Sizes from '../../components/Sizes.astro';
+import SizeGuide from '../../components/SizeGuide.astro';
 import Icon from '../../components/Icon.astro';
-import { colors, models, type ColorId, type Model } from '../../data/catalog';
+import { colors, models, sizeChartFor, sizeRange, type ColorId, type Model } from '../../data/catalog';
 import Lightbox from '../../components/Lightbox.astro';
 import { detailPhotos, hasAllPhotos, hasColorDetails } from '../../data/photos';
-import { site, formatARS, whatsappHref, saleOff, saleSaving } from '../../config/site';
+import { site, formatARS, whatsappHref, saleOff, saleSaving, installments, installmentsPhrase, installmentsTotal } from '../../config/site';
 import { tigre, returnsPolicy } from '../../config/shipping';
 import { photoFor } from '../../data/photos';
 import { breadcrumbNode, productGroupNode, shareImage, skuFor } from '../../lib/seo';
@@ -38,7 +39,7 @@ const origin = Astro.site!;
 const pageUrl = new URL(`/ambos/${model.id}/`, origin);
 const colorName = colors.find((c) => c.id === color)!.name;
 const title = `Ambo ${model.name} para mujer en bengalina elastizada | ${site.name}`;
-const description = `Ambo ${model.name} para mujer en bengalina: ${model.summary}. 5 colores, talles XS a L, a ${formatARS(site.price)}. Envíos a todo el país.`;
+const description = `Ambo ${model.name} para mujer en bengalina: ${model.summary}. 5 colores, talles ${sizeRange(model.id)}, a ${formatARS(site.price)}. Envíos a todo el país.`;
 const cover = photoFor(model.id, color);
 const image = cover && { ...(await shareImage(cover, origin)), alt: `Ambo ${model.name} para mujer en ${colorName.toLowerCase()}, chaqueta y pantalón` };
 const schema = [
@@ -109,9 +110,29 @@ const schema = [
         <span class="pdp-amount"><span class="sr-only">Ahora: </span>{formatARS(site.price)}</span>
         <span class="sale-badge pdp-off">{saleOff}% OFF</span>
         <span class="pdp-sub">Chaqueta + pantalón · <span class="saving">ahorrás {formatARS(saleSaving)}</span></span>
+        <span class="pdp-cuotas">
+          <Icon name="card" />
+          <span>O en <strong>{installmentsPhrase}</strong> con tu tarjeta de débito, vía {installments.provider} (total {formatARS(installmentsTotal)}).</span>
+        </span>
         <span class="pdp-sale"><strong>{site.sale.name}:</strong> este precio es solo hasta el {site.sale.until}.</span>
       </p>
-      <p class="pdp-desc">{model.description}</p>
+      <div class="pdp-feats">
+        {[
+          { id: 'jacket', label: 'Chaqueta', items: model.highlights.jacket },
+          { id: 'pants', label: 'Pantalón', items: model.highlights.pants },
+        ].map((g) => (
+          <div class="pdp-feat">
+            <p class="pdp-feat-label" id={`feat-${g.id}`}>{g.label}</p>
+            <ul role="list" aria-labelledby={`feat-${g.id}`}>
+              {g.items.map((item) => <li><Icon name="check" /> {item}</li>)}
+            </ul>
+          </div>
+        ))}
+        <div class="pdp-feat pdp-fit">
+          <p class="pdp-feat-label" id="feat-fit">Calce</p>
+          <p><Icon name="hanger" /> <span><strong>{model.fit.name}:</strong> {model.fit.text}</span></p>
+        </div>
+      </div>
       <BuyForm uid="pdp" model={model.id} color={color} />
       <ul class="pdp-pay pdp-assure" role="list">
         <li><Icon name="truck" /> Envíos a todo el país</li>
@@ -128,6 +149,7 @@ const schema = [
     </div>
   </section>
   {zoomable && <Lightbox model={model.id} />}
+  {sizeChartFor(model.id).length > 0 && <SizeGuide model={model.id} />}
 
   <section class="spec section" aria-labelledby="spec-title">
     <div class="wrap">
@@ -156,7 +178,7 @@ const schema = [
   </section>
 
   <FabricStory />
-  <Sizes />
+  <Sizes model={model.id} />
 
   <section class="other section" aria-labelledby="other-title">
     <div class="wrap other-grid">
@@ -362,6 +384,27 @@ const schema = [
     font-size: var(--step--1);
     color: var(--ink-2);
   }
+  .pdp-cuotas {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    flex-basis: 100%;
+    margin-top: var(--s-2);
+    font-size: var(--step--1);
+    line-height: 1.45;
+    color: var(--ink-2);
+  }
+  .pdp-cuotas strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .pdp-cuotas :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.05rem;
+    flex: none;
+    color: var(--gold-700);
+  }
   .pdp-sale {
     flex-basis: 100%;
     margin-top: var(--s-2);
@@ -372,9 +415,53 @@ const schema = [
     color: var(--gold-700);
     font-weight: 600;
   }
-  .pdp-desc {
+  /* Características del modelo, debajo del precio */
+  .pdp-feats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-4) var(--s-5);
     margin-block: var(--s-5);
+  }
+  .pdp-feat-label {
+    margin-bottom: var(--s-2);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .pdp-feat ul {
+    display: grid;
+    gap: var(--s-2);
+  }
+  .pdp-feat li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .pdp-fit {
+    grid-column: 1 / -1;
+  }
+  .pdp-fit > p:last-child {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    line-height: 1.45;
     color: var(--ink-2);
+  }
+  .pdp-fit strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .pdp-feat li :global(svg),
+  .pdp-fit :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.05rem;
+    flex: none;
+    color: var(--gold-700);
   }
   .pdp-pay {
     display: grid;
@@ -483,7 +570,8 @@ const schema = [
     }
   }
   @media (max-width: 420px) {
-    .pdp-pay {
+    .pdp-pay,
+    .pdp-feats {
       grid-template-columns: minmax(0, 1fr);
     }
   }

@@ -24,13 +24,14 @@ Ambo médico pensado como prenda de diseño, exclusivamente para mujer, con iden
 
 ## Operating Context
 
-- Catálogo: 2 modelos de ambo (conjunto chaqueta + pantalón), cada uno en 5 colores: bordó, rosa, negro, azul marino, verde militar. Talles: XS, S, M, L.
-- **Essential** (confirmado): chaqueta cuello V y bolsillos frontales amplios; pantalón de cintura elastizada (negra en la foto de referencia), corte recto, bolsillos laterales tradicionales y bolsillo tipo cargo.
-- **Terra** (confirmado): chaqueta cuello V; pantalón con ajuste de cordón interno y bolsillos laterales (en la foto: pierna amplia con bolsillos con tapa).
+- Catálogo: 2 modelos de ambo (conjunto chaqueta + pantalón), cada uno en 5 colores: bordó, rosa, negro, azul marino, verde militar. Talles: XS, S, M, L (el Terra viene en S, M y L).
+- **Essential** (confirmado): chaqueta cuello V y bolsillos frontales amplios, uno de ellos doble (un bolsillo más chico sobre el grande, confirmado 2026-11-26); pantalón de cintura elastizada (negra en la foto de referencia), corte recto, bolsillos laterales tradicionales y bolsillo tipo cargo. Talles XS a L, con tabla de medidas.
+- **Terra** (confirmado 2026-11-26): chaqueta cuello V con bolsillo frontal en el pecho izquierdo y bolsillos laterales; pantalón de cintura elastizada con cordón, doble bolsillo cargo y bolsillos laterales. Tabla de medidas en S, M y L (sin XS en la tabla del usuario; el sitio ofrece Terra en S a L).
+- Calce (confirmado 2026-11-26): el Essential es más entallado; el Terra, más dinámico. Las tablas publicadas amplían cada talle (mínimo −5 cm, máximo +10 cm) por la elasticidad de la bengalina, y la guía aclara que es un estimado y remite a la política de cambios.
 - Tela (ambos modelos, confirmada): bengalina elastizada (lisa) de rayón, nylon 28% y spandex 4%. Tacto suave, calce firme, se adapta al cuerpo sin perder la forma, resistente; estructura + confort. El sitio la nombra «bengalina» (término conocido y buscado en Argentina); no se menciona al proveedor.
 - Dominio: evhtian.com.ar (visto en el material del usuario).
-- Precio: $60.000 ARS cada ambo (confirmado por el usuario).
-- Medios de pago (actualizado 2026-11-18): transferencia bancaria y Mercado Pago. Efectivo al recibir solo para entregas en la zona de Tigre, Buenos Aires. **No** se ofrecen cuotas sin interés (el usuario las quitó).
+- Precio: $65.000 ARS cada ambo (actualizado por el usuario el 2026-11-26; antes $60.000). Precio de lista $130.000.
+- Medios de pago (actualizado 2026-11-26): transferencia bancaria y Mercado Pago. Efectivo al recibir solo para entregas en la zona de Tigre, Buenos Aires. Cuotas: 3 cuotas de $25.000 por ambo con tarjeta de débito a través de GOcuotas (total en cuotas $75.000, más que el contado: el sitio siempre muestra el total). **No** hay cuotas sin interés.
 - Promo grupal: 30% off comprando junto con compañeras/os. **Asumido (sin confirmar):** se activa desde 4 ambos, lectura literal de "más de 3 prendas". Debe ser un único valor configurable.
 - Contacto: WhatsApp e Instagram. Número y usuario: **pendientes** (placeholders configurables).
 - Pedido: sin backend; el carrito arma el mensaje de pedido y lo abre en WhatsApp (decisión de implementación delegada).

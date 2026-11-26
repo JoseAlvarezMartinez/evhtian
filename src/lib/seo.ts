@@ -7,7 +7,7 @@ import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { site, instagramHref, homeDescription } from '../config/site';
 import { returnsPolicy } from '../config/shipping';
-import { colors, fabric, sizes, skuFor, type Model, type ColorId } from '../data/catalog';
+import { colors, fabric, skuFor, type Model, type ColorId } from '../data/catalog';
 import { photoFor } from '../data/photos';
 import { faqs } from '../data/faq';
 
@@ -103,7 +103,7 @@ function offer(url: string, origin: URL): Node {
 
 /**
  * Un modelo como ProductGroup con una variante por color (cada una con su foto, SKU y link que preselecciona el color).
- * Los talles se declaran en el grupo: todos los colores vienen en XS a L al mismo precio.
+ * Los talles se declaran en el grupo: todos los colores vienen en los talles del modelo al mismo precio.
  */
 export async function productGroupNode(model: Model, pageUrl: URL, origin: URL, description: string): Promise<Node> {
   const variants = await Promise.all(
@@ -133,7 +133,7 @@ export async function productGroupNode(model: Model, pageUrl: URL, origin: URL, 
     category: 'Indumentaria > Uniformes > Ambos médicos',
     audience: { '@type': 'PeopleAudience', suggestedGender: 'https://schema.org/Female' },
     material: `${fabric.name}: ${fabric.composition.toLowerCase()}`,
-    size: sizes.join(', '),
+    size: model.sizes.join(', '),
     variesBy: ['https://schema.org/color'],
     image: variants.map((v) => v.image).filter(Boolean),
     hasVariant: variants,

@@ -2,7 +2,7 @@
  * Preguntas frecuentes: se muestran en el inicio (Faq.astro) y se publican como datos estructurados (FAQPage)
  * para Google y los buscadores con IA.
  */
-import { site, formatARS, cashZone } from '../config/site';
+import { site, formatARS, cashZone, installments, installmentsPhrase, installmentsTotal } from '../config/site';
 import { returnsPolicy, tigre } from '../config/shipping';
 
 export const faqs = [
@@ -12,7 +12,7 @@ export const faqs = [
   },
   {
     q: '¿El ambo incluye chaqueta y pantalón?',
-    a: `Sí. Cada ambo es el conjunto completo, chaqueta y pantalón, a ${formatARS(site.price)} con la ${site.sale.name.toLowerCase()} (precio de lista ${formatARS(site.listPrice)}). Elegís el modelo, el color y el talle que quieras.`,
+    a: `Sí. Cada ambo es el conjunto completo, chaqueta y pantalón, a ${formatARS(site.price)} con ${site.sale.phrase} (precio de lista ${formatARS(site.listPrice)}). Elegís el modelo, el color y el talle que quieras.`,
   },
   {
     q: '¿Hasta cuándo dura la promo?',
@@ -32,7 +32,7 @@ export const faqs = [
   },
   {
     q: '¿Qué medios de pago aceptan?',
-    a: `Transferencia bancaria y Mercado Pago. Si tu entrega es en la zona de ${cashZone}, también podés pagar en efectivo cuando recibís tu ambo.`,
+    a: `Transferencia bancaria y Mercado Pago. También podés pagar en ${installmentsPhrase} con tu tarjeta de débito, a través de ${installments.provider} (total en cuotas: ${formatARS(installmentsTotal)} por ambo). Si tu entrega es en la zona de ${cashZone}, además podés pagar en efectivo cuando recibís tu ambo.`,
   },
   {
     q: '¿De qué tela son los ambos?',

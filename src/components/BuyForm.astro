@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { colors, sizes, models, sizeChart, type ColorId, type ModelId } from '../data/catalog';
+import { colors, sizesFor, models, sizeChartFor, type ColorId, type ModelId } from '../data/catalog';
 import { whatsappHref } from '../config/site';
 const sizeAsk = whatsappHref('¡Hola Evhtian! Quiero que me ayuden a elegir mi talle.');
 
@@ -13,6 +13,8 @@ interface Props {
 }
 const { uid, model, color, selectableModel = false, compact = false } = Astro.props;
 const colorName = colors.find((c) => c.id === color)?.name;
+// Con medidas cargadas, «Guía de talles» abre el modal (SizeGuide); sin medidas, la consulta va por WhatsApp.
+const hasGuide = sizeChartFor(model).length > 0;
 ---
 <form class:list={['buy', compact && 'buy--compact']} data-buy data-model={model} novalidate>
   {selectableModel && (
@@ -47,12 +49,12 @@ const colorName = colors.find((c) => c.id === color)?.name;
     <legend class="sr-only">Talle</legend>
     <div class="opt-label">
       <span aria-hidden="true">Talle</span>
-      {!compact && (sizeChart.length
-        ? <a href="#talles" class="guide-link">Guía de talles</a>
+      {!compact && (hasGuide
+        ? <button type="button" class="guide-link guide-btn" data-size-guide-open aria-haspopup="dialog"><Icon name="ruler" /> Guía de talles</button>
         : <a href={sizeAsk} class="guide-link" target="_blank" rel="noopener noreferrer">¿Dudás con el talle? Te asesoramos</a>)}
     </div>
     <div class="sizes">
-      {sizes.map((s) => (
+      {sizesFor(model).map((s) => (
         <label class="size">
           <input type="radio" name={`${uid}-size`} value={s} aria-label={`Talle ${s}`} data-size-input />
           <span>{s}</span>
@@ -91,6 +93,26 @@ const colorName = colors.find((c) => c.id === color)?.name;
   .guide-link {
     font-size: var(--step--1);
     color: var(--gold-700);
+  }
+  .guide-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.2rem 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+  .guide-btn :global(svg) {
+    width: 1.15em;
+    height: 1.15em;
+  }
+  .guide-btn:hover {
+    color: var(--ink);
   }
   .seg {
     display: grid;
