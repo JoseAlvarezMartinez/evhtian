@@ -11,6 +11,7 @@ import { colors, models, type ColorId, type Model } from '../../data/catalog';
 import Lightbox from '../../components/Lightbox.astro';
 import { detailPhotos, hasAllPhotos, hasColorDetails } from '../../data/photos';
 import { site, formatARS, whatsappHref, saleOff, saleSaving } from '../../config/site';
+import { tigre, returnsPolicy } from '../../config/shipping';
 
 export function getStaticPaths() {
   return models.map((model) => ({ params: { slug: model.id }, props: { model } }));
@@ -86,15 +87,21 @@ const ask = whatsappHref(`¡Hola Evhtian! Quiero consultar por el ambo ${model.n
         <span class="pdp-amount"><span class="sr-only">Ahora: </span>{formatARS(site.price)}</span>
         <span class="sale-badge pdp-off">{saleOff}% OFF</span>
         <span class="pdp-sub">Chaqueta + pantalón · <span class="saving">ahorrás {formatARS(saleSaving)}</span></span>
-        <span class="pdp-sale"><strong>{site.sale.name}.</strong> Aprovechala, dura hasta el {site.sale.until}.</span>
+        <span class="pdp-sale"><strong>{site.sale.name}:</strong> este precio es solo hasta el {site.sale.until}.</span>
       </p>
       <p class="pdp-desc">{model.description}</p>
       <BuyForm uid="pdp" model={model.id} color={color} />
+      <ul class="pdp-pay pdp-assure" role="list">
+        <li><Icon name="truck" /> Envíos a todo el país</li>
+        <li><Icon name="pin" /> Entrega en mano en {tigre.zone}</li>
+        <li><Icon name="exchange" /> Cambio de talle en {returnsPolicy.exchangeDays} días</li>
+        <li><Icon name="chat" /> Asesoramiento personal</li>
+      </ul>
       <ul class="pdp-pay" role="list">
         {site.payments.map((p) => <li><Icon name={p.icon} /> {p.short}</li>)}
       </ul>
       <div class="pdp-links">
-        <a class="link-arrow" href={ask} target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" /> Consultar por WhatsApp</a>
+        <a class="link-arrow" href={ask} target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" /> Consultanos por WhatsApp</a>
       </div>
     </div>
   </section>
@@ -365,6 +372,15 @@ const ask = whatsappHref(`¡Hola Evhtian! Quiero consultar por el ambo ${model.n
     height: 1.1rem;
     color: var(--gold-700);
     flex: none;
+  }
+  .pdp-assure {
+    padding-block: var(--s-4);
+    border-block: 1px solid var(--line);
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .pdp-assure + .pdp-pay {
+    margin-top: var(--s-4);
   }
   .pdp-links {
     display: flex;

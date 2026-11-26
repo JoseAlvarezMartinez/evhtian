@@ -6,7 +6,7 @@ export const site = {
   name: 'Evhtian',
   tagline: 'Ambos médicos para mujer',
   description:
-    'Ambos médicos para mujer en bengalina elastizada: elegantes, cómodos e impecables toda la guardia. Essential y Terra en cinco colores, talles XS a L.',
+    'Ambos médicos para mujer en bengalina elastizada: elegantes, cómodos e impecables toda la guardia. Essential y Terra en cinco colores, talles XS a L. Envíos a todo el país.',
 
   /** Precio de cada ambo (chaqueta + pantalón), en pesos argentinos. */
   price: 60000,
@@ -30,8 +30,8 @@ export const site = {
   },
 
   payments: [
-    { id: 'transferencia', label: 'Transferencia bancaria', short: 'Transferencia', icon: 'bank', detail: 'Te enviamos los datos apenas confirmás tu pedido.' },
-    { id: 'mercadopago', label: 'Mercado Pago', short: 'Mercado Pago', icon: 'wallet', detail: 'Te mandamos el link de pago y abonás en segundos.' },
+    { id: 'transferencia', label: 'Transferencia bancaria', short: 'Transferencia', icon: 'bank', detail: 'Te pasamos los datos apenas confirmás tu pedido y listo.' },
+    { id: 'mercadopago', label: 'Mercado Pago', short: 'Mercado Pago', icon: 'wallet', detail: 'Te mandamos el link y pagás en segundos, con el medio que prefieras.' },
     {
       id: 'efectivo',
       label: 'Efectivo al recibir',

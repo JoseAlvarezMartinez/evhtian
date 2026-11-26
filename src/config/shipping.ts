@@ -11,11 +11,9 @@ import { whatsappHref } from './site';
 /** Días hábiles que tardamos en despachar fuera de Tigre desde que se confirma el pago. TODO: confirmar. */
 export const dispatchDays = 2;
 
-/** Partido de Tigre: entrega en mano en el día (y efectivo al recibir). */
+/** Partido de Tigre: entrega en mano coordinada por WhatsApp, con pago en efectivo al recibir. Sin promesa de entrega en el día (decisión de la dueña, 2026-11-26). */
 export const tigre = {
   zone: 'Tigre',
-  /** Pedidos confirmados antes de esta hora (días hábiles) llegan el mismo día. */
-  sameDayCutoff: 12,
 };
 
 /** Política de cambios: solo cambios, sin reembolsos (decisión de la dueña, 2026-11-26). */

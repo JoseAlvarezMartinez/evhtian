@@ -34,7 +34,7 @@ export const fabric = {
   name: 'Bengalina elastizada',
   composition: 'Rayón, nylon (28%) y spandex (4%)',
   summary:
-    'Elegimos una bengalina de tacto suave y calce firme que se adapta a tu cuerpo sin perder la forma. Resiste el ritmo de todos los días y combina la estructura de una prenda sastrera con la comodidad que tu jornada exige.',
+    'Elegimos una bengalina de tacto suave y calce firme que se adapta a tu cuerpo sin perder la forma. Tiene la estructura de una prenda sastrera y la comodidad que tu jornada exige, y resiste el ritmo de todos los días.',
   fibers: [
     { name: 'Rayón', role: 'suavidad al tacto' },
     { name: 'Nylon 28%', role: 'resistencia y durabilidad' },
@@ -44,7 +44,7 @@ export const fabric = {
     {
       image: 'tela-rodilla',
       title: 'Se estira con vos',
-      text: 'Agacharte a la altura de un paciente, sentarte, levantarte: la bengalina acompaña cada movimiento sin tirar ni marcar.',
+      text: 'Agacharte a la altura de un paciente, sentarte, levantarte, volver a empezar: la bengalina acompaña cada movimiento sin tirar ni marcar.',
       alt: 'Médica con ambo Essential bordó y estetoscopio, con una rodilla en el piso y la tela acompañando el movimiento',
     },
     {
@@ -62,7 +62,7 @@ export const fabric = {
     {
       image: 'tela-caminando',
       title: 'Impecable hasta el final',
-      text: 'Resistente y con presencia: terminás la guardia luciendo igual que cuando llegaste.',
+      text: 'Resistente y con presencia: terminás la guardia luciendo igual que cuando llegaste. Nadie diría cuántas horas llevás.',
       alt: 'Médica con ambo Essential verde militar y estetoscopio caminando con paso firme',
     },
   ],
@@ -73,9 +73,9 @@ export const models: Model[] = [
     id: 'essential',
     name: 'Essential',
     tagline: 'El clásico que impone.',
-    teaser: 'Cuello V que estiliza, bolsillos para todo y pantalón recto con cintura elastizada.',
+    teaser: 'Cuello V que estiliza, bolsillos para todo y un pantalón recto con cintura elastizada que no aprieta.',
     description:
-      'El ambo que resuelve tu jornada con elegancia. Chaqueta cuello V que estiliza la figura, bolsillos frontales pensados para tener todo a mano y un pantalón recto con cintura elastizada que no oprime. Terminás la guardia y se sigue viendo impecable.',
+      'El ambo que resuelve tu jornada con elegancia. La chaqueta cuello V estiliza la figura y sus bolsillos frontales amplios te dejan todo a mano. El pantalón recto, con cintura elastizada, bolsillos laterales y bolsillo cargo, acompaña sin apretar. Llegás impecable y terminás la guardia igual.',
     details: [
       'Cuello en V que estiliza',
       'Bolsillos frontales amplios',
@@ -86,25 +86,25 @@ export const models: Model[] = [
     ],
     jacket: [
       { title: 'Cuello en V', text: 'Un diseño clásico y elegante que estiliza la figura.' },
-      { title: 'Bolsillos frontales', text: 'Amplios y ubicados estratégicamente para que tus herramientas esenciales estén siempre a mano.' },
+      { title: 'Bolsillos frontales', text: 'Amplios y bien ubicados, para que tus herramientas de todos los días estén siempre a mano.' },
     ],
     pants: [
-      { title: 'Cintura elastizada', text: 'Un ajuste perfecto y cómodo que no oprime, ideal para las jornadas más intensas.' },
-      { title: 'Corte recto', text: 'Un estilo atemporal que brinda una silueta limpia y profesional.' },
-      { title: 'Capacidad de guardado extra', text: 'Bolsillos laterales tradicionales y un bolsillo tipo cargo para llevar todo lo que necesitás.' },
+      { title: 'Cintura elastizada', text: 'Un ajuste cómodo que no aprieta, ni en la última hora de la guardia.' },
+      { title: 'Corte recto', text: 'Atemporal y prolijo: una silueta limpia y profesional que favorece a todas.' },
+      { title: 'Guardado extra', text: 'Bolsillos laterales y un bolsillo cargo para llevar todo lo que necesitás sin cargar la chaqueta.' },
     ],
   },
   {
     id: 'terra',
     name: 'Terra',
     tagline: 'El moderno que enamora.',
-    teaser: 'Cuello V de líneas limpias y pantalón con cordón interno y bolsillos laterales.',
+    teaser: 'Líneas limpias, cuello V y un pantalón con cordón interno que ajustás a tu medida.',
     description:
-      'Para la que quiere verse actual sin resignar comodidad. Chaqueta cuello V de líneas limpias y un pantalón con cordón interno para ajustar la cintura a tu medida y bolsillos laterales. La misma bengalina suave y elástica, con una silueta moderna que no pasa desapercibida.',
+      'Para la que quiere verse actual sin resignar comodidad. La chaqueta cuello V, de líneas limpias, arma una silueta moderna y prolija. El pantalón se ajusta con cordón interno exactamente a tu medida y suma bolsillos laterales para tener lo esencial a mano. La misma bengalina suave y elástica, con una actitud que no pasa desapercibida.',
     details: ['Cuello en V', 'Ajuste con cordón interno', 'Bolsillos laterales', 'Tela suave y elástica'],
-    jacket: [{ title: 'Cuello en V', text: 'Un diseño clásico y elegante que estiliza la figura.' }],
+    jacket: [{ title: 'Cuello en V', text: 'Líneas limpias que estilizan la figura y enmarcan el rostro.' }],
     pants: [
-      { title: 'Ajuste con cordón interno', text: 'Regulás la cintura a tu medida y te queda perfecto de principio a fin de la jornada.' },
+      { title: 'Ajuste con cordón interno', text: 'Regulás la cintura a tu medida y se queda en su lugar de principio a fin de la jornada.' },
       { title: 'Bolsillos laterales', text: 'Todo lo que necesitás a mano, sin perder la línea del pantalón.' },
     ],
   },

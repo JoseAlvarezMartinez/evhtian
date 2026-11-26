@@ -1,6 +1,6 @@
 ---
 /**
- * Envíos: entrega en el día en Tigre y Andreani al resto del país. El costo se cotiza por WhatsApp
+ * Envíos: entrega en mano en Tigre (con efectivo al recibir) y Andreani al resto del país. El costo se cotiza por WhatsApp
  * (decisión de la dueña, 2026-11-26: sin cotizador en la web). Valores en src/config/shipping.ts.
  */
 import Icon from './Icon.astro';
@@ -11,9 +11,9 @@ const quoteHref = whatsappHref('¡Hola Evhtian! Quiero cotizar el envío.\nLocal
 
 const facts = [
   {
-    icon: 'pin',
-    title: `En ${tigre.zone}, te llega hoy`,
-    text: `Si confirmás tu pedido antes de las ${tigre.sameDayCutoff} h de un día hábil, te lo llevamos en mano ese mismo día. También podés pagar en efectivo al recibir.`,
+    icon: 'cash',
+    title: `En ${tigre.zone}, pagás en efectivo al recibir`,
+    text: 'Te lo llevamos en mano y coordinamos el día y el horario por WhatsApp. Pagás en efectivo cuando tenés tu ambo en las manos, o si preferís, con transferencia o Mercado Pago.',
   },
   {
     icon: 'truck',
@@ -33,8 +33,8 @@ const facts = [
       <header class="section-head">
         <h2 id="envios-title" data-reveal>Tu ambo, <em class="accent">en tu puerta.</em></h2>
         <p data-reveal>
-          Enviamos a todo el país. El costo del envío te lo cotizamos por WhatsApp según tu dirección y la cantidad de ambos, así sabés el
-          total antes de pagar.
+          Enviamos a todo el país. Te cotizamos el envío por WhatsApp según tu dirección y la cantidad de ambos: sabés el total exacto antes
+          de pagar, sin sorpresas.
         </p>
       </header>
       <a class="btn" href={quoteHref} target="_blank" rel="noopener noreferrer" data-reveal>
