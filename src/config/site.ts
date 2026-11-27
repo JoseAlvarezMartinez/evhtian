@@ -51,12 +51,10 @@ export const site = {
 
   contact: {
     /**
-     * Número de WhatsApp en formato internacional, solo dígitos (ej: 5491123456789).
-     * TODO: completar. Vacío = WhatsApp abre con el mensaje listo para elegir el contacto.
+     * Número de WhatsApp en formato internacional, solo dígitos. Celulares de Argentina llevan el 9 después del 54
+     * (+54 11 6043-3866 → 5491160433866), si no wa.me no encuentra el número.
      */
-    whatsapp: '',
-    /** Usuario de Instagram sin @. TODO: confirmar. */
-    instagram: 'evhtian',
+    whatsapp: '5491160433866',
   },
 
   payments: [
@@ -96,5 +94,3 @@ export const whatsappHref = (text: string) => {
   const base = site.contact.whatsapp ? `https://wa.me/${site.contact.whatsapp}` : 'https://wa.me/';
   return `${base}?text=${encodeURIComponent(text)}`;
 };
-
-export const instagramHref = `https://www.instagram.com/${site.contact.instagram}/`;

@@ -47,13 +47,12 @@ Todo lo que cambia está en dos archivos:
 
 | Archivo | Qué tiene |
 |---|---|
-| `src/config/site.ts` | Precio, promo (mínimo de ambos y %), **número de WhatsApp**, **usuario de Instagram**, medios de pago y zona de efectivo (`cashZone`) |
+| `src/config/site.ts` | Precio, promo (mínimo de ambos y %), **número de WhatsApp**, medios de pago y zona de efectivo (`cashZone`) |
 | `src/data/catalog.ts` | Modelos Essential y Terra (descripción y características), tela (bengalina), colores, talles y tabla de medidas |
 
 Pendientes marcados con `TODO` en el código:
 
-- [ ] **Número de WhatsApp** (`site.ts` → `contact.whatsapp`, solo dígitos, ej: `5491123456789`). Mientras esté vacío, WhatsApp se abre con el mensaje listo para elegir el contacto.
-- [ ] **Usuario de Instagram** (`contact.instagram`; hoy dice `evhtian`).
+- [x] **Número de WhatsApp** (`site.ts` → `contact.whatsapp`): `5491160433866`. La web no enlaza a Instagram.
 - [ ] **Promo**: confirmar si arranca en 3 o en 4 ambos (`promo.minItems`; hoy 4).
 - [ ] **Tabla de medidas** (opcional): si completás `sizeChart` en `catalog.ts`, aparece sola una sección de talles con la tabla y el link «Guía de talles» en cada modelo. Mientras tanto, la consulta de talle va por WhatsApp.
 - [ ] **Fotos de producto**: mientras no haya fotos, el sitio muestra ilustraciones dibujadas a partir de las fotos de referencia. Para pasar a fotos, copiá los archivos en `src/assets/products/` con los nombres que indica `src/assets/products/LEEME.md` (por ejemplo `essential-bordo.jpg`). Cada modelo pasa a fotos solo cuando tiene sus 5 colores. Se optimizan solas al compilar (AVIF/WebP en varios tamaños) y también se usan como miniaturas en el carrito.

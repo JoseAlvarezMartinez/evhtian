@@ -16,7 +16,7 @@ Mujeres profesionales de la salud en Argentina (médicas, residentes, enfermeras
 
 ## Product Purpose
 
-Tienda online de Evhtian: vender ambos médicos de mujer y llevar a la visitante a iniciar el pedido. Éxito = pedido enviado por WhatsApp (o contacto por Instagram) con modelo, color, talle y cantidad ya definidos.
+Tienda online de Evhtian: vender ambos médicos de mujer y llevar a la visitante a iniciar el pedido. Éxito = pedido enviado por WhatsApp con modelo, color, talle y cantidad ya definidos.
 
 ## Positioning
 
@@ -33,7 +33,7 @@ Ambo médico pensado como prenda de diseño, exclusivamente para mujer, con iden
 - Precio: $65.000 ARS cada ambo (actualizado por el usuario el 2026-11-26; antes $60.000). Precio de lista $130.000.
 - Medios de pago (actualizado 2026-11-26): transferencia bancaria y Mercado Pago. Efectivo al recibir solo para entregas en la zona de Tigre, Buenos Aires. Cuotas: 3 cuotas de $25.000 por ambo con tarjeta de débito a través de GOcuotas (total en cuotas $75.000, más que el contado: el sitio siempre muestra el total). **No** hay cuotas sin interés.
 - Promo grupal: 30% off comprando junto con compañeras/os. **Asumido (sin confirmar):** se activa desde 4 ambos, lectura literal de "más de 3 prendas". Debe ser un único valor configurable.
-- Contacto: WhatsApp e Instagram. Número y usuario: **pendientes** (placeholders configurables).
+- Contacto: solo WhatsApp (+54 9 11 6043-3866). La web no enlaza a Instagram (decisión de la dueña, 2026-11-26).
 - Pedido: sin backend; el carrito arma el mensaje de pedido y lo abre en WhatsApp (decisión de implementación delegada).
 
 ## Capabilities and Constraints

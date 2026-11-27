@@ -1,7 +1,6 @@
 ---
 import BrandMark from './BrandMark.astro';
 import Icon from './Icon.astro';
-import { instagramHref } from '../config/site';
 
 const links = [
   { href: '/#coleccion', label: 'Colección' },
@@ -30,9 +29,6 @@ const links = [
     </nav>
 
     <div class="actions">
-      <a class="icon-btn ig" href={instagramHref} target="_blank" rel="noopener noreferrer" aria-label="Instagram de Evhtian">
-        <Icon name="instagram" />
-      </a>
       <button class="icon-btn cart-btn" type="button" data-cart-open aria-label="Abrir carrito, 0 ambos" data-cart-label>
         <Icon name="bag" />
         <span class="cart-count tnum" data-cart-count hidden>0</span>
@@ -271,9 +267,6 @@ const links = [
     }
     .brand :global(.brand-mark) {
       width: 1.75rem;
-    }
-    .ig {
-      display: none;
     }
   }
 </style>

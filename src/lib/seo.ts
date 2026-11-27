@@ -5,7 +5,7 @@
  */
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { site, instagramHref, homeDescription } from '../config/site';
+import { site, homeDescription } from '../config/site';
 import { returnsPolicy } from '../config/shipping';
 import { colors, fabric, skuFor, type Model, type ColorId } from '../data/catalog';
 import { photoFor } from '../data/photos';
@@ -43,7 +43,7 @@ export function siteNodes(origin: URL, logo: URL): Node[] {
       image: logo.href,
       description: homeDescription,
       slogan: site.tagline,
-      sameAs: [instagramHref],
+      telephone: '+54 9 11 6043-3866',
       areaServed: { '@type': 'Country', name: 'Argentina' },
       currenciesAccepted: 'ARS',
       paymentAccepted: site.payments.map((p) => p.label).join(', '),

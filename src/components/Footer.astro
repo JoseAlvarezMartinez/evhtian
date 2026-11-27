@@ -1,7 +1,7 @@
 ---
 import BrandMark from './BrandMark.astro';
 import Icon from './Icon.astro';
-import { site, instagramHref, whatsappHref } from '../config/site';
+import { site, whatsappHref } from '../config/site';
 import { regretHref } from '../config/shipping';
 const year = new Date().getFullYear();
 const wa = whatsappHref('¡Hola Evhtian! Tengo una consulta.');
@@ -37,7 +37,6 @@ const wa = whatsappHref('¡Hola Evhtian! Tengo una consulta.');
           <p class="f-title">Contacto</p>
           <ul role="list">
             <li><a href={wa} target="_blank" rel="noopener noreferrer" class="f-social"><Icon name="whatsapp" /> WhatsApp</a></li>
-            <li><a href={instagramHref} target="_blank" rel="noopener noreferrer" class="f-social"><Icon name="instagram" /> @{site.contact.instagram}</a></li>
           </ul>
         </div>
       </nav>
