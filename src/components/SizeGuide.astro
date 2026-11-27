@@ -1,0 +1,668 @@
+---
+/**
+ * Guía de talles de un modelo, en un <dialog>.
+ * Se abre sola la primera vez que la clienta elige un talle en la ficha, y siempre desde «Guía de talles».
+ * Enseña a medirse alrededor del cuerpo (como un cinturón, no solo de frente) y muestra la tabla del modelo.
+ * Tocar una fila elige ese talle en el formulario de compra (lo conecta src/scripts/main.ts).
+ */
+import Icon from './Icon.astro';
+import { models, sizeChartFor, type ModelId } from '../data/catalog';
+import { whatsappHref } from '../config/site';
+import { returnsPolicy } from '../config/shipping';
+
+interface Props {
+  model: ModelId;
+}
+const { model } = Astro.props;
+const info = models.find((m) => m.id === model);
+const name = info?.name ?? model;
+const chart = sizeChartFor(model);
+const ask = whatsappHref(`¡Hola Evhtian! Quiero que me ayuden a elegir mi talle del ambo ${name}.`);
+
+// Maniquí de costura (viewBox de 120 × 200, centrado en x = 60). Lo comparten las tres figuras.
+const body =
+  'M53 22C47 25 36 28 30 33C27 36 28 42 28 46C28 52 23 56 24 64C25 76 37 88 38 100C39 112 24 122 24 134C24 143 27 150 32 153Q60 160 88 153C93 150 96 143 96 134C96 122 81 112 82 100C83 88 95 76 96 64C97 56 92 52 92 46C92 42 93 36 90 33C84 28 73 25 67 22Z';
+const neck = 'M54 22V9.5h12V22';
+const stand = 'M60 157V188M47 190.5h26';
+
+// Cinta alrededor del cuerpo: el tramo de adelante entero y el de la espalda punteado.
+const band = (y: number, rx: number, ry = 5.5) => ({
+  front: `M${60 - rx} ${y}A${rx} ${ry} 0 0 0 ${60 + rx} ${y}`,
+  back: `M${60 - rx} ${y}A${rx} ${ry} 0 0 1 ${60 + rx} ${y}`,
+});
+
+const points = [
+  {
+    label: 'Busto',
+    y: 62,
+    rx: 38,
+    text: 'Por la parte más llena del busto, bajo las axilas y cruzando la espalda. Con el corpiño que usás todos los días.',
+  },
+  {
+    label: 'Cintura',
+    y: 100,
+    rx: 23.5,
+    text: 'Alrededor de la cintura, a la altura del ombligo.',
+  },
+  {
+    label: 'Cadera',
+    y: 134,
+    rx: 37.5,
+    text: 'Por la parte más ancha de la cola, con los pies juntos.',
+  },
+].map((p) => ({ ...p, ...band(p.y, p.rx) }));
+// En «así sí» la elipse es más abierta, para que se vea bien que la cinta pasa por la espalda.
+const waist = band(100, 24.5, 8);
+---
+<dialog class="sg" aria-labelledby="sg-title" aria-describedby="sg-sub" data-size-guide data-model={model}>
+  <div class="sg-inner">
+    <header class="sg-head">
+      <div>
+        <h2 id="sg-title">Guía de talles</h2>
+        <p id="sg-sub" class="sg-sub">Ambo {name} · medidas del cuerpo en centímetros</p>
+      </div>
+      <button class="sg-close" type="button" data-size-guide-close aria-label="Cerrar guía de talles"><Icon name="close" /></button>
+    </header>
+
+    <div class="sg-body" data-size-guide-body>
+      <section class="sg-how" aria-labelledby="sg-how-title">
+        <h3 id="sg-how-title">Medite como si te pusieras un cinturón</h3>
+        <p class="sg-lead">
+          La cinta métrica da <strong>toda la vuelta al cuerpo</strong>: pasa por la espalda y vuelve a juntarse adelante. Si medís solo de
+          frente, de costado a costado, obtenés más o menos la mitad de tu medida real y terminás eligiendo un talle que te queda chico.
+        </p>
+
+        <div class="sg-compare">
+          <figure class="sg-case sg-case--do">
+            <svg viewBox="12 0 96 196" role="img" aria-label="La cinta rodea la cintura del maniquí por adelante y por la espalda">
+              <path class="sg-stand" d={stand} />
+              <path class="sg-neck" d={neck} />
+              <path class="sg-body-shape" d={body} />
+              <path class="sg-tape-back" d={waist.back} />
+              <path class="sg-tape" d={waist.front} />
+            </svg>
+            <figcaption>
+              <strong><Icon name="check" /> Así sí</strong>
+              <span>Toda la vuelta, como un cinturón.</span>
+            </figcaption>
+          </figure>
+          <figure class="sg-case sg-case--dont">
+            <svg viewBox="12 0 96 196" role="img" aria-label="La cinta cruza la cintura solo por adelante, de costado a costado">
+              <path class="sg-stand" d={stand} />
+              <path class="sg-neck" d={neck} />
+              <path class="sg-body-shape" d={body} />
+              <path class="sg-tape-wrong" d="M38.5 103H81.5M38.5 98.5v9M81.5 98.5v9" />
+            </svg>
+            <figcaption>
+              <strong><Icon name="close" /> Así no</strong>
+              <span>Solo de frente: te da la mitad.</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <h3 class="sg-where">Dónde pasar la cinta</h3>
+        <div class="sg-points">
+          <svg class="sg-map" viewBox="0 0 160 196" aria-hidden="true">
+            <path class="sg-stand" d={stand} />
+            <path class="sg-neck" d={neck} />
+            <path class="sg-body-shape" d={body} />
+            {points.map((p) => (
+              <g>
+                <path class="sg-tape-back" d={p.back} />
+                <path class="sg-tape" d={p.front} />
+                <path class="sg-leader" d={`M${60 + p.rx + 3} ${p.y}H112`} />
+                <text class="sg-tag" x="115" y={p.y + 3.2}>{p.label}</text>
+              </g>
+            ))}
+          </svg>
+          <dl class="sg-list">
+            {points.map((p) => (
+              <div>
+                <dt>{p.label}</dt>
+                <dd>{p.text}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        <ul class="sg-tips" role="list">
+          <li>La cinta va derecha, paralela al piso, apoyada sobre el cuerpo pero sin apretar.</li>
+          <li>Medite parada, relajada y sin meter panza, en ropa interior o con una prenda finita.</li>
+        </ul>
+      </section>
+
+      <section class="sg-chart" aria-labelledby="sg-chart-title">
+        <h3 id="sg-chart-title">Encontrá tu talle</h3>
+        <p class="sg-chart-intro">Buscá la fila donde entran tus medidas y tocala para elegir ese talle.</p>
+        {info && (
+          <p class="sg-fit"><Icon name="hanger" /> <span><strong>Calce {info.fit.name.toLowerCase()}.</strong> {info.fit.text[0].toUpperCase() + info.fit.text.slice(1)}</span></p>
+        )}
+        <table>
+          <caption class="sr-only">Medidas del cuerpo por talle del ambo {name}, en centímetros</caption>
+          <thead>
+            <tr><th scope="col">Talle</th><th scope="col">Busto</th><th scope="col">Cintura</th><th scope="col">Cadera</th></tr>
+          </thead>
+          <tbody class="tnum">
+            {chart.map((r) => (
+              <tr data-size-row={r.size}>
+                <th scope="row">
+                  <button type="button" data-size-pick aria-pressed="false" aria-label={`Elegir talle ${r.size}`}>{r.size}</button>
+                </th>
+                <td>{r.busto}</td>
+                <td>{r.cintura}</td>
+                <td>{r.cadera}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="sg-estimate">
+          <strong>La tabla es un estimado, no una medida exacta.</strong> La bengalina se estira bastante y se adapta a tu cuerpo. Si igual
+          te queda chico, podés cambiarlo por otro talle dentro de los {returnsPolicy.exchangeDays} días, como explica nuestra
+          <a href="/#cambios">política de cambios</a>.
+        </p>
+        <p class="sg-help">
+          ¿Quedaste entre dos talles? <a href={ask} target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a> y te ayudamos a
+          elegir.
+        </p>
+      </section>
+    </div>
+
+    <footer class="sg-foot">
+      <p class="sg-assure"><Icon name="exchange" /> Cambio de talle en {returnsPolicy.exchangeDays} días</p>
+      <button class="btn sg-confirm" type="button" data-size-guide-confirm>Entendido</button>
+    </footer>
+  </div>
+</dialog>
+
+<style>
+  .sg {
+    width: min(100vw - 3rem, 66rem);
+    max-width: none;
+    max-height: min(100dvh - 3rem, 54rem);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: var(--shadow-3);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition:
+      opacity 420ms var(--ease-out),
+      transform 520ms var(--ease-out),
+      overlay 520ms allow-discrete,
+      display 520ms allow-discrete;
+  }
+  .sg[open] {
+    opacity: 1;
+    transform: none;
+  }
+  @starting-style {
+    .sg[open] {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+  }
+  .sg::backdrop {
+    background: rgb(15 14 12 / 0);
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+    transition:
+      background-color 520ms var(--ease-out),
+      backdrop-filter 520ms var(--ease-out),
+      overlay 520ms allow-discrete,
+      display 520ms allow-discrete;
+  }
+  .sg[open]::backdrop {
+    background: rgb(15 14 12 / 0.45);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+  }
+  @starting-style {
+    .sg[open]::backdrop {
+      background: rgb(15 14 12 / 0);
+      backdrop-filter: blur(0);
+    }
+  }
+
+  /* Columna: cabecera y pie fijos, el cuerpo hace scroll. */
+  .sg-inner {
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
+  }
+  .sg-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding: var(--s-5) var(--s-6) var(--s-4);
+    border-bottom: 1px solid var(--line);
+  }
+  .sg-head h2 {
+    font-size: var(--step-3);
+  }
+  .sg-sub {
+    margin-top: var(--s-1);
+    font-size: var(--step--1);
+    color: var(--ink-3);
+  }
+  .sg-close {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin: -0.35rem -0.6rem 0 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background-color var(--dur-1) var(--ease-out);
+  }
+  .sg-close:hover {
+    background: var(--paper-2);
+  }
+  .sg-close :global(svg) {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .sg-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+    gap: var(--s-7);
+    align-items: start;
+    padding: var(--s-6);
+  }
+  h3 {
+    font-size: var(--step-1);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .sg-lead {
+    margin-top: var(--s-3);
+    color: var(--ink-2);
+  }
+  .sg-lead strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* Así sí / así no */
+  .sg-compare {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-3);
+    margin-top: var(--s-5);
+  }
+  .sg-case {
+    display: grid;
+    justify-items: center;
+    gap: var(--s-3);
+    padding: var(--s-4) var(--s-3) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--paper-2);
+  }
+  .sg-case svg {
+    width: auto;
+    height: 9rem;
+    overflow: visible;
+  }
+  .sg-case figcaption {
+    display: grid;
+    gap: 0.15rem;
+    text-align: center;
+    font-size: var(--step--1);
+    line-height: 1.4;
+    color: var(--ink-2);
+  }
+  .sg-case figcaption strong {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .sg-case figcaption :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    stroke-width: 2;
+  }
+  .sg-case--do figcaption :global(svg) {
+    color: var(--ok);
+  }
+  .sg-case--dont figcaption :global(svg) {
+    color: var(--danger);
+  }
+
+  /* Dibujo del maniquí y la cinta */
+  .sg-body-shape {
+    fill: var(--paper-3);
+    stroke: var(--ink-3);
+    stroke-width: 1.25;
+    stroke-linejoin: round;
+  }
+  .sg-neck,
+  .sg-stand {
+    fill: none;
+    stroke: var(--ink-3);
+    stroke-width: 1.25;
+    stroke-linecap: round;
+  }
+  .sg-tape {
+    fill: none;
+    stroke: var(--gold-600);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+  .sg-tape-back {
+    fill: none;
+    stroke: var(--gold-600);
+    stroke-width: 1.5;
+    stroke-dasharray: 2.5 3;
+    stroke-linecap: round;
+  }
+  .sg-tape-wrong {
+    fill: none;
+    stroke: var(--danger);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+  .sg-leader {
+    fill: none;
+    stroke: var(--line-strong);
+    stroke-width: 1;
+  }
+  .sg-tag {
+    fill: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 9.5px;
+    font-weight: 600;
+  }
+
+  /* Dónde pasar la cinta */
+  .sg-where {
+    margin-top: var(--s-6);
+  }
+  .sg-points {
+    display: grid;
+    grid-template-columns: 10.5rem minmax(0, 1fr);
+    gap: var(--s-5);
+    align-items: start;
+    margin-top: var(--s-4);
+  }
+  .sg-map {
+    width: 100%;
+    height: auto;
+  }
+  .sg-list {
+    border-top: 1px solid var(--ink);
+  }
+  .sg-list > div {
+    padding-block: var(--s-3);
+    border-bottom: 1px solid var(--line);
+  }
+  .sg-list dt {
+    font-weight: 600;
+  }
+  .sg-list dd {
+    margin-top: 0.15rem;
+    font-size: var(--step--1);
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .sg-tips {
+    display: grid;
+    gap: var(--s-2);
+    margin-top: var(--s-5);
+    font-size: var(--step--1);
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .sg-tips li {
+    position: relative;
+    padding-left: 1.1rem;
+  }
+  .sg-tips li::before {
+    content: '';
+    position: absolute;
+    left: 0.15rem;
+    top: 0.62em;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 50%;
+    background: var(--gold-600);
+  }
+
+  /* Tabla */
+  .sg-chart {
+    position: sticky;
+    top: 0;
+  }
+  .sg-chart-intro {
+    margin-top: var(--s-2);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+  table {
+    width: 100%;
+    margin-top: var(--s-4);
+    border-collapse: collapse;
+  }
+  th,
+  td {
+    padding: 0.95rem 0.7rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+  thead th {
+    padding-block: 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border-bottom-color: var(--ink);
+  }
+  tbody td {
+    font-weight: 500;
+  }
+  /* El fondo va en las celdas (no en la fila) para que no queden costuras entre columnas. */
+  tbody tr {
+    cursor: pointer;
+  }
+  tbody tr > * {
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+  tbody tr:hover > * {
+    --row: var(--paper-2);
+    background: var(--row);
+  }
+  tbody tr.is-picked > * {
+    --row: var(--ink);
+    background: var(--row);
+    color: var(--paper);
+    border-bottom-color: var(--ink);
+  }
+  /* Tapa la línea de antialias entre celdas con anchos fraccionarios. */
+  tbody tr:is(:hover, .is-picked) > :not(:last-child) {
+    box-shadow: 1px 0 0 var(--row);
+  }
+  [data-size-pick] {
+    min-width: 2.75rem;
+    min-height: 2.25rem;
+    margin: -0.5rem 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius);
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-align: left;
+    cursor: pointer;
+  }
+  [data-size-pick]:focus-visible {
+    outline: 2px solid var(--gold-700);
+    outline-offset: 2px;
+  }
+  tr.is-picked [data-size-pick]:focus-visible {
+    outline-color: var(--gold-200);
+  }
+  .sg-fit {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: var(--s-4);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .sg-fit strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .sg-fit :global(svg) {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.05rem;
+    flex: none;
+    color: var(--gold-700);
+  }
+  .sg-estimate {
+    margin-top: var(--s-4);
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--radius-lg);
+    background: var(--paper-2);
+    font-size: var(--step--1);
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .sg-estimate strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .sg-estimate a {
+    color: var(--gold-700);
+    font-weight: 500;
+  }
+  .sg-help {
+    margin-top: var(--s-3);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+  .sg-help a {
+    color: var(--gold-700);
+    font-weight: 500;
+  }
+
+  .sg-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3) var(--s-5);
+    padding: var(--s-4) var(--s-6);
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+  }
+  .sg-assure {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+  .sg-assure :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex: none;
+    color: var(--gold-700);
+  }
+  .sg-confirm {
+    min-width: 15rem;
+  }
+
+  @media (max-width: 900px) {
+    .sg-body {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-6);
+    }
+    .sg-chart {
+      position: static;
+      padding-top: var(--s-6);
+      border-top: 1px solid var(--line);
+    }
+  }
+
+  /* Celular: hoja que sube desde abajo y ocupa casi toda la pantalla. */
+  @media (max-width: 640px) {
+    .sg {
+      width: 100%;
+      max-height: calc(100dvh - 0.75rem);
+      margin: auto 0 0;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      transform: translateY(100%);
+      opacity: 1;
+    }
+    @starting-style {
+      .sg[open] {
+        opacity: 1;
+        transform: translateY(100%);
+      }
+    }
+    .sg-head {
+      padding: var(--s-4) var(--s-4) var(--s-3);
+    }
+    .sg-body {
+      padding: var(--s-5) var(--s-4) var(--s-6);
+    }
+    .sg-points {
+      grid-template-columns: 8.5rem minmax(0, 1fr);
+      gap: var(--s-3);
+    }
+    th,
+    td {
+      padding-inline: 0.5rem;
+    }
+    .sg-foot {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      gap: var(--s-2);
+      padding: var(--s-3) var(--s-4) calc(var(--s-3) + env(safe-area-inset-bottom));
+    }
+    .sg-assure {
+      justify-content: center;
+    }
+    .sg-confirm {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+  @media (max-width: 400px) {
+    .sg-points {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .sg-map {
+      width: 11rem;
+      justify-self: center;
+    }
+    .sg-case svg {
+      height: 7.5rem;
+    }
+  }
+</style>

@@ -76,7 +76,7 @@ Cualquier hosting estático sirve. Recomendado: Vercel, Netlify o Cloudflare Pag
 - Carpeta a publicar: `dist`
 - Variable de entorno (opcional): `SITE_URL`, por defecto `https://evhtian.com.ar`
 
-Los encabezados de seguridad ya vienen configurados en `vercel.json` (Vercel) y `public/_headers` (Netlify / Cloudflare).
+Los encabezados de seguridad vienen configurados en `vercel.json` (Vercel). Si algún día se publica en Netlify o Cloudflare Pages, hay que copiar esas mismas cabeceras a su archivo `_headers`.
 
 ## Seguridad y rendimiento
 

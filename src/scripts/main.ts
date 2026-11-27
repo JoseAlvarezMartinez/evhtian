@@ -36,9 +36,9 @@ function isItem(x: unknown): x is Item {
   if (!x || typeof x !== 'object') return false;
   const o = x as Record<string, unknown>;
   return (
-    models.some((m) => m.id === o.model) &&
     colors.some((c) => c.id === o.color) &&
-    sizes.includes(o.size as SizeId) &&
+    // El talle tiene que ser uno de los que vende ese modelo (el Terra no viene en XS).
+    models.some((m) => m.id === o.model && m.sizes.includes(o.size as SizeId)) &&
     Number.isInteger(o.qty) &&
     (o.qty as number) > 0
   );
@@ -437,7 +437,10 @@ checkout?.addEventListener('submit', (e) => {
   e.preventDefault();
   if (!cart.length) return;
   const data = new FormData(checkout);
-  const clean = (v: FormDataEntryValue | null) => String(v ?? '').replace(/\s+/g, ' ').trim().slice(0, 60);
+  // Texto libre de la clienta: sin caracteres de control ni invisibles (saltos de línea, cambio de dirección del
+  // texto, ancho cero) que puedan alterar cómo se lee el pedido, y como máximo 60 caracteres.
+  const clean = (v: FormDataEntryValue | null) =>
+    [...String(v ?? '').replace(/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/gu, ' ').replace(/\s+/g, ' ').trim()].slice(0, 60).join('');
   const nombre = clean(data.get('nombre'));
   const localidad = clean(data.get('localidad'));
   const pago = clean(data.get('pago'));
@@ -459,6 +462,8 @@ checkout?.addEventListener('submit', (e) => {
     localidad ? `Localidad: ${localidad}` : null,
     '',
     '¿Me confirman disponibilidad y el costo del envío? ¡Gracias!',
+    '',
+    '(Pedido sujeto a verificación de precios y disponibilidad)',
   ];
   const href = whatsappHref(lines.filter((l): l is string => l !== null).join('\n'));
   track('InitiateCheckout', {

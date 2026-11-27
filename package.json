@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@fontsource-variable/montserrat": "5.3.0",
-    "astro": "7.4.4"
+    "astro": "7.4.13"
   },
   "engines": {
     "node": ">=22.12.0"

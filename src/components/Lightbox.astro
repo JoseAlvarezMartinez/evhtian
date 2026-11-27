@@ -38,7 +38,8 @@ const details = Object.fromEntries(
     ]),
   ),
 );
-const data = JSON.stringify({ mains, details });
+// «<» escapado: ningún texto (alt de fotos) puede cerrar la etiqueta <script> que contiene este JSON.
+const data = JSON.stringify({ mains, details }).replace(/</g, '\\u003c');
 ---
 <dialog class="lb" aria-label={`Fotos del ambo ${name}`} data-lightbox>
   <script type="application/json" data-lb-data set:html={data} />
