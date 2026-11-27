@@ -9,3 +9,7 @@ dist/
 .impeccable/review/
 .vercel
 .env*
+
+# Creativos de Meta Ads: borradores y masters 4K quedan solo en esta compu (pesan cientos de MB)
+marketing/meta-ads/creativos/borradores/
+marketing/meta-ads/creativos/*_4K.png

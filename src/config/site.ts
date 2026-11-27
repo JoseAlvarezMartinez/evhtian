@@ -33,9 +33,9 @@ export const site = {
     /** El nombre dentro de una frase: «Ahorrás con {phrase}», «a $65.000 con {phrase}». */
     phrase: 'la promo de Black Friday y Cyber Monday',
     /** Hasta cuándo dura, tal como se lee en la web. */
-    until: '30 de noviembre',
+    until: '6 de diciembre',
     /** La misma fecha en formato AAAA-MM-DD: Google y Meta la leen como vencimiento del precio. Actualizar junto con `until`. */
-    endsOn: '2026-11-30',
+    endsOn: '2026-12-06',
   },
 
   /**
