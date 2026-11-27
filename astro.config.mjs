@@ -30,7 +30,9 @@ export default defineConfig({
         `connect-src 'self'${meta}`,
         "object-src 'none'",
         "base-uri 'self'",
-        "form-action 'self'",
+        // El Pixel a veces manda los eventos con un formulario oculto dentro de un iframe a facebook.com/tr.
+        `form-action 'self'${pixel ? ' https://www.facebook.com' : ''}`,
+        ...(pixel ? ['frame-src https://www.facebook.com'] : []),
         'upgrade-insecure-requests',
       ],
       ...(pixel && { scriptDirective: { resources: ["'self'", 'https://connect.facebook.net'] } }),
