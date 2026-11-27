@@ -1,0 +1,71 @@
+{
+  "_nota": "Copys v3 (2026-11-27). {OFERTA} se reemplaza según el período. Sin datos inventados: nada de reseñas, stock limitado ni tiempos de respuesta.",
+  "oferta": {
+    "P65k": "🔥 Black Friday y Cyber Monday: ambo completo (chaqueta + pantalón) a $65.000. Antes $130.000: es la mitad. Solo hasta el 6 de diciembre.",
+    "P130k": "Ambo completo (chaqueta + pantalón): $130.000.",
+    "P85k": "🎄 Promo de fin de año: ambo completo (chaqueta + pantalón) a $85.000. Antes $130.000: ahorrás $45.000. Hasta el 31 de diciembre."
+  },
+  "pagos": {
+    "P65k": "Mercado Pago, transferencia o 3 cuotas de $25.000 con débito (GOcuotas, total $75.000)",
+    "P130k": "Mercado Pago o transferencia",
+    "P85k": "Mercado Pago o transferencia"
+  },
+  "TOFU": {
+    "link": "https://evhtian.com.ar/",
+    "textos": [
+      "12 horas de guardia se notan en el ambo. En el nuestro, no. 🩺\n\nEvhtian son ambos médicos con moldería femenina, en bengalina elastizada: se estira con cada movimiento y vuelve a su forma.\n\n✔️ Chaqueta + pantalón\n✔️ Dos calces: Essential (entallado) o Terra (relajado, con cordón)\n✔️ 5 colores · talles XS a L\n✔️ Envíos a todo el país · cambios en 7 días\n\n{OFERTA}\n\n👉 Elegí modelo, color y talle en la web.",
+      "Si alguna vez usaste un ambo unisex, ya sabés cómo queda: tira en la cadera, sobra en los hombros y se sube cuando te agachás.\n\nPor eso hicimos Evhtian con moldería femenina desde cero: bengalina con spandex, bolsillos cargo y una chaqueta que se queda en su lugar.\n\n{OFERTA}\n\nMirá los 5 colores en la web 👇",
+      "{OFERTA}\n\nAmbo médico completo con moldería femenina, en bengalina elastizada. 5 colores, talles XS a L y envíos a todo el país.\n\n👉 Armá tu pedido en la web y lo cerramos por WhatsApp."
+    ],
+    "titulos": {
+      "P65k": ["Ambo completo a $65.000 · 50% OFF", "Ambos médicos con calce femenino", "50% OFF solo hasta el 6/12", "Bengalina elastizada · 5 colores", "Chaqueta + pantalón a mitad de precio"],
+      "P130k": ["Ambos médicos con calce femenino", "Bengalina elastizada · 5 colores", "Essential o Terra: elegí tu calce", "Chaqueta + pantalón en 5 colores", "Cambios dentro de los 7 días"],
+      "P85k": ["Fin de año: ambo completo a $85.000", "Ahorrás $45.000 hasta el 31/12", "Ambos médicos con calce femenino", "Bengalina elastizada · 5 colores", "Regalate un ambo que te quede bien"]
+    },
+    "descripcion": "Envíos a todo el país · Cambios en 7 días"
+  },
+  "MOFU": {
+    "link": "https://evhtian.com.ar/ambos/terra/?color=bordo",
+    "textos": [
+      "¿Te quedaste con la duda del talle? 📏\n\nCada modelo tiene su guía con medidas en centímetros. Y si no te queda, lo cambiás dentro de los 7 días.\n\n✔️ Essential: entallado, con cintura elastizada\n✔️ Terra: relajado, con cordón para ajustarlo a tu medida\n✔️ Bengalina con spandex: acompaña cada movimiento\n\n{OFERTA}\n\nVolvé a elegir el tuyo 👇",
+      "La diferencia está en la tela. 🧵\n\nBengalina elastizada (rayón, nylon y spandex): suave al tacto, firme a la vista y con el estiramiento justo para agacharte, levantar los brazos o correr por el pasillo sin que la chaqueta se suba.\n\n{OFERTA}\n\nElegí tu color en la web 👇",
+      "Pedir tu ambo es fácil:\n\n1️⃣ Elegís modelo, color y talle en la web\n2️⃣ Mandás el pedido por WhatsApp\n3️⃣ Te confirmamos todo y lo despachamos\n\n💳 Pagás con {PAGOS}\n📦 Envíos a todo el país (en Tigre, entrega en mano con pago en efectivo)\n\n{OFERTA}"
+    ],
+    "titulos": {
+      "P65k": ["Tu ambo, a mitad de precio", "Guía de talles en cm + cambios", "Ambo completo a $65.000", "3 cuotas de $25.000 con débito", "50% OFF hasta el 6/12"],
+      "P130k": ["Guía de talles en cm + cambios", "La bengalina que se mueve con vos", "Essential o Terra: elegí tu calce", "Envíos a todo el país", "Ambo completo en 5 colores"],
+      "P85k": ["Ambo completo a $85.000", "Guía de talles en cm + cambios", "Ahorrás $45.000 hasta el 31/12", "La bengalina que se mueve con vos", "Envíos a todo el país"]
+    },
+    "descripcion": "Guía de talles en cm · Cambios en 7 días"
+  },
+  "BOFU": {
+    "link": "https://evhtian.com.ar/ambos/essential/?color=negro",
+    "textos": [
+      "Tu ambo está a un paso. 🛒\n\nTerminá tu pedido en la web: lo mandás por WhatsApp y te confirmamos talle, color y envío antes de pagar.\n\n✔️ Cambios dentro de los 7 días\n✔️ {PAGOS}\n✔️ Envíos a todo el país\n\n{OFERTA}",
+      "¿Dudás entre dos talles? 💬\n\nArmá tu pedido en la web y, cuando lo mandes por WhatsApp, pasanos tus medidas: te decimos cuál te conviene antes de pagar. Y si igual no te queda, lo cambiás dentro de los 7 días.\n\n{OFERTA}",
+      "{URGENCIA}\n\nAmbo completo, moldería femenina, bengalina elastizada y 5 colores. Lo pedís en la web y lo cerramos por WhatsApp.\n\n{OFERTA}"
+    ],
+    "urgencia": {
+      "P65k": "⏳ El 50% OFF termina el 6 de diciembre. Desde el 7, el ambo vuelve a $130.000.",
+      "P130k": "Tu talle y tu color, confirmados por WhatsApp antes de pagar.",
+      "P85k": "⏳ La promo de fin de año termina el 31 de diciembre."
+    },
+    "titulos": {
+      "P65k": ["Terminá tu pedido · 50% OFF", "Último llamado: hasta el 6/12", "Te ayudamos a elegir el talle", "Ambo completo a $65.000", "Cambios dentro de los 7 días"],
+      "P130k": ["Terminá tu pedido", "Te ayudamos a elegir el talle", "Cambios dentro de los 7 días", "Envíos a todo el país", "Confirmás talle antes de pagar"],
+      "P85k": ["Terminá tu pedido · $85.000", "Promo hasta el 31/12", "Te ayudamos a elegir el talle", "Ahorrás $45.000", "Cambios dentro de los 7 días"]
+    },
+    "descripcion": "Confirmás talle y color por WhatsApp"
+  },
+  "carrusel": {
+    "TOFU_essential": {
+      "texto": "Essential, nuestro ambo entallado, en 5 colores. Deslizá y elegí el tuyo 👉\n\nBengalina elastizada, cintura que no aprieta y bolsillo cargo. Talles XS a L.\n\n{OFERTA}",
+      "modelo": "essential"
+    },
+    "MOFU_terra": {
+      "texto": "Terra, el ambo de calce relajado, con cordón para ajustarlo a tu medida. ¿Cuál es tu color? 👉\n\nBengalina elastizada, bolsillo en el pecho y cargo con solapa. Talles S a L.\n\n{OFERTA}",
+      "modelo": "terra"
+    },
+    "colores": {"bordo": "Bordó", "marino": "Azul marino", "negro": "Negro", "rosa": "Rosa", "verde": "Verde militar"}
+  }
+}

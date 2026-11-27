@@ -1,6 +1,6 @@
 # EVHTIAN · Plan de Meta Ads
 
-Estado: **Fase 3 lista: todo creado como BORRADOR en Meta (nada publicado).** Falta que la dueña revise y publique.
+Estado: **Fase 3b lista: 6 anuncios en BORRADOR (período $65.000), sin errores (nada publicado).** Publicar solo TOFU; MOFU y BOFU esperan público.
 Última actualización: 2026-11-27.
 
 | Fase | Estado |
@@ -9,6 +9,61 @@ Estado: **Fase 3 lista: todo creado como BORRADOR en Meta (nada publicado).** Fa
 | 1 · Estrategia del embudo | Aprobada. BOFU va al sitio (WhatsApp no vinculado, decisión de la dueña) |
 | 2 · Creativos (Nano Banana Pro) | **Aprobados** (versión 2, 2026-11-27) |
 | 3 · Creación en Meta Ads (en pausa) | **Hecha** (2026-11-27): 6 públicos, 3 campañas, 3 conjuntos, 9 anuncios en borrador |
+| 3b · Rearmado v3 (errores + copys) | **Hecho** (2026-11-27): 6 anuncios en borrador (solo período $65.000), 0 errores, vista previa OK. Ver «Fase 3b» abajo |
+
+---
+
+## Fase 3b · Rearmado v3 (2026-11-27)
+
+**Diagnóstico de los borradores v2** (Administrador de anuncios, puntuación de campaña 58):
+1. «El anuncio no se puede entregar en … Edita la imagen» en las 16 ubicaciones y sin vista previa: los creativos
+   tenían apagadas *todas* las funciones de Advantage+ (incluidas `adapt_to_placement` e `image_auto_crop`) con
+   `image_crops` vacío, así que Meta no podía encajar la imagen en ninguna ubicación.
+2. Error #1815589: el botón llevaba `link_title`/`link_description` dentro de `call_to_action.value` (obsoleto).
+   El conector los agrega solo si se crea el creativo con `ads_create_creative`; por eso ahora los creativos se
+   cargan *inline* (con `ads_update_entity`/`ads_create_ad`) con `call_to_action: {type, value: {link}}`.
+3. Ubicaciones manuales (solo FB + IG): Meta restaba 11 puntos. Ahora **Advantage+ en los 3 conjuntos**.
+4. Al anuncio TOFU de $65.000 le faltaba la cuenta de Instagram. Los anuncios nuevos llevan además
+   `threads_user_id` 17841447506622297 (sin eso, la vista de Instagram del carrusel salía sin nombre).
+
+**Estructura nueva (2 anuncios activos a la vez por conjunto, programados por período de precio):**
+
+| Conjunto | Anuncio A (imagen 4:5 feed + 9:16 historias/reels, 3 textos + 5 títulos) | Anuncio B |
+|---|---|---|
+| TOFU | `EVH_TOFU_marca_P65k/P130k/P85k` → inicio | `EVH_TOFU_carrusel-essential_*` (5 colores, cada tarjeta a su color) |
+| MOFU | `EVH_MOFU_producto_*` → Terra bordó | `EVH_MOFU_carrusel-terra_*` (5 colores) |
+| BOFU | `EVH_BOFU_whatsapp_*` → Essential negro | `EVH_BOFU_vestuario_*` (foto vestuario, abre con «¿Dudás entre dos talles?») → Terra bordó |
+
+**Corrección del mismo día (pedido de la dueña):** el Administrador de anuncios **no muestra** la programación por
+anuncio, así que los anuncios de $130.000 y $85.000 parecían activos (casi se publica el de Navidad). Se **borraron
+los 12 anuncios de períodos futuros** (borradores nunca publicados). Quedan solo los 6 del período actual, que
+terminan el 6/12 23:59:
+
+| Campaña | Anuncios en borrador (ID) |
+|---|---|
+| TOFU | `EVH_TOFU_marca_P65k` 120254150336170652 · `EVH_TOFU_carrusel-essential_P65k` 120254153392480652 |
+| MOFU | `EVH_MOFU_producto_P65k` 120254150341310652 · `EVH_MOFU_carrusel-terra_P65k` 120254153404770652 |
+| BOFU | `EVH_BOFU_whatsapp_P65k` 120254150342260652 · `EVH_BOFU_vestuario_P65k` 120254153412990652 |
+
+- **6/12:** armar los anuncios de $130.000 (7–19/12) con los textos `P130k` de `creativos/v3/copys.json`, en borrador
+  para que la dueña los revise antes del 7/12.
+- **19/12:** idem con `P85k` (20–31/12).
+- Al reemplazar creativos, Meta volvió a prender sus mejoras automáticas (texto superpuesto, animación, brillo,
+  cambios de texto). Se apagaron las 8 en los 6 anuncios y se verificó en el borrador.
+- Al revisar y publicar en el Administrador, la ventana «Revisar y publicar» junta los borradores de las 3
+  campañas: destildar MOFU y BOFU (público todavía «demasiado pequeño», menos de 1.000 personas).
+
+- Copys: `creativos/v3/copys.json` (ofertas por período, sin datos inventados; cuotas solo a $65.000 y con total).
+- Imágenes v3: `creativos/v3/` (1080×1350, 1080×1920 y tarjetas 1080×1080 hechas con las fotos de producto del
+  sitio). Hashes en Meta: TOFU 4:5 `37b7716719ee3b8b6bdb8521767f0012`, 9:16 `db451c59cd760feeffc700d1828dfd4c` ·
+  MOFU `c3f6cb0f89095432323629ff6b71c263` / `42367987b514c372bab1cb5f69467d8f` · BOFU
+  `4a0a6f08bae20738b57dc940617b9355` / `6b1a9dfc62f4df8e8cb71eb1a9da0ce9`.
+- Mejoras automáticas de imagen de Meta (brillo, retoques, IA) siguen apagadas.
+- Puntuación después: TOFU 76, MOFU ~60+, BOFU 60. Lo que falta son sugerencias, no errores: video (+11/+2),
+  imágenes generadas con IA (+8) y, en BOFU, audiencia Advantage+ (+9) — **no se aplica a propósito**: abriría
+  el retargeting a gente fría.
+- Verificado en el Administrador: vista previa en feed (4:5) e historias (9:16 a pantalla completa) en TOFU y BOFU,
+  carrusel en FB e IG. Todos los objetos «VALIDATED», sin `active_errors`.
 
 ---
 
@@ -322,7 +377,47 @@ y control numérico del color (desvío R−G / B−G de las zonas neutras: v1 ha
   (va en la izquierda).
 - Costo total de la Fase 2 hasta ahora: ~24 imágenes de Nano Banana Pro (~95 créditos de Higgsfield).
 
-### Copys
+### Copys v2 (cargados en los anuncios el 2026-11-27)
+
+Estructura: gancho en la primera línea (lo único que se ve sin tocar «más»), beneficios concretos, quitar
+objeciones y cierre con la oferta del período. Sin datos inventados (ni reseñas ni stock limitado).
+Botón «Comprar» en las tres etapas.
+
+**TOFU** · gancho: el dolor de la guardia larga · título según período: «50% OFF · Ambo completo a $65.000» /
+«Ambos médicos con calce de mujer» / «Fin de año · Ambo completo a $85.000»
+> 12 horas de guardia piden más que un ambo cualquiera. 🩺
+> Por eso creamos Evhtian: ambos médicos diseñados desde cero para el cuerpo de una mujer.
+> ✔️ Bengalina elastizada: se estira con cada movimiento y vuelve a su forma
+> ✔️ Calce femenino: Essential, entallado · Terra, más relajado
+> ✔️ Bolsillos donde de verdad los necesitás
+> ✔️ 5 colores · talles del XS al L
+> Llegás impecable y terminás la guardia igual.
+> {oferta del período}
+> 👉 Elegí tu modelo y tu color en la web.
+
+**MOFU** · gancho: el problema del ambo unisex · títulos: «Ambo con calce de mujer · 50% OFF» /
+«La bengalina que se mueve con vos» / «Ambo con calce de mujer · $85.000»
+> El ambo unisex se nota: tira donde no tiene que tirar y sobra donde no hace falta.
+> Los nuestros están hechos para el cuerpo de una mujer 👇
+> 🧵 Bengalina con spandex: suave, firme y elástica. Te agachás, te estirás y la chaqueta queda en su lugar.
+> 📐 Dos calces: Essential (entallado, cintura elastizada que no aprieta) o Terra (relajado, con cordón para ajustarlo a tu medida).
+> 👖 Bolsillos cargo y laterales para llevar todo sin cargar la chaqueta.
+> 📏 Guía de talles con medidas en centímetros: elegís sin adivinar. Y si no te queda, lo cambiás dentro de los 7 días.
+> {oferta del período}
+> Mirá los 5 colores en la web 👇
+
+**BOFU** · gancho: la última duda antes de comprar · títulos: «Último llamado: 50% OFF hasta el 6/12» /
+«Escribinos y elegí tu talle» / «$85.000 hasta el 31/12 · Escribinos»
+> ¿Te quedó alguna duda antes de pedir tu ambo? Escribinos por WhatsApp y la resolvemos en el momento. 💬
+> ✔️ Te ayudamos a elegir el talle con tus medidas
+> ✔️ Te confirmamos color y stock en el momento
+> ✔️ Cambios dentro de los 7 días
+> ✔️ Pagás con transferencia o Mercado Pago (en Tigre, también en efectivo al recibir)
+> ✔️ Envíos a todo el país
+> {oferta del período, con urgencia: «El 50% OFF termina el 6 de diciembre…»}
+> Armá tu pedido en la web y lo cerramos por WhatsApp 👇
+
+### Copys v1 (reemplazados)
 
 Los textos se escriben sin precio fijo; la línea de precio se cambia en cada período (ver abajo).
 Cumplen las políticas de Meta: sin afirmaciones absolutas, sin hablarle a la persona por atributos personales.
@@ -465,21 +560,21 @@ Sin marca de «hecho con IA» (decisión de la dueña: en Argentina no es obliga
 
 **Imágenes en la cuenta (hash):** TOFU 4:5 `5cfcf6337f348fc8f5ab70584182aedf` · 1:1 `4b52bf778068a238683450e7a3c97261` ·
 MOFU 4:5 `9e7c3fd4fdf9e8efa43fdbb45cce4e97` · 1:1 `1b124c20bded6229ae6d75785446df8f` · BOFU 4:5 `92e498c952c4f7a5cafbce87c037eb09` ·
-1:1 `68795eedd64d57396c32ca99aaf34f56`. La 1:1 se usa en la columna derecha y Marketplace de Facebook; el resto usa la 4:5.
+1:1 `68795eedd64d57396c32ca99aaf34f56`. Los anuncios usan solo la 4:5 (formato de una imagen). La versión con 1:1 por ubicación se sacó el 2026-11-27 porque la vista previa de Meta no cargaba; en ubicaciones cuadradas Meta recorta la 4:5 al centro.
 
 **Anuncios (9, borrador, fechas en hora de Argentina)**
 
 | Anuncio | ID | Creativo | Se muestra |
 |---|---|---|---|
-| EVH_TOFU_marca_P65k | 120254150336170652 | 1711861083745380 | desde que se publica hasta el 6/12 23:59 |
-| EVH_TOFU_marca_P130k | 120254150336540652 | 1139962988817285 | 7/12 00:00 → 19/12 23:59 |
-| EVH_TOFU_marca_P85k | 120254150336850652 | 1846213033239473 | 20/12 00:00 → 31/12 23:59 |
-| EVH_MOFU_producto_P65k | 120254150341310652 | 1720888889692413 | hasta el 6/12 23:59 |
-| EVH_MOFU_producto_P130k | 120254150341550652 | 4698793193691531 | 7/12 → 19/12 |
-| EVH_MOFU_producto_P85k | 120254150342070652 | 2254104208484137 | 20/12 → 31/12 |
-| EVH_BOFU_whatsapp_P65k | 120254150342260652 | 1599489511862302 | hasta el 6/12 23:59 |
-| EVH_BOFU_whatsapp_P130k | 120254150342960652 | 1664188461856639 | 7/12 → 19/12 |
-| EVH_BOFU_whatsapp_P85k | 120254150343410652 | 2118121065568429 | 20/12 → 31/12 |
+| EVH_TOFU_marca_P65k | 120254150336170652 | 30075562235394916 | desde que se publica hasta el 6/12 23:59 |
+| EVH_TOFU_marca_P130k | 120254150336540652 | 1475037268070174 | 7/12 00:00 → 19/12 23:59 |
+| EVH_TOFU_marca_P85k | 120254150336850652 | 1300794155561661 | 20/12 00:00 → 31/12 23:59 |
+| EVH_MOFU_producto_P65k | 120254150341310652 | 4114122315548515 | hasta el 6/12 23:59 |
+| EVH_MOFU_producto_P130k | 120254150341550652 | 4715194665436145 | 7/12 → 19/12 |
+| EVH_MOFU_producto_P85k | 120254150342070652 | 1998956161467398 | 20/12 → 31/12 |
+| EVH_BOFU_whatsapp_P65k | 120254150342260652 | 2500699167120159 | hasta el 6/12 23:59 |
+| EVH_BOFU_whatsapp_P130k | 120254150342960652 | 1145455075012720 | 7/12 → 19/12 |
+| EVH_BOFU_whatsapp_P85k | 120254150343410652 | 1642676644373454 | 20/12 → 31/12 |
 
 Todos con parámetros UTM (`utm_campaign={{campaign.name}}`, etc.) y las mejoras automáticas de Meta
 (Advantage+ creativo: brillo, texto generado, etc.) **apagadas**, para que el producto se vea tal cual.
