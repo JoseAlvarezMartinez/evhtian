@@ -5,6 +5,9 @@
  */
 import { site, formatARS, whatsappHref, installments } from '../config/site';
 import { models, colors, sizes, skuFor, type ColorId, type ModelId, type SizeId } from '../data/catalog';
+import { track, trackCustom, captureAttribution, attributionParams, newRef } from './tracking';
+
+captureAttribution();
 
 type Item = { model: ModelId; color: ColorId; size: SizeId; qty: number };
 
@@ -16,9 +19,6 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
 const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) =>
   Array.from(root.querySelectorAll<T>(sel));
-
-/** Evento del Pixel de Meta (ver src/scripts/pixel.ts). No hace nada si el Pixel no está configurado. */
-const track = (event: string, params?: Record<string, unknown>) => window.fbq?.('track', event, params);
 
 const modelName = (id: ModelId) => models.find((m) => m.id === id)?.name ?? id;
 const colorName = (id: ColorId) => colors.find((c) => c.id === id)?.name ?? id;
@@ -299,6 +299,25 @@ $$<HTMLFormElement>('form[data-buy]').forEach((form) => {
     const t = e.target as HTMLInputElement;
     if (t.matches('[data-size-input]') && hint) hint.textContent = '';
     syncForm(form);
+    // Eligió color o talle: intención media (sirve para públicos de MOFU/BOFU).
+    if (t.matches('[data-color-input], [data-size-input]')) {
+      const model = (selectedValue(form, 'data-model-input') ?? form.dataset.model) as ModelId;
+      const color = selectedValue(form, 'data-color-input') as ColorId | undefined;
+      const size = selectedValue(form, 'data-size-input');
+      if (model && color) {
+        track('CustomizeProduct', {
+          content_ids: [skuFor(model, color)],
+          content_name: `Ambo ${modelName(model)}`,
+          content_type: 'product',
+          model,
+          color,
+          ...(size && { size }),
+          changed: t.matches('[data-color-input]') ? 'color' : 'size',
+          value: site.price,
+          currency: 'ARS',
+        });
+      }
+    }
   });
 
   form.addEventListener('submit', (e) => {
@@ -315,9 +334,12 @@ $$<HTMLFormElement>('form[data-buy]').forEach((form) => {
     addItem({ model, color, size, qty });
     track('AddToCart', {
       content_ids: [skuFor(model, color)],
-      contents: [{ id: skuFor(model, color), quantity: qty }],
+      contents: [{ id: skuFor(model, color), quantity: qty, item_price: site.price }],
       content_name: `Ambo ${modelName(model)}`,
       content_type: 'product',
+      model,
+      color,
+      size,
       value: site.price * qty,
       currency: 'ARS',
     });
@@ -359,6 +381,7 @@ $$<HTMLFormElement>('form[data-buy]').forEach((form) => {
     sync();
     if (body) body.scrollTop = 0;
     guide.showModal();
+    trackCustom('SizeGuideView', { model: guide.dataset.model, content_name: `Ambo ${modelName(guide.dataset.model as ModelId)}` });
   };
 
   form.addEventListener('change', (e) => {
@@ -419,6 +442,8 @@ $$('[data-pick-color]').forEach((btn) =>
     content_ids: [skuFor(model, shown)],
     content_name: `Ambo ${modelName(model)}`,
     content_type: 'product',
+    model,
+    color: shown,
     value: site.price,
     currency: 'ARS',
   });
@@ -441,6 +466,7 @@ checkout?.addEventListener('submit', (e) => {
   const pago = clean(data.get('pago'));
   const enCuotas = checkout.querySelector<HTMLInputElement>('input[data-pay="gocuotas"]')?.checked;
   const { qty, total } = totals();
+  const ref = newRef();
 
   const lines: (string | null)[] = [
     '¡Hola Evhtian! Quiero hacer este pedido:',
@@ -458,17 +484,30 @@ checkout?.addEventListener('submit', (e) => {
     '',
     '¿Me confirman disponibilidad y el costo del envío? ¡Gracias!',
     '',
+    `Código de pedido: ${ref}`,
     '(Pedido sujeto a verificación de precios y disponibilidad)',
   ];
   const href = whatsappHref(lines.filter((l): l is string => l !== null).join('\n'));
-  track('InitiateCheckout', {
-    content_ids: cart.map((i) => skuFor(i.model, i.color)),
-    contents: cart.map((i) => ({ id: skuFor(i.model, i.color), quantity: i.qty })),
+  // Conversión principal del sitio: la clienta manda su pedido por WhatsApp.
+  // Lead usa el código de pedido como event_id para poder cruzarlo con la venta cerrada.
+  const uniq = (xs: string[]) => [...new Set(xs)].join(',');
+  const order = {
+    content_ids: [...new Set(cart.map((i) => skuFor(i.model, i.color)))],
+    contents: cart.map((i) => ({ id: skuFor(i.model, i.color), quantity: i.qty, item_price: site.price, size: i.size })),
+    content_name: uniq(cart.map((i) => `Ambo ${modelName(i.model)}`)),
     content_type: 'product',
     num_items: qty,
+    model: uniq(cart.map((i) => i.model)),
+    color: uniq(cart.map((i) => i.color)),
+    size: uniq(cart.map((i) => i.size)),
+    order_ref: ref,
+    payment: pago || undefined,
     value: total,
     currency: 'ARS',
-  });
+    ...attributionParams(),
+  };
+  track('InitiateCheckout', order, `${ref}-ic`);
+  track('Lead', order, ref);
   const link = el('a');
   link.dataset.noTrack = '';
   link.href = href;
@@ -479,10 +518,26 @@ checkout?.addEventListener('submit', (e) => {
   link.remove();
 });
 
-/* Cualquier link a WhatsApp (consultas, talles, cambios): evento Contact del Pixel. */
+/* Cualquier otro link a WhatsApp (consultas, talles, cambios): evento Contact del Pixel y código de
+   referencia al final del mensaje, para saber de qué campaña vino la consulta. */
 document.addEventListener('click', (e) => {
   const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="https://wa.me/"]');
-  if (a && !a.hasAttribute('data-no-track')) track('Contact');
+  if (!a || a.hasAttribute('data-no-track')) return;
+  const ref = newRef();
+  try {
+    const url = new URL(a.href);
+    const text = (url.searchParams.get('text') ?? '').replace(/\n*Código: EVH-\w+$/, '');
+    a.href = whatsappHref(`${text}\n\nCódigo: ${ref}`);
+  } catch {
+    /* link raro: se abre tal cual */
+  }
+  const page = $('[data-product-page] form[data-buy]') as HTMLFormElement | null;
+  track('Contact', {
+    contact_reason: a.dataset.waReason ?? 'consulta',
+    order_ref: ref,
+    ...(page?.dataset.model && { model: page.dataset.model, content_name: `Ambo ${modelName(page.dataset.model as ModelId)}` }),
+    ...attributionParams(),
+  }, ref);
 });
 
 /* --------------------------------------------------------------------------

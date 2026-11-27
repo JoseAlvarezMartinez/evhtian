@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel';
 import { site as store } from './src/config/site.ts';
 
 // URL pública del sitio (canonical, Open Graph, sitemap). Se puede cambiar con SITE_URL al desplegar.
@@ -11,7 +12,10 @@ const meta = pixel ? ' https://www.facebook.com https://connect.facebook.net' : 
 
 export default defineConfig({
   site,
+  // Todas las páginas siguen siendo estáticas. El adapter solo agrega la función de /api/evento/
+  // (API de Conversiones de Meta), que se marca con `prerender = false`.
   output: 'static',
+  adapter: vercel({ maxDuration: 10 }),
   // Una sola URL por página (/ambos/essential/): evita contenido duplicado. Vercel redirige la versión sin barra.
   trailingSlash: 'always',
   compressHTML: true,
