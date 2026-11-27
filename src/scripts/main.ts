@@ -335,8 +335,8 @@ $$<HTMLFormElement>('form[data-buy]').forEach((form) => {
 
 /* --------------------------------------------------------------------------
    Guía de talles (ficha de modelo con medidas)
-   Se abre sola la primera vez que la clienta elige un talle, y siempre desde
-   «Guía de talles». Tocar una fila de la tabla elige ese talle en el formulario.
+   Se abre solo cuando la clienta toca «Guía de talles» (nunca sola al elegir
+   un talle). Tocar una fila de la tabla elige ese talle en el formulario.
    -------------------------------------------------------------------------- */
 (() => {
   const guide = $<HTMLDialogElement>('[data-size-guide]');
@@ -344,7 +344,6 @@ $$<HTMLFormElement>('form[data-buy]').forEach((form) => {
   if (!guide || !form) return;
   const body = $('[data-size-guide-body]', guide);
   const confirm = $<HTMLButtonElement>('[data-size-guide-confirm]', guide);
-  let shown = false;
 
   const sync = () => {
     const size = selectedValue(form, 'data-size-input');
@@ -357,17 +356,13 @@ $$<HTMLFormElement>('form[data-buy]').forEach((form) => {
   };
   const open = () => {
     if (guide.open) return;
-    shown = true;
     sync();
     if (body) body.scrollTop = 0;
     guide.showModal();
   };
 
   form.addEventListener('change', (e) => {
-    if (!(e.target as Element).matches('[data-size-input]')) return;
-    sync();
-    // Solo cuando la elige la clienta (no la preselección por URL ni la fila de la tabla).
-    if (!shown && e.isTrusted) open();
+    if ((e.target as Element).matches('[data-size-input]')) sync();
   });
   $$('[data-size-guide-open]').forEach((b) => b.addEventListener('click', open));
   $$('[data-size-guide-close], [data-size-guide-confirm]', guide).forEach((b) => b.addEventListener('click', () => guide.close()));
