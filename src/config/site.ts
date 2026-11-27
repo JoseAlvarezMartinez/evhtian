@@ -45,7 +45,7 @@ export const site = {
    *   Dominios → «Etiqueta meta»), solo el valor de content. Vacío = no se agrega la etiqueta.
    */
   meta: {
-    pixelId: '2640697886447879',
+    pixelId: '1171033125432619',
     domainVerification: '',
   },
 
